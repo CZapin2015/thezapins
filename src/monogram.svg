@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 50">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Allura&amp;display=swap');
+    text { font-family: 'Allura', cursive; fill: currentColor; }
+  </style>
+  <text x="4" y="40" font-size="46">S</text>
+  <text x="32" y="42" font-size="34" opacity="0.9">&amp;</text>
+  <text x="58" y="40" font-size="46">C</text>
+</svg>

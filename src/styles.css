@@ -39,17 +39,37 @@ nav a {
 }
 nav a:hover { color: #c9a96e; }
 .nav-monogram {
-  font-family: 'Allura', cursive;
-  font-size: 28px;
-  color: rgba(201, 169, 110, 0.7);
-  letter-spacing: -2px;
   text-decoration: none;
   position: absolute;
   left: 20px; top: 50%;
   transform: translateY(-50%);
-  transition: color 0.3s;
+  transition: opacity 0.3s;
 }
-.nav-monogram:hover { color: #c9a96e; }
+.nav-monogram:hover { opacity: 1; }
+.monogram-svg {
+  height: 32px;
+  width: auto;
+  overflow: visible;
+}
+.mono-letter {
+  font-family: 'Allura', cursive;
+  fill: rgba(201, 169, 110, 0.75);
+}
+.mono-amp {
+  font-family: 'Allura', cursive;
+  fill: rgba(201, 169, 110, 0.6);
+}
+.nav-monogram:hover .mono-letter { fill: #c9a96e; }
+.nav-monogram:hover .mono-amp { fill: rgba(201, 169, 110, 0.85); }
+.monogram-footer {
+  height: 56px;
+}
+.monogram-footer .mono-letter {
+  fill: rgba(201, 169, 110, 0.4);
+}
+.monogram-footer .mono-amp {
+  fill: rgba(201, 169, 110, 0.3);
+}
 
 /* Hamburger toggle - hidden on desktop */
 .menu-toggle {
@@ -941,10 +961,7 @@ footer {
   margin-bottom: 24px;
 }
 .footer-monogram {
-  font-family: 'Allura', cursive;
-  font-size: 52px; color: rgba(201, 169, 110, 0.45);
-  letter-spacing: -3px;
-  text-shadow: 0 0 40px rgba(201, 169, 110, 0.1);
+  display: flex; justify-content: center;
 }
 .footer-date {
   font-family: 'Montserrat', sans-serif;
