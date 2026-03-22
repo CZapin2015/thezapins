@@ -274,20 +274,10 @@ section { position: relative; z-index: 2; }
   opacity: 0; transform: translateY(14px);
 }
 .section-divider {
-  width: 40px; height: 1px;
+  width: 70px; height: 1px;
   background: linear-gradient(90deg, transparent, rgba(201, 169, 110, 0.5), transparent);
   margin: 28px auto 55px;
   transform: scaleX(0);
-}
-.section-flourish {
-  text-align: center;
-  margin: 24px auto 50px;
-  transform: scaleX(0);
-  opacity: 0;
-}
-.section-flourish svg {
-  width: 180px;
-  height: 28px;
 }
 
 /* ===== WEDDING DETAILS ===== */
@@ -947,8 +937,10 @@ footer {
   border-top: 1px solid rgba(201, 169, 110, 0.08);
   position: relative; z-index: 2;
 }
-.footer-flourish {
-  margin-bottom: 24px;
+.footer-divider {
+  width: 50px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 169, 110, 0.3), transparent);
+  margin: 0 auto 24px;
 }
 .footer-monogram {
   display: flex; justify-content: center;
