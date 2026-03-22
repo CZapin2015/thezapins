@@ -647,6 +647,11 @@ section { position: relative; z-index: 2; }
 .gallery-img:hover::after {
   opacity: 1;
 }
+/* On touch devices, hover overlays don't work - show subtle tap cue */
+@media (hover: none) {
+  .gallery-img::after { display: none; }
+  .gallery-img { cursor: pointer; }
+}
 .gallery-img {
   position: relative;
 }

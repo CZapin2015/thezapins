@@ -217,11 +217,12 @@ rsvpForm.addEventListener('submit', async (e) => {
   const eventWedding = document.getElementById('eventWedding').checked;
   const eventBrunch = document.getElementById('eventBrunch').checked;
   const anyEvent = eventWelcome || eventWedding || eventBrunch;
+  const isAccepting = document.getElementById('rsvpAttendance').value === 'accept';
 
   const data = {
     full_name: document.getElementById('rsvpName').value.trim(),
     email: document.getElementById('rsvpEmail').value.trim(),
-    attending: anyEvent ? 'accepted' : 'declined',
+    attending: isAccepting ? 'accepted' : 'declined',
     guest_count: parseInt(document.getElementById('rsvpGuests').value, 10),
     meal_preference: document.getElementById('rsvpMeal').value,
     dietary_notes: document.getElementById('rsvpNotes').value.trim(),
@@ -241,6 +242,15 @@ rsvpForm.addEventListener('submit', async (e) => {
 
   if (!data.email) {
     rsvpMessage.textContent = 'Please enter your email address.';
+    rsvpMessage.className = 'rsvp-message error';
+    btnText.style.display = 'inline';
+    btnLoading.style.display = 'none';
+    rsvpBtn.disabled = false;
+    return;
+  }
+
+  if (isAccepting && !anyEvent) {
+    rsvpMessage.textContent = 'Please select at least one event you\'ll be attending.';
     rsvpMessage.className = 'rsvp-message error';
     btnText.style.display = 'inline';
     btnLoading.style.display = 'none';
@@ -272,10 +282,15 @@ rsvpForm.addEventListener('submit', async (e) => {
         : 'We\'ll miss you! Thank you for letting us know.';
       rsvpMessage.className = 'rsvp-message success';
       rsvpForm.reset();
-      // Reset toggle to "Just Me"
+      // Reset all toggles to default state
       document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector('.toggle-btn[data-value="accept"]').classList.add('active');
       document.querySelector('.toggle-btn[data-value="1"]').classList.add('active');
+      document.getElementById('rsvpAttendance').value = 'accept';
       document.getElementById('rsvpGuests').value = '1';
+      document.getElementById('attendingFields').classList.remove('hidden');
+      document.getElementById('declineMessage').classList.remove('visible');
+      document.getElementById('guestSection').classList.remove('visible');
     } else {
       rsvpMessage.textContent = result.error || 'Something went wrong. Please try again.';
       rsvpMessage.className = 'rsvp-message error';
