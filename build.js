@@ -26,14 +26,12 @@ function generateOgImage() {
   const now = new Date();
   const diff = wedding - now;
   const days = Math.floor(diff / 86400000);
-  const hours = Math.floor((diff % 86400000) / 3600000);
-  const mins = Math.floor((diff % 3600000) / 60000);
-
-  function countdownBox(value, label, x) {
+  // Single centered days-only countdown box
+  function countdownDays(value) {
     return `
-      <rect x="${x}" y="390" width="80" height="80" rx="12" fill="rgba(10,22,40,0.6)" stroke="rgba(201,169,110,0.2)" stroke-width="1"/>
-      <text x="${x + 40}" y="435" text-anchor="middle" font-family="Georgia, serif" font-size="42" font-weight="300" fill="rgba(232,228,220,0.95)">${value}</text>
-      <text x="${x + 40}" y="458" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" letter-spacing="2" fill="rgba(201,169,110,0.7)">${label.toUpperCase()}</text>
+      <rect x="555" y="390" width="90" height="80" rx="12" fill="rgba(10,22,40,0.6)" stroke="rgba(201,169,110,0.2)" stroke-width="1"/>
+      <text x="600" y="435" text-anchor="middle" font-family="Georgia, serif" font-size="42" font-weight="300" fill="rgba(232,228,220,0.95)">${value}</text>
+      <text x="600" y="458" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" letter-spacing="2" fill="rgba(201,169,110,0.7)">DAYS</text>
     `;
   }
 
@@ -67,9 +65,7 @@ function generateOgImage() {
     <text x="600" y="325" text-anchor="middle" font-family="Georgia, 'Palatino Linotype', serif" font-size="22" font-style="italic" font-weight="300" fill="#c9a96e" letter-spacing="3">Eau Palm Beach Resort &amp; Spa</text>
     <rect x="520" y="348" width="160" height="34" rx="2" fill="none" stroke="rgba(201,169,110,0.35)" stroke-width="1"/>
     <text x="600" y="371" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" letter-spacing="4" fill="rgba(201,169,110,0.9)">BLACK TIE</text>
-    ${countdownBox(days, 'Days', 418)}
-    ${countdownBox(hours, 'Hours', 510)}
-    ${countdownBox(mins, 'Minutes', 602)}
+    ${countdownDays(days)}
     <text x="600" y="520" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" letter-spacing="3" fill="rgba(201,169,110,0.35)">THEZAPINS.COM</text>
   </svg>`;
 
@@ -88,7 +84,7 @@ function generateOgImage() {
     .jpeg({ quality: 90 })
     .toBuffer()
     .then(buf => {
-      console.log(`OG image: ${days}d ${hours}h ${mins}m countdown`);
+      console.log(`OG image: ${days} days countdown`);
       return buf;
     });
 }
