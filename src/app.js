@@ -130,14 +130,40 @@ for (let i = 0; i < 10; i++) {
 }
 
 
-// ===== NAV AUTO-HIDE =====
+// ===== NAV AUTO-HIDE (with debounce) =====
 let lastScrollY = 0;
 window.addEventListener('scroll', () => {
   const nav = document.getElementById('mainNav');
   const y = window.scrollY;
-  nav.style.transform = (y > lastScrollY && y > 80) ? 'translateY(-100%)' : 'translateY(0)';
-  lastScrollY = y;
+  const delta = y - lastScrollY;
+  // Only toggle if scroll delta > 5px to prevent jitter
+  if (Math.abs(delta) > 5) {
+    nav.style.transform = (delta > 0 && y > 80) ? 'translateY(-100%)' : 'translateY(0)';
+    // Close mobile menu on scroll
+    if (navLinks.classList.contains('open')) {
+      navLinks.classList.remove('open');
+      menuToggle.classList.remove('active');
+    }
+    lastScrollY = y;
+  }
 }, { passive: true });
+
+// ===== MOBILE HAMBURGER MENU =====
+const menuToggle = document.getElementById('menuToggle');
+const navLinks = document.getElementById('navLinks');
+
+menuToggle.addEventListener('click', () => {
+  menuToggle.classList.toggle('active');
+  navLinks.classList.toggle('open');
+});
+
+// Close menu when a link is clicked
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    menuToggle.classList.remove('active');
+  });
+});
 
 
 // ===== TOGGLE BUTTONS =====
@@ -190,6 +216,24 @@ rsvpForm.addEventListener('submit', async (e) => {
     return;
   }
 
+  if (!data.email) {
+    rsvpMessage.textContent = 'Please enter your email address.';
+    rsvpMessage.className = 'rsvp-message error';
+    btnText.style.display = 'inline';
+    btnLoading.style.display = 'none';
+    rsvpBtn.disabled = false;
+    return;
+  }
+
+  if (anyEvent && !data.meal_preference) {
+    rsvpMessage.textContent = 'Please select a meal preference.';
+    rsvpMessage.className = 'rsvp-message error';
+    btnText.style.display = 'inline';
+    btnLoading.style.display = 'none';
+    rsvpBtn.disabled = false;
+    return;
+  }
+
   try {
     const res = await fetch('/api/rsvp', {
       method: 'POST',
@@ -227,7 +271,77 @@ rsvpForm.addEventListener('submit', async (e) => {
 // ===== LIGHTBOX =====
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightboxImg');
-let galleryImages = [];
+let galleryImages = [
+  "/images/gallery/full/CS9A1866.jpg",
+  "/images/gallery/full/CS9A1942.jpg",
+  "/images/gallery/full/CS9A1955.jpg",
+  "/images/gallery/full/CS9A2000.jpg",
+  "/images/gallery/full/CS9A2092.jpg",
+  "/images/gallery/full/CS9A1839.jpg",
+  "/images/gallery/full/CS9A1904.jpg",
+  "/images/gallery/full/CS9A2170.jpg",
+  "/images/gallery/full/CS9A1848.jpg",
+  "/images/gallery/full/CS9A1849.jpg",
+  "/images/gallery/full/CS9A1866.jpg",
+  "/images/gallery/full/CS9A1870.jpg",
+  "/images/gallery/full/CS9A1877.jpg",
+  "/images/gallery/full/CS9A1886.jpg",
+  "/images/gallery/full/CS9A1890.jpg",
+  "/images/gallery/full/CS9A1891.jpg",
+  "/images/gallery/full/CS9A1892.jpg",
+  "/images/gallery/full/CS9A1894.jpg",
+  "/images/gallery/full/CS9A1899.jpg",
+  "/images/gallery/full/CS9A1902.jpg",
+  "/images/gallery/full/CS9A1903.jpg",
+  "/images/gallery/full/CS9A1909.jpg",
+  "/images/gallery/full/CS9A1911.jpg",
+  "/images/gallery/full/CS9A1912.jpg",
+  "/images/gallery/full/CS9A1914.jpg",
+  "/images/gallery/full/CS9A1915.jpg",
+  "/images/gallery/full/CS9A1918.jpg",
+  "/images/gallery/full/CS9A1921.jpg",
+  "/images/gallery/full/CS9A1923.jpg",
+  "/images/gallery/full/CS9A1929.jpg",
+  "/images/gallery/full/CS9A1931.jpg",
+  "/images/gallery/full/CS9A1933.jpg",
+  "/images/gallery/full/CS9A1935.jpg",
+  "/images/gallery/full/CS9A1947.jpg",
+  "/images/gallery/full/CS9A1948.jpg",
+  "/images/gallery/full/CS9A1951.jpg",
+  "/images/gallery/full/CS9A1952.jpg",
+  "/images/gallery/full/CS9A1958.jpg",
+  "/images/gallery/full/CS9A1967.jpg",
+  "/images/gallery/full/CS9A1974.jpg",
+  "/images/gallery/full/CS9A1986.jpg",
+  "/images/gallery/full/CS9A1990.jpg",
+  "/images/gallery/full/CS9A1996.jpg",
+  "/images/gallery/full/CS9A2005.jpg",
+  "/images/gallery/full/CS9A2010.jpg",
+  "/images/gallery/full/CS9A2012.jpg",
+  "/images/gallery/full/CS9A2015.jpg",
+  "/images/gallery/full/CS9A2016.jpg",
+  "/images/gallery/full/CS9A2027.jpg",
+  "/images/gallery/full/CS9A2034.jpg",
+  "/images/gallery/full/CS9A2035.jpg",
+  "/images/gallery/full/CS9A2040.jpg",
+  "/images/gallery/full/CS9A2045.jpg",
+  "/images/gallery/full/CS9A2047.jpg",
+  "/images/gallery/full/CS9A2049.jpg",
+  "/images/gallery/full/CS9A2055.jpg",
+  "/images/gallery/full/CS9A2057.jpg",
+  "/images/gallery/full/CS9A2067.jpg",
+  "/images/gallery/full/CS9A2103.jpg",
+  "/images/gallery/full/CS9A2121.jpg",
+  "/images/gallery/full/CS9A2126.jpg",
+  "/images/gallery/full/CS9A2128.jpg",
+  "/images/gallery/full/CS9A2130.jpg",
+  "/images/gallery/full/CS9A2132.jpg",
+  "/images/gallery/full/CS9A2143.jpg",
+  "/images/gallery/full/CS9A2145.jpg",
+  "/images/gallery/full/CS9A2147.jpg",
+  "/images/gallery/full/CS9A2150.jpg",
+  "/images/gallery/full/CS9A2161.jpg"
+];
 let currentImageIndex = 0;
 
 function openLightbox(index) {
