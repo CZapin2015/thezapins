@@ -4,6 +4,7 @@ const path = require('path');
 const distDir = path.join(__dirname, 'dist');
 const srcDir = path.join(__dirname, 'src');
 const publicDir = path.join(__dirname, 'public');
+const version = Date.now();
 
 // Clean and create dist
 if (fs.existsSync(distDir)) {
@@ -29,9 +30,18 @@ function copyDir(src, dest) {
 // Copy public assets (images, etc.)
 copyDir(publicDir, distDir);
 
-// Copy src files to dist root
+// Copy src files to dist root, adding cache-busting to HTML
 for (const file of fs.readdirSync(srcDir)) {
-  fs.copyFileSync(path.join(srcDir, file), path.join(distDir, file));
+  const srcPath = path.join(srcDir, file);
+  const destPath = path.join(distDir, file);
+  if (file === 'index.html') {
+    let html = fs.readFileSync(srcPath, 'utf8');
+    html = html.replace('/styles.css"', `/styles.css?v=${version}"`);
+    html = html.replace('/app.js"', `/app.js?v=${version}"`);
+    fs.writeFileSync(destPath, html);
+  } else {
+    fs.copyFileSync(srcPath, destPath);
+  }
 }
 
 console.log('Build complete -> dist/');
