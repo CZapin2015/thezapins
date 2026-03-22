@@ -752,13 +752,13 @@ section { position: relative; z-index: 2; }
   border-color: rgba(201, 169, 110, 0.25);
 }
 .hotel-logo {
-  width: 200px; height: 80px;
+  width: 220px; height: 100px;
   object-fit: contain;
   margin: 16px 0 20px;
   opacity: 0.85;
 }
 .eau-logo {
-  width: 280px; height: 120px;
+  width: 220px; height: 100px;
 }
 .hotel-badge {
   font-family: 'Montserrat', sans-serif;
@@ -783,7 +783,7 @@ section { position: relative; z-index: 2; }
 .hotel-note {
   font-family: 'Cormorant Garamond', serif;
   font-size: 19px; color: rgba(201, 169, 110, 0.9);
-  font-style: italic; margin-top: 12px; line-height: 1.5;
+  font-style: italic; margin-top: auto; padding-top: 12px; line-height: 1.5;
 }
 .hotel-link {
   display: inline-block; margin-top: 18px;
