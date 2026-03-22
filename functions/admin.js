@@ -393,9 +393,16 @@ export async function onRequest() {
           '<td>' + esc(r.dietary_notes || '') + '</td>' +
           '<td>' + esc(r.matched_guest_name || '-') + '</td>' +
           '<td>' + date + '</td>' +
-          '<td><button class="delete-btn" onclick="deleteRsvp(' + r.id + ', \'' + esc(r.full_name).replace(/'/g, "\\\\'") + '\')">Delete</button></td>' +
+          '<td><button class="delete-btn" data-id="' + r.id + '" data-name="' + esc(r.full_name) + '">Delete</button></td>' +
           '</tr>';
       }).join('');
+
+      // Attach delete handlers
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          deleteRsvp(btn.dataset.id, btn.dataset.name);
+        });
+      });
 
       // Missing guests
       document.getElementById('missing-list').innerHTML = missing.map(g =>
