@@ -56,7 +56,6 @@ function generateOgImage() {
         <stop offset="100%" stop-color="transparent"/>
       </linearGradient>
     </defs>
-    <rect width="1200" height="630" fill="url(#bg)"/>
     <rect width="1200" height="630" fill="url(#glow)"/>
     <path d="M30,85 L30,30 L85,30" fill="none" stroke="rgba(201,169,110,0.2)" stroke-width="1"/>
     <path d="M1115,30 L1170,30 L1170,85" fill="none" stroke="rgba(201,169,110,0.2)" stroke-width="1"/>
@@ -74,7 +73,20 @@ function generateOgImage() {
     <text x="600" y="520" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" letter-spacing="3" fill="rgba(201,169,110,0.35)">THEZAPINS.COM</text>
   </svg>`;
 
-  return sharp(Buffer.from(svg)).jpeg({ quality: 90 }).toBuffer()
+  // Start with venue-hero background, resize to 1200x630, darken with overlay, then composite text SVG
+  const heroPath = path.join(__dirname, 'public', 'images', 'venue-hero.webp');
+  const overlayBuf = Buffer.from(
+    `<svg width="1200" height="630"><rect width="1200" height="630" fill="rgba(10,18,36,0.78)"/></svg>`
+  );
+
+  return sharp(heroPath)
+    .resize(1200, 630, { fit: 'cover', position: 'center' })
+    .composite([
+      { input: overlayBuf, blend: 'over' },
+      { input: Buffer.from(svg), blend: 'over' },
+    ])
+    .jpeg({ quality: 90 })
+    .toBuffer()
     .then(buf => {
       console.log(`OG image: ${days}d ${hours}h ${mins}m countdown`);
       return buf;
