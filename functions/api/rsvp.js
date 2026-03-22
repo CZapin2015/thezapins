@@ -25,7 +25,7 @@ const MATCH_THRESHOLD = 3;
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
@@ -149,6 +149,32 @@ async function handleGet(request, env) {
   }
 }
 
+// DELETE /api/rsvp?key=ADMIN_KEY&id=RSVP_ID - Admin: delete an RSVP
+async function handleDelete(request, env) {
+  const url = new URL(request.url);
+  const key = url.searchParams.get('key');
+  const id = url.searchParams.get('id');
+
+  if (!key || key !== env.ADMIN_KEY) {
+    return json({ error: 'Unauthorized' }, 401);
+  }
+
+  if (!id) {
+    return json({ error: 'id parameter is required' }, 400);
+  }
+
+  try {
+    const result = await env.DB.prepare('DELETE FROM wedding_rsvps WHERE id = ?').bind(id).run();
+    if (result.meta.changes === 0) {
+      return json({ error: 'RSVP not found' }, 404);
+    }
+    return json({ success: true, deleted_id: id });
+  } catch (err) {
+    console.error('Delete failed:', err.message);
+    return json({ error: 'Failed to delete RSVP' }, 500);
+  }
+}
+
 export async function onRequest(context) {
   const { request, env } = context;
 
@@ -162,6 +188,10 @@ export async function onRequest(context) {
 
   if (request.method === 'GET') {
     return handleGet(request, env);
+  }
+
+  if (request.method === 'DELETE') {
+    return handleDelete(request, env);
   }
 
   return json({ error: 'Method not allowed' }, 405);

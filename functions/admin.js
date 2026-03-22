@@ -148,6 +148,52 @@ export async function onRequest() {
 
     tr:hover td { background: rgba(255, 255, 255, 0.03); }
 
+    .delete-btn {
+      padding: 0.25rem 0.6rem;
+      font-size: 0.7rem;
+      background: rgba(231, 76, 60, 0.15);
+      color: #e74c3c;
+      border: 1px solid rgba(231, 76, 60, 0.3);
+      border-radius: 3px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .delete-btn:hover { background: rgba(231, 76, 60, 0.3); }
+
+    .event-dots {
+      display: flex;
+      gap: 0.3rem;
+    }
+    .event-dot {
+      display: inline-block;
+      padding: 0.1rem 0.4rem;
+      border-radius: 2px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+    .event-dot.on { background: rgba(46, 204, 113, 0.2); color: #2ecc71; }
+    .event-dot.off { background: rgba(255, 255, 255, 0.05); color: rgba(232, 224, 212, 0.3); }
+
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(46, 204, 113, 0.9);
+      color: #0a1628;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 100;
+    }
+    .toast.visible { opacity: 1; }
+    .toast.error { background: rgba(231, 76, 60, 0.9); color: #fff; }
+
     .badge {
       display: inline-block;
       padding: 0.15rem 0.5rem;
@@ -225,12 +271,15 @@ export async function onRequest() {
           <thead>
             <tr>
               <th>Name</th>
+              <th>Email</th>
               <th>Status</th>
+              <th>Events</th>
               <th>Guests</th>
               <th>Meal</th>
-              <th>Dietary Notes</th>
-              <th>Matched To</th>
+              <th>Notes</th>
+              <th>Matched</th>
               <th>Date</th>
+              <th></th>
             </tr>
           </thead>
           <tbody id="rsvp-table"></tbody>
@@ -244,17 +293,44 @@ export async function onRequest() {
     </div>
   </div>
 
+  <div class="toast" id="toast"></div>
+
   <script>
+    let adminKey = '';
     const keyInput = document.getElementById('key-input');
     keyInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') loadDashboard();
     });
 
+    function showToast(msg, isError) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast visible' + (isError ? ' error' : '');
+      setTimeout(() => t.className = 'toast', 2500);
+    }
+
+    async function deleteRsvp(id, name) {
+      if (!confirm('Delete RSVP from ' + name + '?')) return;
+      try {
+        const res = await fetch('/api/rsvp?key=' + encodeURIComponent(adminKey) + '&id=' + id, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Deleted ' + name);
+          loadDashboard();
+        } else {
+          showToast(data.error || 'Delete failed', true);
+        }
+      } catch {
+        showToast('Network error', true);
+      }
+    }
+
     async function loadDashboard() {
-      const key = keyInput.value.trim();
+      const key = keyInput.value.trim() || adminKey;
       const errorEl = document.getElementById('error-msg');
       if (!key) { errorEl.textContent = 'Enter the admin password'; return; }
       errorEl.textContent = '';
+      adminKey = key;
 
       let data;
       try {
@@ -296,14 +372,24 @@ export async function onRequest() {
       document.getElementById('rsvp-table').innerHTML = rsvps.map(r => {
         const cls = r.attending === 'accepted' ? 'badge-accepted' : 'badge-declined';
         const date = r.created_at ? r.created_at.split('T')[0] : '';
+        const evW = r.event_welcome ? 'on' : 'off';
+        const evC = r.event_wedding ? 'on' : 'off';
+        const evB = r.event_brunch ? 'on' : 'off';
         return '<tr>' +
           '<td>' + esc(r.full_name) + '</td>' +
+          '<td>' + esc(r.email || '') + '</td>' +
           '<td><span class="badge ' + cls + '">' + r.attending + '</span></td>' +
+          '<td><div class="event-dots">' +
+            '<span class="event-dot ' + evW + '">W</span>' +
+            '<span class="event-dot ' + evC + '">C</span>' +
+            '<span class="event-dot ' + evB + '">B</span>' +
+          '</div></td>' +
           '<td>' + (r.guest_count || 1) + '</td>' +
           '<td>' + esc(r.meal_preference || '') + '</td>' +
           '<td>' + esc(r.dietary_notes || '') + '</td>' +
           '<td>' + esc(r.matched_guest_name || '-') + '</td>' +
           '<td>' + date + '</td>' +
+          '<td><button class="delete-btn" onclick="deleteRsvp(' + r.id + ', \'' + esc(r.full_name).replace(/'/g, "\\\\'") + '\')">Delete</button></td>' +
           '</tr>';
       }).join('');
 
