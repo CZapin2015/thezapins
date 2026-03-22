@@ -28,8 +28,8 @@
       <a href="#details">Details</a>
       <a href="#rsvp">RSVP</a>
       <a href="#travel">Travel</a>
-      <a href="#registry">Registry</a>
       <a href="#photos">Photos</a>
+      <a href="#registry">Registry</a>
     </div>
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">
       <span></span><span></span><span></span>
@@ -55,24 +55,6 @@
       <div class="hero-date" id="heroDate">January 24, 2027</div>
       <div class="hero-venue" id="heroVenue">Eau Palm Beach Resort &amp; Spa</div>
       <div class="hero-dresscode" id="heroDress">Black Tie</div>
-      <div class="hero-countdown" id="heroCountdown">
-        <div class="countdown-item">
-          <span class="countdown-num" id="cdDays">---</span>
-          <span class="countdown-label">Days</span>
-        </div>
-        <div class="countdown-item">
-          <span class="countdown-num" id="cdHours">--</span>
-          <span class="countdown-label">Hours</span>
-        </div>
-        <div class="countdown-item">
-          <span class="countdown-num" id="cdMinutes">--</span>
-          <span class="countdown-label">Min</span>
-        </div>
-        <div class="countdown-item">
-          <span class="countdown-num" id="cdSeconds">--</span>
-          <span class="countdown-label">Sec</span>
-        </div>
-      </div>
     </div>
     <div class="scroll-hint" id="scrollHint">
       Scroll
@@ -89,19 +71,52 @@
 
       <div class="details-cards">
         <div class="detail-card reveal-up">
-          <h3>Welcome Party</h3>
-          <p>Saturday, January 23</p>
-          <p class="detail-note">Details to follow</p>
+          <div class="detail-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <h3>Ceremony</h3>
+          <p>Eau Palm Beach<br>Resort &amp; Spa</p>
+          <p class="detail-time">5:00 PM</p>
         </div>
         <div class="detail-card reveal-up">
-          <h3>Ceremony &amp; Reception</h3>
-          <p>Sunday, January 24</p>
-          <p class="detail-note">Eau Palm Beach Resort &amp; Spa</p>
+          <div class="detail-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M17 4H7a2 2 0 0 0-2 2v4a7 7 0 0 0 14 0V6a2 2 0 0 0-2-2z"/></svg>
+          </div>
+          <h3>Reception</h3>
+          <p>Grand Ballroom<br>Eau Palm Beach</p>
+          <p class="detail-time">Dinner &amp; Dancing</p>
         </div>
         <div class="detail-card reveal-up">
-          <h3>Farewell Brunch</h3>
-          <p>Monday, January 25</p>
-          <p class="detail-note">Details to follow</p>
+          <div class="detail-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>
+          </div>
+          <h3>Dress Code</h3>
+          <p>Black Tie</p>
+          <p class="detail-note">Formal evening attire</p>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-track" id="timelineTrack"></div>
+        <div class="timeline-item reveal-tl">
+          <h4>4:30 PM</h4>
+          <p>Guest Arrival</p>
+        </div>
+        <div class="timeline-item reveal-tl">
+          <h4>5:00 PM</h4>
+          <p>Ceremony</p>
+        </div>
+        <div class="timeline-item reveal-tl">
+          <h4>5:30 PM</h4>
+          <p>Cocktail Hour</p>
+        </div>
+        <div class="timeline-item reveal-tl">
+          <h4>7:00 PM</h4>
+          <p>Reception &amp; Dinner</p>
+        </div>
+        <div class="timeline-item reveal-tl">
+          <h4>11:00 PM</h4>
+          <p>Last Dance</p>
         </div>
       </div>
     </div>
@@ -118,7 +133,7 @@
         <div class="form-row">
           <div class="form-group">
             <label for="rsvpName">Full Name</label>
-            <input type="text" id="rsvpName" name="full_name" placeholder="First and Last Name" required>
+            <input type="text" id="rsvpName" name="full_name" placeholder="" required>
           </div>
           <div class="form-group">
             <label for="rsvpEmail">Email</label>
@@ -127,92 +142,59 @@
         </div>
 
         <div class="form-group">
-          <label>Will You Be Attending?</label>
-          <div class="toggle-group attending-toggle">
-            <button type="button" class="toggle-btn active" data-value="yes" onclick="setAttendingStatus(this)">Attending</button>
-            <button type="button" class="toggle-btn" data-value="no" onclick="setAttendingStatus(this)">Cannot Attend</button>
-          </div>
-          <input type="hidden" id="attendingStatus" name="attending_status" value="yes">
-        </div>
-
-        <div id="attendanceDetails">
-          <div class="form-group">
-            <label>Which Events Will You Be Attending?</label>
-            <div class="event-checklist">
-              <label class="event-check">
-                <input type="checkbox" name="event_welcome" id="eventWelcome" value="1">
-                <span class="check-box"></span>
-                <span class="event-info">
-                  <span class="event-name">Welcome Party</span>
-                  <span class="event-date">Saturday, January 23</span>
-                </span>
-              </label>
-              <label class="event-check">
-                <input type="checkbox" name="event_wedding" id="eventWedding" value="1">
-                <span class="check-box"></span>
-                <span class="event-info">
-                  <span class="event-name">Wedding Ceremony &amp; Reception</span>
-                  <span class="event-date">Sunday, January 24</span>
-                </span>
-              </label>
-              <label class="event-check">
-                <input type="checkbox" name="event_brunch" id="eventBrunch" value="1">
-                <span class="check-box"></span>
-                <span class="event-info">
-                  <span class="event-name">Farewell Brunch</span>
-                  <span class="event-date">Monday, January 25</span>
-                </span>
-              </label>
-            </div>
-          </div>
-
-          <div class="form-group" id="guestCountGroup">
-            <label>Attending With a Guest?</label>
-            <div class="toggle-group">
-              <button type="button" class="toggle-btn active" data-value="1" onclick="setGuestCount(this)">Just Me</button>
-              <button type="button" class="toggle-btn" data-value="2" onclick="setGuestCount(this)">Me + Guest</button>
-            </div>
-            <input type="hidden" id="rsvpGuests" name="guest_count" value="1">
-          </div>
-
-          <div class="form-group" id="mealGroup">
-            <label for="rsvpMeal">Your Meal Preference</label>
-            <select id="rsvpMeal" name="meal_preference">
-              <option value="">Select...</option>
-              <option value="Beef">Beef</option>
-              <option value="Chicken">Chicken</option>
-              <option value="Fish">Fish</option>
-              <option value="Vegetarian">Vegetarian</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="rsvpNotes">Dietary Restrictions or Notes</label>
-            <input type="text" id="rsvpNotes" name="dietary_notes" placeholder="Allergies, special requests...">
-          </div>
-
-          <div class="guest-section" id="guestSection">
-            <div class="guest-section-title">Guest Details</div>
-            <div class="form-group">
-              <label for="guestName">Guest Name</label>
-              <input type="text" id="guestName" name="guest_name" placeholder="Guest's full name">
-            </div>
-            <div class="form-group">
-              <label for="guestMeal">Guest Meal Preference</label>
-              <select id="guestMeal" name="guest_meal_preference">
-                <option value="">Select...</option>
-                <option value="Beef">Beef</option>
-                <option value="Chicken">Chicken</option>
-                <option value="Fish">Fish</option>
-                <option value="Vegetarian">Vegetarian</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="guestNotes">Guest Dietary Restrictions</label>
-              <input type="text" id="guestNotes" name="guest_dietary_notes" placeholder="Allergies, special requests...">
-            </div>
+          <label>Which Events Will You Be Attending?</label>
+          <div class="event-checklist">
+            <label class="event-check">
+              <input type="checkbox" name="event_welcome" id="eventWelcome" value="1">
+              <span class="check-box"></span>
+              <span class="event-info">
+                <span class="event-name">Welcome Party</span>
+                <span class="event-date">Friday, January 23</span>
+              </span>
+            </label>
+            <label class="event-check">
+              <input type="checkbox" name="event_wedding" id="eventWedding" value="1">
+              <span class="check-box"></span>
+              <span class="event-info">
+                <span class="event-name">Wedding Ceremony &amp; Reception</span>
+                <span class="event-date">Saturday, January 24</span>
+              </span>
+            </label>
+            <label class="event-check">
+              <input type="checkbox" name="event_brunch" id="eventBrunch" value="1">
+              <span class="check-box"></span>
+              <span class="event-info">
+                <span class="event-name">Sunday Brunch</span>
+                <span class="event-date">Sunday, January 25</span>
+              </span>
+            </label>
           </div>
         </div>
 
+        <div class="form-group" id="guestCountGroup">
+          <label>Attending With a Guest?</label>
+          <div class="toggle-group">
+            <button type="button" class="toggle-btn active" data-value="1" onclick="setGuestCount(this)">Just Me</button>
+            <button type="button" class="toggle-btn" data-value="2" onclick="setGuestCount(this)">Me + Guest</button>
+          </div>
+          <input type="hidden" id="rsvpGuests" name="guest_count" value="1">
+        </div>
+
+        <div class="form-group" id="mealGroup">
+          <label for="rsvpMeal">Meal Preference</label>
+          <select id="rsvpMeal" name="meal_preference">
+            <option value="">Select...</option>
+            <option value="Beef">Beef</option>
+            <option value="Chicken">Chicken</option>
+            <option value="Fish">Fish</option>
+            <option value="Vegetarian">Vegetarian</option>
+            <option value="Kosher">Kosher</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="rsvpNotes">Dietary Restrictions or Notes</label>
+          <input type="text" id="rsvpNotes" name="dietary_notes" placeholder="Allergies, special requests...">
+        </div>
         <button type="submit" class="rsvp-btn" id="rsvpBtn">
           <span class="btn-text">Submit RSVP</span>
           <span class="btn-loading" style="display:none;">Sending...</span>
@@ -232,36 +214,17 @@
       <div class="hotel-cards">
         <div class="hotel-card reveal-up">
           <div class="hotel-badge">Venue Hotel</div>
-          <img src="/images/eau-palm-beach-logo.svg" alt="Eau Palm Beach Resort &amp; Spa" class="hotel-logo">
+          <h3>Eau Palm Beach Resort &amp; Spa</h3>
           <p class="hotel-address">100 S Ocean Blvd, Manalapan, FL 33462</p>
-          <p class="hotel-note">Room block available for wedding guests at a preferred rate. Booking link coming soon.</p>
+          <p class="hotel-note">Room block available for wedding guests at a preferred rate.</p>
+          <a href="https://www.eaupalmbeach.com" target="_blank" rel="noopener" class="hotel-link">Book Your Room</a>
         </div>
         <div class="hotel-card reveal-up">
           <div class="hotel-badge">Nearby Option</div>
-          <img src="/images/fairfield-logo.png" alt="Fairfield by Marriott Inn &amp; Suites Palm Beach" class="hotel-logo">
-          <p class="hotel-address">2870 South Ocean Boulevard, Palm Beach, FL 33480</p>
-          <p class="hotel-note">A nearby alternative for wedding guests. Booking link coming soon.</p>
+          <h3>Additional Accommodations</h3>
+          <p class="hotel-address">More hotel options coming soon</p>
+          <p class="hotel-note">We'll share additional nearby hotels with preferred rates closer to the date.</p>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- REGISTRY -->
-  <section id="registry">
-    <div class="section-inner">
-      <h2 class="section-title reveal">Registry</h2>
-      <p class="section-sub reveal">Your Presence Is Our Greatest Gift</p>
-      <div class="section-divider reveal-line"></div>
-
-      <div class="registry-links">
-        <a href="https://www.crateandbarrel.com/gift-registry/Stephanie-Mosberg-and-Corey-Zapin/r7521271" class="registry-link reveal-up" target="_blank" rel="noopener">
-          <img src="/images/crate-barrel-logo.png" alt="Crate &amp; Barrel" class="registry-logo">
-          <span class="registry-cta">View Registry</span>
-        </a>
-        <a href="https://www.bloomingdales.com/registry/Stephanie-Mosberg-Corey-Zapin/1343176" class="registry-link reveal-up" target="_blank" rel="noopener">
-          <img src="/images/bloomingdales-logo.png" alt="Bloomingdale's" class="registry-logo">
-          <span class="registry-cta">View Registry</span>
-        </a>
       </div>
     </div>
   </section>
@@ -279,29 +242,41 @@
         <div class="gallery-img reveal-up" onclick="openLightbox(2)"><img src="/images/gallery/thumbs/CS9A1955.jpg" alt="Couple smiling together showing engagement ring" loading="lazy"></div>
         <div class="gallery-img reveal-up" onclick="openLightbox(3)"><img src="/images/gallery/thumbs/CS9A2000.jpg" alt="Embracing with a rose" loading="lazy"></div>
         <div class="gallery-img reveal-up" onclick="openLightbox(4)"><img src="/images/gallery/thumbs/CS9A2092.jpg" alt="She Said Yes celebration at dinner" loading="lazy"></div>
-        <div class="gallery-img reveal-up" onclick="openLightbox(5)"><img src="/images/gallery/thumbs/CS9A1904.jpg" alt="Couple at the proposal scene" loading="lazy"></div>
-        <div class="gallery-img reveal-up" onclick="openLightbox(6)"><img src="/images/gallery/thumbs/CS9A2170.jpg" alt="Guitar Hotel at night" loading="lazy"></div>
+        <div class="gallery-img reveal-up" onclick="openLightbox(5)"><img src="/images/gallery/thumbs/CS9A1839.jpg" alt="MARRY ME sign at sunset" loading="lazy"></div>
+        <div class="gallery-img reveal-up" onclick="openLightbox(6)"><img src="/images/gallery/thumbs/CS9A1904.jpg" alt="Couple at the proposal scene" loading="lazy"></div>
+        <div class="gallery-img reveal-up" onclick="openLightbox(7)"><img src="/images/gallery/thumbs/CS9A2170.jpg" alt="Guitar Hotel at night" loading="lazy"></div>
       </div>
     </div>
   </section>
 
   <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox">
-    <div class="lightbox-top-bar">
-      <div class="lightbox-counter" id="lightboxCounter"></div>
-      <button class="lightbox-close" id="lightboxClose" aria-label="Close gallery">&times;</button>
-    </div>
-    <button class="lightbox-prev" id="lightboxPrev" aria-label="Previous photo">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
-    <button class="lightbox-next" id="lightboxNext" aria-label="Next photo">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
-    </button>
-    <div class="lightbox-img-wrap">
-      <img class="lightbox-img" id="lightboxImg" src="" alt="Gallery photo">
-    </div>
-    <div class="lightbox-progress" id="lightboxProgress"><div class="lightbox-progress-bar" id="lightboxProgressBar"></div></div>
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close gallery">&times;</button>
+    <button class="lightbox-prev" id="lightboxPrev" aria-label="Previous photo">&#8249;</button>
+    <button class="lightbox-next" id="lightboxNext" aria-label="Next photo">&#8250;</button>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="Gallery photo">
+    <div class="lightbox-counter" id="lightboxCounter"></div>
   </div>
+
+  <!-- REGISTRY -->
+  <section id="registry">
+    <div class="section-inner">
+      <h2 class="section-title reveal">Registry</h2>
+      <p class="section-sub reveal">Your Presence Is Our Greatest Gift</p>
+      <div class="section-divider reveal-line"></div>
+
+      <div class="registry-links">
+        <a href="https://www.crateandbarrel.com/gift-registry/Stephanie-Mosberg-and-Corey-Zapin/r7521271" class="registry-link reveal-up" target="_blank" rel="noopener">
+          <img src="/images/crate-barrel-logo.svg" alt="Crate &amp; Barrel" class="registry-logo">
+          <span class="registry-cta">View Registry</span>
+        </a>
+        <a href="https://www.bloomingdales.com/registry/Stephanie-Mosberg-Corey-Zapin/1343176" class="registry-link reveal-up" target="_blank" rel="noopener">
+          <img src="/images/bloomingdales-logo.svg" alt="Bloomingdale's" class="registry-logo">
+          <span class="registry-cta">View Registry</span>
+        </a>
+      </div>
+    </div>
+  </section>
 
   <!-- FOOTER -->
   <footer>
