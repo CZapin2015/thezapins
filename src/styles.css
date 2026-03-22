@@ -282,6 +282,20 @@ nav a:hover { color: #c9a96e; }
   color: rgba(201, 169, 110, 0.95);
 }
 
+/* ===== SCROLL REVEAL INITIAL STATES ===== */
+/* Set in CSS to prevent flash-of-content before GSAP hydrates */
+.reveal,
+.reveal-up,
+.reveal-tl,
+.reveal-line,
+.registry-link {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.reveal-line {
+  transform: scaleX(0);
+}
+
 /* ===== SECTIONS ===== */
 section { position: relative; z-index: 2; }
 
