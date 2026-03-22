@@ -75,10 +75,10 @@ document.querySelectorAll('.reveal-up').forEach((el, i) => {
 
 // ===== TIMELINE =====
 
-// Line draws down linked to scroll
-gsap.to('#timelineTrack', {
+// Timeline line draws down linked to scroll
+gsap.to('#timelineLine', {
   scrollTrigger: {
-    trigger: '.timeline',
+    trigger: '.event-timeline',
     start: 'top 85%',
     end: 'bottom 60%',
     scrub: 1
@@ -92,7 +92,7 @@ document.querySelectorAll('.reveal-tl').forEach((item, i) => {
   gsap.to(item, {
     scrollTrigger: { trigger: item, start: 'top 88%' },
     opacity: 1, y: 0, duration: 0.5,
-    delay: i * 0.06,
+    delay: i * 0.15,
     ease: 'power2.out',
     onComplete: () => item.classList.add('lit')
   });
