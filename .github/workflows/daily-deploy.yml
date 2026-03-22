@@ -2,7 +2,7 @@ name: Daily OG Image Refresh
 
 on:
   schedule:
-    - cron: '0 10 * * *'  # 10 AM UTC = 5/6 AM ET daily
+    - cron: '3 5 * * *'  # 5:03 AM UTC = 12:03 AM ET daily
   workflow_dispatch: {}    # Manual trigger
 
 jobs:
