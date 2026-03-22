@@ -567,6 +567,9 @@ section { position: relative; z-index: 2; }
   margin: 16px 0 20px;
   opacity: 0.85;
 }
+.eau-logo {
+  width: 240px; height: 100px;
+}
 .hotel-badge {
   font-family: 'Montserrat', sans-serif;
   font-size: 11px; letter-spacing: 2px;
