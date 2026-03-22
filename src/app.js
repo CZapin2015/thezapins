@@ -172,6 +172,12 @@ function setGuestCount(btn) {
   group.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('rsvpGuests').value = btn.dataset.value;
+  const guestSection = document.getElementById('guestSection');
+  if (btn.dataset.value === '2') {
+    guestSection.classList.add('visible');
+  } else {
+    guestSection.classList.remove('visible');
+  }
 }
 
 // ===== RSVP FORM =====
@@ -272,91 +278,95 @@ rsvpForm.addEventListener('submit', async (e) => {
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightboxImg');
 let galleryImages = [
-  "/images/gallery/full/CS9A1866.jpg",
-  "/images/gallery/full/CS9A1942.jpg",
-  "/images/gallery/full/CS9A1955.jpg",
-  "/images/gallery/full/CS9A2000.jpg",
-  "/images/gallery/full/CS9A2092.jpg",
-  "/images/gallery/full/CS9A1839.jpg",
-  "/images/gallery/full/CS9A1904.jpg",
-  "/images/gallery/full/CS9A2170.jpg",
   "/images/gallery/full/CS9A1848.jpg",
-  "/images/gallery/full/CS9A1849.jpg",
-  "/images/gallery/full/CS9A1866.jpg",
   "/images/gallery/full/CS9A1870.jpg",
-  "/images/gallery/full/CS9A1877.jpg",
-  "/images/gallery/full/CS9A1886.jpg",
+  "/images/gallery/full/CS9A1866.jpg",
+  "/images/gallery/full/CS9A2049.jpg",
   "/images/gallery/full/CS9A1890.jpg",
-  "/images/gallery/full/CS9A1891.jpg",
+  "/images/gallery/full/CS9A1909.jpg",
+  "/images/gallery/full/CS9A1931.jpg",
   "/images/gallery/full/CS9A1892.jpg",
   "/images/gallery/full/CS9A1894.jpg",
-  "/images/gallery/full/CS9A1899.jpg",
-  "/images/gallery/full/CS9A1902.jpg",
-  "/images/gallery/full/CS9A1903.jpg",
-  "/images/gallery/full/CS9A1909.jpg",
-  "/images/gallery/full/CS9A1911.jpg",
-  "/images/gallery/full/CS9A1912.jpg",
-  "/images/gallery/full/CS9A1914.jpg",
-  "/images/gallery/full/CS9A1915.jpg",
   "/images/gallery/full/CS9A1918.jpg",
-  "/images/gallery/full/CS9A1921.jpg",
-  "/images/gallery/full/CS9A1923.jpg",
-  "/images/gallery/full/CS9A1929.jpg",
-  "/images/gallery/full/CS9A1931.jpg",
+  "/images/gallery/full/CS9A1911.jpg",
+  "/images/gallery/full/CS9A1942.jpg",
+  "/images/gallery/full/CS9A1902.jpg",
   "/images/gallery/full/CS9A1933.jpg",
   "/images/gallery/full/CS9A1935.jpg",
+  "/images/gallery/full/CS9A1903.jpg",
+  "/images/gallery/full/CS9A1904.jpg",
   "/images/gallery/full/CS9A1947.jpg",
   "/images/gallery/full/CS9A1948.jpg",
-  "/images/gallery/full/CS9A1951.jpg",
-  "/images/gallery/full/CS9A1952.jpg",
+  "/images/gallery/full/CS9A1955.jpg",
   "/images/gallery/full/CS9A1958.jpg",
-  "/images/gallery/full/CS9A1967.jpg",
   "/images/gallery/full/CS9A1974.jpg",
   "/images/gallery/full/CS9A1986.jpg",
-  "/images/gallery/full/CS9A1990.jpg",
-  "/images/gallery/full/CS9A1996.jpg",
-  "/images/gallery/full/CS9A2005.jpg",
+  "/images/gallery/full/CS9A2000.jpg",
   "/images/gallery/full/CS9A2010.jpg",
-  "/images/gallery/full/CS9A2012.jpg",
   "/images/gallery/full/CS9A2015.jpg",
-  "/images/gallery/full/CS9A2016.jpg",
   "/images/gallery/full/CS9A2027.jpg",
-  "/images/gallery/full/CS9A2034.jpg",
-  "/images/gallery/full/CS9A2035.jpg",
+  "/images/gallery/full/CS9A1996.jpg",
+  "/images/gallery/full/CS9A1921.jpg",
+  "/images/gallery/full/CS9A1967.jpg",
   "/images/gallery/full/CS9A2040.jpg",
   "/images/gallery/full/CS9A2045.jpg",
   "/images/gallery/full/CS9A2047.jpg",
-  "/images/gallery/full/CS9A2049.jpg",
+  "/images/gallery/full/CS9A1951.jpg",
+  "/images/gallery/full/CS9A1914.jpg",
+  "/images/gallery/full/CS9A2012.jpg",
+  "/images/gallery/full/CS9A1990.jpg",
+  "/images/gallery/full/CS9A2161.jpg",
+  "/images/gallery/full/CS9A2092.jpg",
+  "/images/gallery/full/CS9A2103.jpg",
   "/images/gallery/full/CS9A2055.jpg",
   "/images/gallery/full/CS9A2057.jpg",
   "/images/gallery/full/CS9A2067.jpg",
-  "/images/gallery/full/CS9A2103.jpg",
-  "/images/gallery/full/CS9A2121.jpg",
-  "/images/gallery/full/CS9A2126.jpg",
-  "/images/gallery/full/CS9A2128.jpg",
-  "/images/gallery/full/CS9A2130.jpg",
-  "/images/gallery/full/CS9A2132.jpg",
   "/images/gallery/full/CS9A2143.jpg",
-  "/images/gallery/full/CS9A2145.jpg",
   "/images/gallery/full/CS9A2147.jpg",
+  "/images/gallery/full/CS9A2130.jpg",
   "/images/gallery/full/CS9A2150.jpg",
-  "/images/gallery/full/CS9A2161.jpg"
+  "/images/gallery/full/CS9A2170.jpg"
 ];
 let currentImageIndex = 0;
 
 const lightboxCounter = document.getElementById('lightboxCounter');
+const lightboxProgressBar = document.getElementById('lightboxProgressBar');
 
-function updateCounter() {
+function updateUI() {
   lightboxCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+  lightboxProgressBar.style.width = `${((currentImageIndex + 1) / galleryImages.length) * 100}%`;
+}
+
+function preloadAdjacent() {
+  [-1, 1, 2].forEach(offset => {
+    const i = (currentImageIndex + offset + galleryImages.length) % galleryImages.length;
+    const img = new Image();
+    img.src = galleryImages[i];
+  });
+}
+
+function navigateTo(index) {
+  lightboxImg.classList.add('fading');
+  setTimeout(() => {
+    currentImageIndex = index;
+    lightboxImg.src = galleryImages[index];
+    lightboxImg.onload = () => {
+      lightboxImg.classList.remove('fading');
+      preloadAdjacent();
+    };
+    updateUI();
+  }, 150);
 }
 
 function openLightbox(index) {
   if (!galleryImages.length) return;
   currentImageIndex = index;
   lightboxImg.src = galleryImages[index];
-  updateCounter();
+  lightboxImg.classList.remove('fading');
+  updateUI();
   lightbox.classList.add('active');
   document.body.style.overflow = 'hidden';
+  preloadAdjacent();
 }
 
 function closeLightbox() {
@@ -366,26 +376,47 @@ function closeLightbox() {
 
 document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
 document.getElementById('lightboxPrev').addEventListener('click', () => {
-  currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
-  lightboxImg.src = galleryImages[currentImageIndex];
-  updateCounter();
+  navigateTo((currentImageIndex - 1 + galleryImages.length) % galleryImages.length);
 });
 document.getElementById('lightboxNext').addEventListener('click', () => {
-  currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
-  lightboxImg.src = galleryImages[currentImageIndex];
-  updateCounter();
+  navigateTo((currentImageIndex + 1) % galleryImages.length);
 });
 
+// Click backdrop to close
 lightbox.addEventListener('click', (e) => {
-  if (e.target === lightbox) closeLightbox();
+  if (e.target === lightbox || e.target.classList.contains('lightbox-img-wrap')) closeLightbox();
 });
 
+// Keyboard navigation
 document.addEventListener('keydown', (e) => {
   if (!lightbox.classList.contains('active')) return;
   if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowLeft') document.getElementById('lightboxPrev').click();
-  if (e.key === 'ArrowRight') document.getElementById('lightboxNext').click();
+  if (e.key === 'ArrowLeft') navigateTo((currentImageIndex - 1 + galleryImages.length) % galleryImages.length);
+  if (e.key === 'ArrowRight') navigateTo((currentImageIndex + 1) % galleryImages.length);
 });
+
+// Touch swipe support
+(function() {
+  const wrap = document.querySelector('.lightbox-img-wrap');
+  if (!wrap) return;
+  let startX = 0, startY = 0, moved = false;
+  wrap.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    moved = false;
+  }, { passive: true });
+  wrap.addEventListener('touchmove', (e) => {
+    const dx = e.touches[0].clientX - startX;
+    const dy = e.touches[0].clientY - startY;
+    if (Math.abs(dx) > 30 && Math.abs(dx) > Math.abs(dy)) moved = true;
+  }, { passive: true });
+  wrap.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (!moved) return;
+    if (dx < -50) navigateTo((currentImageIndex + 1) % galleryImages.length);
+    else if (dx > 50) navigateTo((currentImageIndex - 1 + galleryImages.length) % galleryImages.length);
+  });
+})();
 
 
 // ===== SMOOTH SCROLL FOR NAV =====

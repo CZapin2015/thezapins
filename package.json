@@ -9,5 +9,8 @@
     "deploy": "npm run build && npx wrangler pages deploy dist",
     "db:init": "npx wrangler d1 execute thezapins-db --file=schema.sql",
     "db:init:remote": "npx wrangler d1 execute thezapins-db --remote --file=schema.sql"
+  },
+  "dependencies": {
+    "sharp": "^0.34.5"
   }
 }
