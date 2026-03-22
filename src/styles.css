@@ -119,6 +119,7 @@ nav a:hover { color: #c9a96e; }
   font-size: 96px;
   color: #c9a96e;
   white-space: nowrap;
+  letter-spacing: -2px;
   text-shadow: 0 3px 24px rgba(0, 0, 0, 0.6);
 }
 .nib { display: none; }
