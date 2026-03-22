@@ -27,10 +27,34 @@ if (window.scrollY < window.innerHeight * 0.3) {
     .to('#heroDate', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 2.0)
     .to('#heroVenue', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 2.1)
     .to('#heroDress', { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }, 2.2)
-    .to('#heroCountdown', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 2.35)
+    .to('#heroCountdown', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 2.35)
     .to('#scrollHint', { opacity: 1, duration: 0.5 }, 2.6);
 }
 // If scrolled past hero on load: everything is already visible via CSS defaults
+
+
+// ===== COUNTDOWN TIMER =====
+const weddingDate = new Date('2027-01-24T00:00:00');
+
+function updateCountdown() {
+  const diff = weddingDate - new Date();
+  if (diff <= 0) {
+    const el = document.getElementById('heroCountdown');
+    if (el) el.style.display = 'none';
+    return;
+  }
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff % 86400000) / 3600000);
+  const mins = Math.floor((diff % 3600000) / 60000);
+  const secs = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cdDays').textContent = String(days).padStart(3, '0');
+  document.getElementById('cdHours').textContent = String(hours).padStart(2, '0');
+  document.getElementById('cdMinutes').textContent = String(mins).padStart(2, '0');
+  document.getElementById('cdSeconds').textContent = String(secs).padStart(2, '0');
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
 
 
 // ===== HERO PARALLAX ON SCROLL =====
@@ -167,62 +191,13 @@ navLinks.querySelectorAll('a').forEach(link => {
 });
 
 
-// ===== COUNTDOWN TIMER =====
-const weddingDate = new Date('2027-01-24T17:00:00-05:00'); // 5 PM EST
-function updateCountdown() {
-  const now = new Date();
-  const diff = weddingDate - now;
-  if (diff <= 0) {
-    document.getElementById('heroCountdown').innerHTML = '<span class="countdown-label" style="font-size:14px;letter-spacing:3px;">Today is the day!</span>';
-    return;
-  }
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  const secs = Math.floor((diff % (1000 * 60)) / 1000);
-  document.getElementById('countDays').textContent = days;
-  document.getElementById('countHours').textContent = String(hours).padStart(2, '0');
-  document.getElementById('countMins').textContent = String(mins).padStart(2, '0');
-  document.getElementById('countSecs').textContent = String(secs).padStart(2, '0');
-}
-updateCountdown();
-setInterval(updateCountdown, 1000);
-
-
-// ===== BACK TO TOP =====
-const backToTop = document.getElementById('backToTop');
-window.addEventListener('scroll', () => {
-  if (window.scrollY > window.innerHeight) {
-    backToTop.classList.add('visible');
-  } else {
-    backToTop.classList.remove('visible');
-  }
-}, { passive: true });
-backToTop.addEventListener('click', () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-
-
 // ===== ATTENDING TOGGLE =====
-const attendingDetails = document.getElementById('attendingDetails');
-function setAttending(btn) {
-  const group = btn.parentElement;
-  group.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+function setAttendingStatus(btn) {
+  btn.closest('.toggle-group').querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('rsvpAttending').value = btn.dataset.value;
-  if (btn.dataset.value === 'no') {
-    attendingDetails.classList.add('hidden');
-    attendingDetails.style.maxHeight = '0';
-  } else {
-    attendingDetails.classList.remove('hidden');
-    attendingDetails.style.maxHeight = attendingDetails.scrollHeight + 'px';
-  }
-}
-// Initialize max-height for smooth transition
-if (attendingDetails) {
-  requestAnimationFrame(() => {
-    attendingDetails.style.maxHeight = attendingDetails.scrollHeight + 'px';
-  });
+  const attending = btn.dataset.value === 'yes';
+  document.getElementById('attendingStatus').value = attending ? 'yes' : 'no';
+  document.getElementById('attendanceDetails').classList.toggle('hidden', !attending);
 }
 
 
@@ -232,6 +207,12 @@ function setGuestCount(btn) {
   group.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('rsvpGuests').value = btn.dataset.value;
+  const guestSection = document.getElementById('guestSection');
+  if (btn.dataset.value === '2') {
+    guestSection.classList.add('visible');
+  } else {
+    guestSection.classList.remove('visible');
+  }
 }
 
 // ===== RSVP FORM =====
@@ -250,19 +231,19 @@ rsvpForm.addEventListener('submit', async (e) => {
   rsvpMessage.textContent = '';
   rsvpMessage.className = 'rsvp-message';
 
-  const isDeclined = document.getElementById('rsvpAttending').value === 'no';
-  const eventWelcome = isDeclined ? false : document.getElementById('eventWelcome').checked;
-  const eventWedding = isDeclined ? false : document.getElementById('eventWedding').checked;
-  const eventBrunch = isDeclined ? false : document.getElementById('eventBrunch').checked;
+  const isAttending = document.getElementById('attendingStatus').value === 'yes';
+  const eventWelcome = isAttending && document.getElementById('eventWelcome').checked;
+  const eventWedding = isAttending && document.getElementById('eventWedding').checked;
+  const eventBrunch = isAttending && document.getElementById('eventBrunch').checked;
   const anyEvent = eventWelcome || eventWedding || eventBrunch;
 
   const data = {
     full_name: document.getElementById('rsvpName').value.trim(),
     email: document.getElementById('rsvpEmail').value.trim(),
-    attending: isDeclined ? 'declined' : (anyEvent ? 'accepted' : 'declined'),
-    guest_count: isDeclined ? 1 : parseInt(document.getElementById('rsvpGuests').value, 10),
-    meal_preference: isDeclined ? '' : document.getElementById('rsvpMeal').value,
-    dietary_notes: document.getElementById('rsvpNotes').value.trim(),
+    attending: isAttending ? 'accepted' : 'declined',
+    guest_count: isAttending ? parseInt(document.getElementById('rsvpGuests').value, 10) : 0,
+    meal_preference: isAttending ? document.getElementById('rsvpMeal').value : '',
+    dietary_notes: isAttending ? document.getElementById('rsvpNotes').value.trim() : '',
     event_welcome: eventWelcome,
     event_wedding: eventWedding,
     event_brunch: eventBrunch,
@@ -286,7 +267,7 @@ rsvpForm.addEventListener('submit', async (e) => {
     return;
   }
 
-  if (!isDeclined && anyEvent && !data.meal_preference) {
+  if (isAttending && !data.meal_preference) {
     rsvpMessage.textContent = 'Please select a meal preference.';
     rsvpMessage.className = 'rsvp-message error';
     btnText.style.display = 'inline';
@@ -305,19 +286,21 @@ rsvpForm.addEventListener('submit', async (e) => {
     const result = await res.json();
 
     if (res.ok) {
-      rsvpMessage.textContent = anyEvent
+      rsvpMessage.textContent = isAttending
         ? 'Thank you! We can\'t wait to celebrate with you.'
         : 'We\'ll miss you! Thank you for letting us know.';
       rsvpMessage.className = 'rsvp-message success';
       rsvpForm.reset();
-      // Reset toggles
-      document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
-      document.querySelector('.toggle-btn[data-value="1"]').classList.add('active');
-      document.querySelector('#attendingGroup .toggle-btn[data-value="yes"]').classList.add('active');
+      // Reset attending toggle to "Attending"
+      document.querySelector('.attending-toggle .toggle-btn[data-value="yes"]').classList.add('active');
+      document.querySelector('.attending-toggle .toggle-btn[data-value="no"]').classList.remove('active');
+      document.getElementById('attendingStatus').value = 'yes';
+      document.getElementById('attendanceDetails').classList.remove('hidden');
+      // Reset guest count to "Just Me"
+      document.querySelector('#guestCountGroup .toggle-btn[data-value="1"]').classList.add('active');
+      document.querySelector('#guestCountGroup .toggle-btn[data-value="2"]').classList.remove('active');
       document.getElementById('rsvpGuests').value = '1';
-      document.getElementById('rsvpAttending').value = 'yes';
-      attendingDetails.classList.remove('hidden');
-      attendingDetails.style.maxHeight = attendingDetails.scrollHeight + 'px';
+      document.getElementById('guestSection').classList.remove('visible');
     } else {
       rsvpMessage.textContent = result.error || 'Something went wrong. Please try again.';
       rsvpMessage.className = 'rsvp-message error';
@@ -337,127 +320,95 @@ rsvpForm.addEventListener('submit', async (e) => {
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightboxImg');
 let galleryImages = [
-  "/images/gallery/full/CS9A1866.jpg",
-  "/images/gallery/full/CS9A1942.jpg",
-  "/images/gallery/full/CS9A1955.jpg",
-  "/images/gallery/full/CS9A2000.jpg",
-  "/images/gallery/full/CS9A2092.jpg",
-  "/images/gallery/full/CS9A1839.jpg",
-  "/images/gallery/full/CS9A1904.jpg",
-  "/images/gallery/full/CS9A2170.jpg",
   "/images/gallery/full/CS9A1848.jpg",
-  "/images/gallery/full/CS9A1849.jpg",
-  "/images/gallery/full/CS9A1866.jpg",
   "/images/gallery/full/CS9A1870.jpg",
-  "/images/gallery/full/CS9A1877.jpg",
-  "/images/gallery/full/CS9A1886.jpg",
+  "/images/gallery/full/CS9A1866.jpg",
+  "/images/gallery/full/CS9A2049.jpg",
   "/images/gallery/full/CS9A1890.jpg",
-  "/images/gallery/full/CS9A1891.jpg",
+  "/images/gallery/full/CS9A1909.jpg",
+  "/images/gallery/full/CS9A1931.jpg",
   "/images/gallery/full/CS9A1892.jpg",
   "/images/gallery/full/CS9A1894.jpg",
-  "/images/gallery/full/CS9A1899.jpg",
-  "/images/gallery/full/CS9A1902.jpg",
-  "/images/gallery/full/CS9A1903.jpg",
-  "/images/gallery/full/CS9A1909.jpg",
-  "/images/gallery/full/CS9A1911.jpg",
-  "/images/gallery/full/CS9A1912.jpg",
-  "/images/gallery/full/CS9A1914.jpg",
-  "/images/gallery/full/CS9A1915.jpg",
   "/images/gallery/full/CS9A1918.jpg",
-  "/images/gallery/full/CS9A1921.jpg",
-  "/images/gallery/full/CS9A1923.jpg",
-  "/images/gallery/full/CS9A1929.jpg",
-  "/images/gallery/full/CS9A1931.jpg",
+  "/images/gallery/full/CS9A1911.jpg",
+  "/images/gallery/full/CS9A1942.jpg",
+  "/images/gallery/full/CS9A1902.jpg",
   "/images/gallery/full/CS9A1933.jpg",
   "/images/gallery/full/CS9A1935.jpg",
+  "/images/gallery/full/CS9A1903.jpg",
+  "/images/gallery/full/CS9A1904.jpg",
   "/images/gallery/full/CS9A1947.jpg",
   "/images/gallery/full/CS9A1948.jpg",
-  "/images/gallery/full/CS9A1951.jpg",
-  "/images/gallery/full/CS9A1952.jpg",
+  "/images/gallery/full/CS9A1955.jpg",
   "/images/gallery/full/CS9A1958.jpg",
-  "/images/gallery/full/CS9A1967.jpg",
   "/images/gallery/full/CS9A1974.jpg",
   "/images/gallery/full/CS9A1986.jpg",
-  "/images/gallery/full/CS9A1990.jpg",
-  "/images/gallery/full/CS9A1996.jpg",
-  "/images/gallery/full/CS9A2005.jpg",
+  "/images/gallery/full/CS9A2000.jpg",
   "/images/gallery/full/CS9A2010.jpg",
-  "/images/gallery/full/CS9A2012.jpg",
   "/images/gallery/full/CS9A2015.jpg",
-  "/images/gallery/full/CS9A2016.jpg",
   "/images/gallery/full/CS9A2027.jpg",
-  "/images/gallery/full/CS9A2034.jpg",
-  "/images/gallery/full/CS9A2035.jpg",
+  "/images/gallery/full/CS9A1996.jpg",
+  "/images/gallery/full/CS9A1921.jpg",
+  "/images/gallery/full/CS9A1967.jpg",
   "/images/gallery/full/CS9A2040.jpg",
   "/images/gallery/full/CS9A2045.jpg",
   "/images/gallery/full/CS9A2047.jpg",
-  "/images/gallery/full/CS9A2049.jpg",
+  "/images/gallery/full/CS9A1951.jpg",
+  "/images/gallery/full/CS9A1914.jpg",
+  "/images/gallery/full/CS9A2012.jpg",
+  "/images/gallery/full/CS9A1990.jpg",
+  "/images/gallery/full/CS9A2161.jpg",
+  "/images/gallery/full/CS9A2092.jpg",
+  "/images/gallery/full/CS9A2103.jpg",
   "/images/gallery/full/CS9A2055.jpg",
   "/images/gallery/full/CS9A2057.jpg",
   "/images/gallery/full/CS9A2067.jpg",
-  "/images/gallery/full/CS9A2103.jpg",
-  "/images/gallery/full/CS9A2121.jpg",
-  "/images/gallery/full/CS9A2126.jpg",
-  "/images/gallery/full/CS9A2128.jpg",
-  "/images/gallery/full/CS9A2130.jpg",
-  "/images/gallery/full/CS9A2132.jpg",
   "/images/gallery/full/CS9A2143.jpg",
-  "/images/gallery/full/CS9A2145.jpg",
   "/images/gallery/full/CS9A2147.jpg",
+  "/images/gallery/full/CS9A2130.jpg",
   "/images/gallery/full/CS9A2150.jpg",
-  "/images/gallery/full/CS9A2161.jpg"
+  "/images/gallery/full/CS9A2170.jpg"
 ];
 let currentImageIndex = 0;
-let galleryExpanded = false;
-
-// ===== VIEW ALL PHOTOS =====
-const galleryGrid = document.getElementById('galleryGrid');
-const showAllBtn = document.getElementById('galleryShowAll');
-
-showAllBtn.addEventListener('click', () => {
-  if (galleryExpanded) return;
-  galleryExpanded = true;
-
-  // Add remaining images as thumbnails
-  const existingCount = galleryGrid.querySelectorAll('.gallery-img').length;
-  galleryImages.slice(existingCount).forEach((src, i) => {
-    const thumbSrc = src.replace('/full/', '/thumbs/');
-    const div = document.createElement('div');
-    div.className = 'gallery-img';
-    div.onclick = () => openLightbox(existingCount + i);
-    const img = document.createElement('img');
-    img.src = thumbSrc;
-    img.alt = 'Engagement photo';
-    img.loading = 'lazy';
-    div.appendChild(img);
-    galleryGrid.appendChild(div);
-
-    // Animate in
-    gsap.fromTo(div,
-      { opacity: 0, y: 25 },
-      { opacity: 1, y: 0, duration: 0.5, delay: i * 0.03, ease: 'power2.out' }
-    );
-  });
-
-  showAllBtn.textContent = `Showing All ${galleryImages.length} Photos`;
-  showAllBtn.disabled = true;
-  showAllBtn.style.opacity = '0.5';
-  showAllBtn.style.cursor = 'default';
-});
 
 const lightboxCounter = document.getElementById('lightboxCounter');
+const lightboxProgressBar = document.getElementById('lightboxProgressBar');
 
-function updateCounter() {
+function updateUI() {
   lightboxCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+  lightboxProgressBar.style.width = `${((currentImageIndex + 1) / galleryImages.length) * 100}%`;
+}
+
+function preloadAdjacent() {
+  [-1, 1, 2].forEach(offset => {
+    const i = (currentImageIndex + offset + galleryImages.length) % galleryImages.length;
+    const img = new Image();
+    img.src = galleryImages[i];
+  });
+}
+
+function navigateTo(index) {
+  lightboxImg.classList.add('fading');
+  setTimeout(() => {
+    currentImageIndex = index;
+    lightboxImg.src = galleryImages[index];
+    lightboxImg.onload = () => {
+      lightboxImg.classList.remove('fading');
+      preloadAdjacent();
+    };
+    updateUI();
+  }, 150);
 }
 
 function openLightbox(index) {
   if (!galleryImages.length) return;
   currentImageIndex = index;
   lightboxImg.src = galleryImages[index];
-  updateCounter();
+  lightboxImg.classList.remove('fading');
+  updateUI();
   lightbox.classList.add('active');
   document.body.style.overflow = 'hidden';
+  preloadAdjacent();
 }
 
 function closeLightbox() {
@@ -467,60 +418,47 @@ function closeLightbox() {
 
 document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
 document.getElementById('lightboxPrev').addEventListener('click', () => {
-  currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
-  lightboxImg.src = galleryImages[currentImageIndex];
-  updateCounter();
-  preloadAdjacent();
+  navigateTo((currentImageIndex - 1 + galleryImages.length) % galleryImages.length);
 });
 document.getElementById('lightboxNext').addEventListener('click', () => {
-  currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
-  lightboxImg.src = galleryImages[currentImageIndex];
-  updateCounter();
-  preloadAdjacent();
+  navigateTo((currentImageIndex + 1) % galleryImages.length);
 });
 
+// Click backdrop to close
 lightbox.addEventListener('click', (e) => {
-  if (e.target === lightbox) closeLightbox();
+  if (e.target === lightbox || e.target.classList.contains('lightbox-img-wrap')) closeLightbox();
 });
 
+// Keyboard navigation
 document.addEventListener('keydown', (e) => {
   if (!lightbox.classList.contains('active')) return;
   if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowLeft') document.getElementById('lightboxPrev').click();
-  if (e.key === 'ArrowRight') document.getElementById('lightboxNext').click();
+  if (e.key === 'ArrowLeft') navigateTo((currentImageIndex - 1 + galleryImages.length) % galleryImages.length);
+  if (e.key === 'ArrowRight') navigateTo((currentImageIndex + 1) % galleryImages.length);
 });
 
-// ===== LIGHTBOX TOUCH SWIPE =====
-let touchStartX = 0;
-let touchStartY = 0;
-lightbox.addEventListener('touchstart', (e) => {
-  touchStartX = e.changedTouches[0].screenX;
-  touchStartY = e.changedTouches[0].screenY;
-}, { passive: true });
-lightbox.addEventListener('touchend', (e) => {
-  const dx = e.changedTouches[0].screenX - touchStartX;
-  const dy = e.changedTouches[0].screenY - touchStartY;
-  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
-    if (dx > 0) {
-      document.getElementById('lightboxPrev').click();
-    } else {
-      document.getElementById('lightboxNext').click();
-    }
-  }
-}, { passive: true });
-
-// ===== LIGHTBOX IMAGE PRELOADING =====
-function preloadAdjacent() {
-  const prev = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
-  const next = (currentImageIndex + 1) % galleryImages.length;
-  new Image().src = galleryImages[prev];
-  new Image().src = galleryImages[next];
-}
-const origOpen = openLightbox;
-openLightbox = function(index) {
-  origOpen(index);
-  preloadAdjacent();
-};
+// Touch swipe support
+(function() {
+  const wrap = document.querySelector('.lightbox-img-wrap');
+  if (!wrap) return;
+  let startX = 0, startY = 0, moved = false;
+  wrap.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    moved = false;
+  }, { passive: true });
+  wrap.addEventListener('touchmove', (e) => {
+    const dx = e.touches[0].clientX - startX;
+    const dy = e.touches[0].clientY - startY;
+    if (Math.abs(dx) > 30 && Math.abs(dx) > Math.abs(dy)) moved = true;
+  }, { passive: true });
+  wrap.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (!moved) return;
+    if (dx < -50) navigateTo((currentImageIndex + 1) % galleryImages.length);
+    else if (dx > 50) navigateTo((currentImageIndex - 1 + galleryImages.length) % galleryImages.length);
+  });
+})();
 
 
 // ===== SMOOTH SCROLL FOR NAV =====
