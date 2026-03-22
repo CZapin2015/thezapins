@@ -277,20 +277,23 @@ rsvpForm.addEventListener('submit', async (e) => {
     const result = await res.json();
 
     if (res.ok) {
-      rsvpMessage.textContent = anyEvent
+      const msg = isAccepting
         ? 'Thank you! We can\'t wait to celebrate with you.'
         : 'We\'ll miss you! Thank you for letting us know.';
-      rsvpMessage.className = 'rsvp-message success';
-      rsvpForm.reset();
-      // Reset all toggles to default state
-      document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
-      document.querySelector('.toggle-btn[data-value="accept"]').classList.add('active');
-      document.querySelector('.toggle-btn[data-value="1"]').classList.add('active');
-      document.getElementById('rsvpAttendance').value = 'accept';
-      document.getElementById('rsvpGuests').value = '1';
-      document.getElementById('attendingFields').classList.remove('hidden');
-      document.getElementById('declineMessage').classList.remove('visible');
-      document.getElementById('guestSection').classList.remove('visible');
+      // Collapse the entire form and show just the confirmation
+      rsvpForm.style.transition = 'opacity 0.4s ease, max-height 0.5s ease';
+      rsvpForm.style.opacity = '0';
+      setTimeout(() => {
+        rsvpForm.style.maxHeight = '0';
+        rsvpForm.style.overflow = 'hidden';
+        rsvpForm.style.padding = '0';
+        rsvpForm.style.border = 'none';
+        rsvpForm.style.margin = '0';
+        rsvpMessage.textContent = msg;
+        rsvpMessage.className = 'rsvp-message success';
+        rsvpMessage.style.fontSize = '22px';
+        rsvpMessage.style.marginTop = '20px';
+      }, 400);
     } else {
       rsvpMessage.textContent = result.error || 'Something went wrong. Please try again.';
       rsvpMessage.className = 'rsvp-message error';
