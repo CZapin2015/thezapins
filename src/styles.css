@@ -242,25 +242,36 @@ nav a:hover { color: #c9a96e; }
 
 /* Days unit - hero emphasis */
 .countdown-unit:first-child {
-  padding: 20px 28px 16px;
-  min-width: 100px;
-  border-color: rgba(201, 169, 110, 0.3);
-  background: rgba(10, 22, 40, 0.6);
+  padding: 24px 34px 18px;
+  min-width: 120px;
+  border-color: rgba(201, 169, 110, 0.45);
+  background: rgba(10, 22, 40, 0.7);
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.3),
     0 2px 8px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(201, 169, 110, 0.15),
-    0 0 24px rgba(201, 169, 110, 0.06);
+    inset 0 1px 0 rgba(201, 169, 110, 0.2),
+    0 0 40px rgba(201, 169, 110, 0.1),
+    0 0 80px rgba(201, 169, 110, 0.04);
+  transform: scale(1.08);
+  animation: float-days 6s ease-in-out infinite;
+}
+@keyframes float-days {
+  0%, 100% { transform: scale(1.08) translateY(0); }
+  50% { transform: scale(1.08) translateY(-6px); }
 }
 .countdown-unit:first-child .countdown-num {
-  font-size: 64px;
+  font-size: 72px;
+  font-weight: 400;
   color: #c9a96e;
-  text-shadow: 0 2px 16px rgba(201, 169, 110, 0.3);
+  text-shadow:
+    0 2px 16px rgba(201, 169, 110, 0.35),
+    0 0 40px rgba(201, 169, 110, 0.12);
 }
 .countdown-unit:first-child .countdown-label {
-  font-size: 11px;
-  letter-spacing: 3px;
-  color: rgba(201, 169, 110, 0.9);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  color: rgba(201, 169, 110, 0.95);
 }
 
 /* ===== SECTIONS ===== */
@@ -1131,8 +1142,8 @@ footer {
   .countdown { gap: 10px; flex-wrap: wrap; }
   .countdown-unit { min-width: 60px; padding: 12px 14px 10px; }
   .countdown-num { font-size: 34px; }
-  .countdown-unit:first-child { min-width: 70px; padding: 14px 18px 10px; }
-  .countdown-unit:first-child .countdown-num { font-size: 48px; }
+  .countdown-unit:first-child { min-width: 76px; padding: 16px 20px 12px; transform: scale(1.06); }
+  .countdown-unit:first-child .countdown-num { font-size: 52px; }
   .section-title { font-size: 38px; }
   .section-sub { font-size: 13px; }
   .gallery-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1154,9 +1165,9 @@ footer {
   .countdown-unit { min-width: 54px; padding: 10px 10px 8px; }
   .countdown-num { font-size: 28px; }
   .countdown-label { font-size: 8px; letter-spacing: 1.5px; }
-  .countdown-unit:first-child { min-width: 64px; padding: 12px 14px 8px; }
-  .countdown-unit:first-child .countdown-num { font-size: 40px; }
-  .countdown-unit:first-child .countdown-label { font-size: 9px; }
+  .countdown-unit:first-child { min-width: 66px; padding: 14px 16px 10px; transform: scale(1.05); }
+  .countdown-unit:first-child .countdown-num { font-size: 42px; }
+  .countdown-unit:first-child .countdown-label { font-size: 9px; letter-spacing: 3px; }
   .section-title { font-size: 32px; }
   .registry-links { flex-direction: column; align-items: center; }
   .registry-link { min-width: 0; width: 100%; }
