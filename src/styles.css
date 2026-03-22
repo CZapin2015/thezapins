@@ -52,7 +52,9 @@ nav a:hover { color: #c9a96e; }
   overflow: visible;
 }
 .mono-letter {
-  font-family: 'Allura', cursive;
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-style: italic;
   fill: rgba(201, 169, 110, 0.75);
 }
 .mono-amp {

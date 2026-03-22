@@ -1,9 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 50">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Allura&amp;display=swap');
-    text { font-family: 'Allura', cursive; fill: currentColor; }
-  </style>
-  <text x="4" y="40" font-size="46">S</text>
-  <text x="32" y="42" font-size="34" opacity="0.9">&amp;</text>
-  <text x="58" y="40" font-size="46">C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 60">
+  <!-- Elegant serif S -->
+  <path d="M18.5 48c-7.5 0-13-3.5-13-9.5 0-3.5 2.2-6.2 6-8.2-2.8-2-4.5-4.5-4.5-7.5 0-5.8 5-10.3 12.5-10.3 6.5 0 11 3.5 11 8.5 0 3.8-2.8 6.5-6.5 8.5 4.2 2.2 7.5 5 7.5 9.5 0 5.8-5.5 9-13 9zm.5-33.5c-4.5 0-8 3-8 7 0 3.2 2.5 5.5 6 7.2 4-2 6.5-4.2 6.5-7.5 0-3.8-2-6.7-4.5-6.7zm-.5 16c-4.5 0-8.5 2.5-8.5 6.5s3.5 7 8.5 7 9-2.5 9-6.5-3.5-7-9-7z" fill="currentColor"/>
+
+  <!-- Refined ampersand - classic style, not curly -->
+  <path d="M63 47c-2.5 0-4.5-1-6.5-3l-1.5 2.5h-2.5l3.5-6.5c-4.5-3.5-7.5-8-7.5-13 0-3.5 2-6.5 5.5-6.5 3 0 5 2.5 5 5.5 0 3.5-2.5 6.5-6 9 2 2.5 4 4.5 6 6.5 1.5-2.5 2.5-5.5 3-8.5h2.5c-1 4-2.5 7.5-4.5 10.5l5.5 6h-4l-1.5-2c1.5 1.5 3.5 2.5 5.5 3l-.5 2c-1-.2-2.5-.8-4-1.8zm-13-16c0 4 2.5 7.5 6 11 3-2.5 5-5.5 5-8.5 0-2.5-1.5-4.5-3.5-4.5-2.5 0-4.5 2-4.5 4.5l-3-2.5zm7.5 15c-2-2-4-4.5-5.5-7l-2 4.5c0 3 2.5 4.5 5 4.5l2.5-2z" fill="currentColor" opacity="0.85"/>
+
+  <!-- Clean classic C - no curl, clear opening -->
+  <path d="M105 48c-10 0-17-7.5-17-18s7-18 16.5-18c5.5 0 9.5 2.5 11.5 6.5l-2.5 1.5c-2-3.5-5-5.5-9-5.5-7.5 0-12.5 6.5-12.5 15.5s5 15.5 13 15.5c4 0 7.5-2 9.5-5.5l2.5 1.5c-2.5 4.5-7 7.5-12 7.5z" fill="currentColor"/>
+
+  <!-- Subtle decorative line under -->
+  <line x1="12" y1="54" x2="112" y2="54" stroke="currentColor" stroke-width="0.4" opacity="0.2"/>
 </svg>
