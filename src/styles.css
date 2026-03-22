@@ -38,6 +38,18 @@ nav a {
   transition: color 0.3s;
 }
 nav a:hover { color: #c9a96e; }
+.nav-monogram {
+  font-family: 'Allura', cursive;
+  font-size: 28px;
+  color: rgba(201, 169, 110, 0.7);
+  letter-spacing: -2px;
+  text-decoration: none;
+  position: absolute;
+  left: 20px; top: 50%;
+  transform: translateY(-50%);
+  transition: color 0.3s;
+}
+.nav-monogram:hover { color: #c9a96e; }
 
 /* Hamburger toggle - hidden on desktop */
 .menu-toggle {
@@ -931,6 +943,7 @@ footer {
 .footer-monogram {
   font-family: 'Allura', cursive;
   font-size: 52px; color: rgba(201, 169, 110, 0.45);
+  letter-spacing: -3px;
   text-shadow: 0 0 40px rgba(201, 169, 110, 0.1);
 }
 .footer-date {
