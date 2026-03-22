@@ -137,21 +137,11 @@ for (let i = 0; i < 18; i++) {
 const menuToggle = document.getElementById('menuToggle');
 const navLinks = document.getElementById('navLinks');
 
-// ===== NAV AUTO-HIDE (with debounce) =====
-let lastScrollY = 0;
+// ===== CLOSE MOBILE MENU ON SCROLL =====
 window.addEventListener('scroll', () => {
-  const nav = document.getElementById('mainNav');
-  const y = window.scrollY;
-  const delta = y - lastScrollY;
-  // Only toggle if scroll delta > 5px to prevent jitter
-  if (Math.abs(delta) > 5) {
-    nav.style.transform = (delta > 0 && y > 80) ? 'translateY(-100%)' : 'translateY(0)';
-    // Close mobile menu on scroll
-    if (navLinks.classList.contains('open')) {
-      navLinks.classList.remove('open');
-      menuToggle.classList.remove('active');
-    }
-    lastScrollY = y;
+  if (navLinks.classList.contains('open')) {
+    navLinks.classList.remove('open');
+    menuToggle.classList.remove('active');
   }
 }, { passive: true });
 
