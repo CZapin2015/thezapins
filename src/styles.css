@@ -149,6 +149,36 @@ nav a:hover { color: #c9a96e; }
   display: inline-block;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
 }
+/* Countdown */
+.hero-countdown {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  margin-top: 28px;
+}
+.countdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+}
+.countdown-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: #e8e4dc;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+.countdown-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(201, 169, 110, 0.5);
+  margin-top: 6px;
+}
+
 .scroll-hint {
   position: absolute; bottom: 32px; left: 50%;
   transform: translateX(-50%);
@@ -705,6 +735,8 @@ footer {
 
 @media (max-width: 768px) {
   .sig-text { font-size: 52px !important; }
+  .hero-countdown { gap: 18px; margin-top: 22px; }
+  .countdown-num { font-size: 26px; }
   .hero-date { font-size: 22px; letter-spacing: 3px; }
   .hero-venue { font-size: 18px; }
   .hero-dresscode { font-size: 12px; }
@@ -753,12 +785,80 @@ footer {
 
 @media (max-width: 420px) {
   .sig-text { font-size: 40px !important; }
+  .hero-countdown { gap: 14px; margin-top: 18px; }
+  .countdown-num { font-size: 22px; }
+  .countdown-label { font-size: 8px; letter-spacing: 2px; }
+  .back-to-top { bottom: 20px; right: 20px; width: 40px; height: 40px; }
   .hero-date { font-size: 20px; }
   .hero-venue { font-size: 16px; }
   .section-title { font-size: 30px; }
   .registry-links { flex-direction: column; align-items: center; }
   .registry-link { min-width: 0; width: 100%; }
   .rsvp-form { padding: 24px 16px; }
+}
+
+/* ===== GALLERY VIEW ALL BUTTON ===== */
+.gallery-show-all {
+  display: block;
+  margin: 32px auto 0;
+  padding: 14px 40px;
+  background: transparent;
+  border: 1px solid rgba(201, 169, 110, 0.3);
+  border-radius: 8px;
+  color: rgba(201, 169, 110, 0.8);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.gallery-show-all:hover {
+  background: rgba(201, 169, 110, 0.1);
+  border-color: rgba(201, 169, 110, 0.5);
+  color: #c9a96e;
+}
+
+/* ===== BACK TO TOP ===== */
+.back-to-top {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(10, 22, 40, 0.9);
+  border: 1px solid rgba(201, 169, 110, 0.25);
+  color: rgba(201, 169, 110, 0.6);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s;
+  z-index: 90;
+  backdrop-filter: blur(8px);
+}
+.back-to-top.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.back-to-top:hover {
+  background: rgba(201, 169, 110, 0.15);
+  border-color: rgba(201, 169, 110, 0.5);
+  color: #c9a96e;
+}
+
+/* ===== RSVP ATTENDING TOGGLE ===== */
+#attendingDetails {
+  transition: max-height 0.4s ease, opacity 0.3s ease;
+  overflow: hidden;
+}
+#attendingDetails.hidden {
+  max-height: 0 !important;
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* ===== FOCUS VISIBLE ===== */

@@ -15,7 +15,7 @@ if (window.scrollY < window.innerHeight * 0.3) {
   gsap.set('.corner', { opacity: 0 });
   gsap.set('#sigText', { clipPath: 'inset(0 100% 0 0)' });
   gsap.set('#heroDivider', { transform: 'scaleX(0)' });
-  gsap.set(['#heroDate', '#heroVenue', '#heroDress', '#scrollHint'], { opacity: 0, y: 6 });
+  gsap.set(['#heroDate', '#heroVenue', '#heroDress', '#heroCountdown', '#scrollHint'], { opacity: 0, y: 6 });
 
   const heroTL = gsap.timeline({ delay: 0.2 });
 
@@ -27,7 +27,8 @@ if (window.scrollY < window.innerHeight * 0.3) {
     .to('#heroDate', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 2.0)
     .to('#heroVenue', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 2.1)
     .to('#heroDress', { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }, 2.2)
-    .to('#scrollHint', { opacity: 1, duration: 0.5 }, 2.5);
+    .to('#heroCountdown', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 2.35)
+    .to('#scrollHint', { opacity: 1, duration: 0.5 }, 2.6);
 }
 // If scrolled past hero on load: everything is already visible via CSS defaults
 
@@ -166,6 +167,65 @@ navLinks.querySelectorAll('a').forEach(link => {
 });
 
 
+// ===== COUNTDOWN TIMER =====
+const weddingDate = new Date('2027-01-24T17:00:00-05:00'); // 5 PM EST
+function updateCountdown() {
+  const now = new Date();
+  const diff = weddingDate - now;
+  if (diff <= 0) {
+    document.getElementById('heroCountdown').innerHTML = '<span class="countdown-label" style="font-size:14px;letter-spacing:3px;">Today is the day!</span>';
+    return;
+  }
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const secs = Math.floor((diff % (1000 * 60)) / 1000);
+  document.getElementById('countDays').textContent = days;
+  document.getElementById('countHours').textContent = String(hours).padStart(2, '0');
+  document.getElementById('countMins').textContent = String(mins).padStart(2, '0');
+  document.getElementById('countSecs').textContent = String(secs).padStart(2, '0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+
+// ===== BACK TO TOP =====
+const backToTop = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > window.innerHeight) {
+    backToTop.classList.add('visible');
+  } else {
+    backToTop.classList.remove('visible');
+  }
+}, { passive: true });
+backToTop.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+
+// ===== ATTENDING TOGGLE =====
+const attendingDetails = document.getElementById('attendingDetails');
+function setAttending(btn) {
+  const group = btn.parentElement;
+  group.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('rsvpAttending').value = btn.dataset.value;
+  if (btn.dataset.value === 'no') {
+    attendingDetails.classList.add('hidden');
+    attendingDetails.style.maxHeight = '0';
+  } else {
+    attendingDetails.classList.remove('hidden');
+    attendingDetails.style.maxHeight = attendingDetails.scrollHeight + 'px';
+  }
+}
+// Initialize max-height for smooth transition
+if (attendingDetails) {
+  requestAnimationFrame(() => {
+    attendingDetails.style.maxHeight = attendingDetails.scrollHeight + 'px';
+  });
+}
+
+
 // ===== TOGGLE BUTTONS =====
 function setGuestCount(btn) {
   const group = btn.parentElement;
@@ -190,17 +250,18 @@ rsvpForm.addEventListener('submit', async (e) => {
   rsvpMessage.textContent = '';
   rsvpMessage.className = 'rsvp-message';
 
-  const eventWelcome = document.getElementById('eventWelcome').checked;
-  const eventWedding = document.getElementById('eventWedding').checked;
-  const eventBrunch = document.getElementById('eventBrunch').checked;
+  const isDeclined = document.getElementById('rsvpAttending').value === 'no';
+  const eventWelcome = isDeclined ? false : document.getElementById('eventWelcome').checked;
+  const eventWedding = isDeclined ? false : document.getElementById('eventWedding').checked;
+  const eventBrunch = isDeclined ? false : document.getElementById('eventBrunch').checked;
   const anyEvent = eventWelcome || eventWedding || eventBrunch;
 
   const data = {
     full_name: document.getElementById('rsvpName').value.trim(),
     email: document.getElementById('rsvpEmail').value.trim(),
-    attending: anyEvent ? 'accepted' : 'declined',
-    guest_count: parseInt(document.getElementById('rsvpGuests').value, 10),
-    meal_preference: document.getElementById('rsvpMeal').value,
+    attending: isDeclined ? 'declined' : (anyEvent ? 'accepted' : 'declined'),
+    guest_count: isDeclined ? 1 : parseInt(document.getElementById('rsvpGuests').value, 10),
+    meal_preference: isDeclined ? '' : document.getElementById('rsvpMeal').value,
     dietary_notes: document.getElementById('rsvpNotes').value.trim(),
     event_welcome: eventWelcome,
     event_wedding: eventWedding,
@@ -225,7 +286,7 @@ rsvpForm.addEventListener('submit', async (e) => {
     return;
   }
 
-  if (anyEvent && !data.meal_preference) {
+  if (!isDeclined && anyEvent && !data.meal_preference) {
     rsvpMessage.textContent = 'Please select a meal preference.';
     rsvpMessage.className = 'rsvp-message error';
     btnText.style.display = 'inline';
@@ -249,10 +310,14 @@ rsvpForm.addEventListener('submit', async (e) => {
         : 'We\'ll miss you! Thank you for letting us know.';
       rsvpMessage.className = 'rsvp-message success';
       rsvpForm.reset();
-      // Reset toggle to "Just Me"
+      // Reset toggles
       document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
       document.querySelector('.toggle-btn[data-value="1"]').classList.add('active');
+      document.querySelector('#attendingGroup .toggle-btn[data-value="yes"]').classList.add('active');
       document.getElementById('rsvpGuests').value = '1';
+      document.getElementById('rsvpAttending').value = 'yes';
+      attendingDetails.classList.remove('hidden');
+      attendingDetails.style.maxHeight = attendingDetails.scrollHeight + 'px';
     } else {
       rsvpMessage.textContent = result.error || 'Something went wrong. Please try again.';
       rsvpMessage.className = 'rsvp-message error';
@@ -343,6 +408,42 @@ let galleryImages = [
   "/images/gallery/full/CS9A2161.jpg"
 ];
 let currentImageIndex = 0;
+let galleryExpanded = false;
+
+// ===== VIEW ALL PHOTOS =====
+const galleryGrid = document.getElementById('galleryGrid');
+const showAllBtn = document.getElementById('galleryShowAll');
+
+showAllBtn.addEventListener('click', () => {
+  if (galleryExpanded) return;
+  galleryExpanded = true;
+
+  // Add remaining images as thumbnails
+  const existingCount = galleryGrid.querySelectorAll('.gallery-img').length;
+  galleryImages.slice(existingCount).forEach((src, i) => {
+    const thumbSrc = src.replace('/full/', '/thumbs/');
+    const div = document.createElement('div');
+    div.className = 'gallery-img';
+    div.onclick = () => openLightbox(existingCount + i);
+    const img = document.createElement('img');
+    img.src = thumbSrc;
+    img.alt = 'Engagement photo';
+    img.loading = 'lazy';
+    div.appendChild(img);
+    galleryGrid.appendChild(div);
+
+    // Animate in
+    gsap.fromTo(div,
+      { opacity: 0, y: 25 },
+      { opacity: 1, y: 0, duration: 0.5, delay: i * 0.03, ease: 'power2.out' }
+    );
+  });
+
+  showAllBtn.textContent = `Showing All ${galleryImages.length} Photos`;
+  showAllBtn.disabled = true;
+  showAllBtn.style.opacity = '0.5';
+  showAllBtn.style.cursor = 'default';
+});
 
 const lightboxCounter = document.getElementById('lightboxCounter');
 
@@ -369,11 +470,13 @@ document.getElementById('lightboxPrev').addEventListener('click', () => {
   currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
   lightboxImg.src = galleryImages[currentImageIndex];
   updateCounter();
+  preloadAdjacent();
 });
 document.getElementById('lightboxNext').addEventListener('click', () => {
   currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
   lightboxImg.src = galleryImages[currentImageIndex];
   updateCounter();
+  preloadAdjacent();
 });
 
 lightbox.addEventListener('click', (e) => {
@@ -386,6 +489,38 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') document.getElementById('lightboxPrev').click();
   if (e.key === 'ArrowRight') document.getElementById('lightboxNext').click();
 });
+
+// ===== LIGHTBOX TOUCH SWIPE =====
+let touchStartX = 0;
+let touchStartY = 0;
+lightbox.addEventListener('touchstart', (e) => {
+  touchStartX = e.changedTouches[0].screenX;
+  touchStartY = e.changedTouches[0].screenY;
+}, { passive: true });
+lightbox.addEventListener('touchend', (e) => {
+  const dx = e.changedTouches[0].screenX - touchStartX;
+  const dy = e.changedTouches[0].screenY - touchStartY;
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+    if (dx > 0) {
+      document.getElementById('lightboxPrev').click();
+    } else {
+      document.getElementById('lightboxNext').click();
+    }
+  }
+}, { passive: true });
+
+// ===== LIGHTBOX IMAGE PRELOADING =====
+function preloadAdjacent() {
+  const prev = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+  const next = (currentImageIndex + 1) % galleryImages.length;
+  new Image().src = galleryImages[prev];
+  new Image().src = galleryImages[next];
+}
+const origOpen = openLightbox;
+openLightbox = function(index) {
+  origOpen(index);
+  preloadAdjacent();
+};
 
 
 // ===== SMOOTH SCROLL FOR NAV =====
