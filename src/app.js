@@ -448,3 +448,21 @@ document.querySelectorAll('nav a').forEach(link => {
     }
   });
 });
+
+// ===== COUNTDOWN =====
+function updateCountdown() {
+  const wedding = new Date('2027-01-24T17:00:00-05:00');
+  const now = new Date();
+  const diff = wedding - now;
+  if (diff <= 0) return;
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff % 86400000) / 3600000);
+  const mins = Math.floor((diff % 3600000) / 60000);
+  const secs = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cdDays').textContent = String(days).padStart(3, '0');
+  document.getElementById('cdHours').textContent = String(hours).padStart(2, '0');
+  document.getElementById('cdMins').textContent = String(mins).padStart(2, '0');
+  document.getElementById('cdSecs').textContent = String(secs).padStart(2, '0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
