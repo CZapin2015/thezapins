@@ -296,11 +296,14 @@ export async function onRequest() {
   <div class="toast" id="toast"></div>
 
   <script>
-    let adminKey = '';
+    let adminKey = sessionStorage.getItem('adminKey') || '';
     const keyInput = document.getElementById('key-input');
     keyInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') loadDashboard();
     });
+
+    // Auto-login if key is stored
+    if (adminKey) loadDashboard();
 
     function showToast(msg, isError) {
       const t = document.getElementById('toast');
@@ -331,6 +334,7 @@ export async function onRequest() {
       if (!key) { errorEl.textContent = 'Enter the admin password'; return; }
       errorEl.textContent = '';
       adminKey = key;
+      sessionStorage.setItem('adminKey', key);
 
       let data;
       try {
