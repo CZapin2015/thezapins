@@ -22,12 +22,17 @@ if (window.scrollY < window.innerHeight * 0.3) {
   heroTL
     .to('.corner', { opacity: 1, duration: 0.5, stagger: 0.04, ease: 'power1.out' })
     .to('#sigText', { clipPath: 'inset(0 0% 0 0)', duration: 1.8, ease: 'power3.out' }, 0.25)
+    // Subtle glow pulse on names after reveal
+    .to('#sigText', { textShadow: '0 3px 24px rgba(0,0,0,0.6), 0 0 60px rgba(201,169,110,0.2)', duration: 0.8, ease: 'power2.out' }, 1.8)
+    .to('#sigText', { textShadow: '0 3px 24px rgba(0,0,0,0.6), 0 0 30px rgba(201,169,110,0.08)', duration: 1.2, ease: 'power2.out' }, 2.4)
     // Details appear
     .to('#heroDivider', { scaleX: 1, duration: 0.5, ease: 'power2.out' }, 1.85)
     .to('#heroDate', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 2.0)
     .to('#heroVenue', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 2.1)
     .to('#heroDress', { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }, 2.2)
-    .to('#scrollHint', { opacity: 1, duration: 0.5 }, 2.5);
+    // Countdown cards float in with stagger
+    .from('.countdown-unit', { opacity: 0, y: 15, scale: 0.9, duration: 0.5, stagger: 0.08, ease: 'power2.out' }, 2.3)
+    .to('#scrollHint', { opacity: 1, duration: 0.5 }, 2.7);
 }
 // If scrolled past hero on load: everything is already visible via CSS defaults
 
@@ -42,11 +47,12 @@ gsap.to('#heroBg', {
 
 // ===== SECTION REVEAL ANIMATIONS =====
 
-// Titles and subtitles fade up
+// Titles and subtitles fade up with scale
 document.querySelectorAll('.reveal').forEach(el => {
+  gsap.set(el, { scale: 0.96 });
   gsap.to(el, {
     scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' },
-    opacity: 1, y: 0, duration: 0.7, ease: 'power2.out'
+    opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power2.out'
   });
 });
 
@@ -58,16 +64,17 @@ document.querySelectorAll('.reveal-line').forEach(el => {
   });
 });
 
-// Generic cards/items that fade up
+// Generic cards/items that fade up with scale
 document.querySelectorAll('.reveal-up').forEach((el, i) => {
   const parent = el.parentElement;
   const siblings = Array.from(parent.children).filter(c => c.classList.contains('reveal-up'));
   const index = siblings.indexOf(el);
 
+  gsap.set(el, { scale: 0.95 });
   gsap.to(el, {
     scrollTrigger: { trigger: el, start: 'top 90%' },
-    opacity: 1, y: 0, duration: 0.6,
-    delay: index * 0.1,
+    opacity: 1, y: 0, scale: 1, duration: 0.7,
+    delay: index * 0.12,
     ease: 'power2.out'
   });
 });
@@ -112,10 +119,10 @@ document.querySelectorAll('.registry-link').forEach((link, i) => {
 
 // ===== GOLD PARTICLES =====
 const particleContainer = document.getElementById('particles');
-for (let i = 0; i < 18; i++) {
+for (let i = 0; i < 24; i++) {
   const p = document.createElement('div');
   p.className = 'particle';
-  const size = 1 + Math.random() * 1.5;
+  const size = 1.5 + Math.random() * 2;
   p.style.width = size + 'px';
   p.style.height = size + 'px';
   p.style.left = (5 + Math.random() * 90) + '%';
@@ -123,12 +130,13 @@ for (let i = 0; i < 18; i++) {
   particleContainer.appendChild(p);
 
   gsap.to(p, {
-    opacity: 0.06 + Math.random() * 0.1,
-    y: -20 - Math.random() * 40,
-    duration: 5 + Math.random() * 6,
+    opacity: 0.08 + Math.random() * 0.14,
+    y: -30 - Math.random() * 50,
+    x: -10 + Math.random() * 20,
+    duration: 5 + Math.random() * 7,
     repeat: -1, yoyo: true,
     ease: 'sine.inOut',
-    delay: Math.random() * 8
+    delay: Math.random() * 6
   });
 }
 
