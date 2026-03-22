@@ -222,20 +222,6 @@ nav a:hover { color: #c9a96e; }
 
 /* ===== SECTIONS ===== */
 section { position: relative; z-index: 2; }
-/* Subtle pattern overlay on alternating sections */
-#details::before,
-#registry::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 40px,
-    rgba(201, 169, 110, 0.035) 40px,
-    rgba(201, 169, 110, 0.035) 41px
-  );
-  pointer-events: none;
-}
 
 /* Alternating section backgrounds for better readability */
 #details {
