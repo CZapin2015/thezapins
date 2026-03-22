@@ -231,8 +231,8 @@ section { position: relative; z-index: 2; }
     45deg,
     transparent,
     transparent 40px,
-    rgba(201, 169, 110, 0.015) 40px,
-    rgba(201, 169, 110, 0.015) 41px
+    rgba(201, 169, 110, 0.035) 40px,
+    rgba(201, 169, 110, 0.035) 41px
   );
   pointer-events: none;
 }
@@ -284,6 +284,10 @@ section { position: relative; z-index: 2; }
   margin: 24px auto 50px;
   transform: scaleX(0);
   opacity: 0;
+}
+.section-flourish svg {
+  width: 180px;
+  height: 28px;
 }
 
 /* ===== WEDDING DETAILS ===== */
@@ -774,10 +778,10 @@ section { position: relative; z-index: 2; }
 .gallery-img {
   border-radius: 6px;
   overflow: hidden;
-  border: 1px solid rgba(201, 169, 110, 0.08);
+  border: 1px solid rgba(201, 169, 110, 0.15);
   opacity: 0; transform: translateY(25px);
   cursor: pointer;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s, border-color 0.4s;
 }
 .gallery-img img {
   width: 100%;
@@ -939,7 +943,7 @@ section { position: relative; z-index: 2; }
 /* ===== FOOTER ===== */
 footer {
   text-align: center;
-  padding: 90px 24px 50px;
+  padding: 50px 24px 50px;
   border-top: 1px solid rgba(201, 169, 110, 0.08);
   position: relative; z-index: 2;
 }
