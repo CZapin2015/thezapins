@@ -2,45 +2,41 @@
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ===== HERO ENTRANCE ANIMATION =====
-const heroTL = gsap.timeline({ delay: 0.4 });
+// Wait for fonts before showing hero
+document.fonts.ready.then(() => {
+  document.body.classList.add('fonts-loaded');
+});
 
-heroTL
-  .to('.corner', { opacity: 1, duration: 1, stagger: 0.08, ease: 'power1.out' })
-  .to('#nib', { opacity: 0.85, duration: 0.15 }, 0.6)
-  .to('#nib', { left: '95%', duration: 3.8, ease: 'power1.inOut' }, 0.6)
-  .to('#sigText', { clipPath: 'inset(0 0% 0 0)', duration: 3.8, ease: 'power1.inOut' }, 0.6)
-  .to('#nib', { opacity: 0, duration: 0.4 }, 4.2)
-  .to('#heroDivider', { scaleX: 1, duration: 1, ease: 'power2.out' }, 4)
-  .to('#heroDate', { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, 4.3)
-  .to('#heroVenue', { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, 4.5)
-  .to('#heroDress', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 4.7)
-  .to('#scrollHint', { opacity: 1, duration: 1 }, 5.2);
+// ===== HERO ENTRANCE ANIMATION =====
+// Only play the drawing animation if user loads at top of page
+// Otherwise everything is visible by default (CSS has no hidden states)
+if (window.scrollY < window.innerHeight * 0.3) {
+  // Hide elements first, then animate them in
+  gsap.set('.corner', { opacity: 0 });
+  gsap.set('#sigText', { clipPath: 'inset(0 100% 0 0)' });
+  gsap.set('#heroDivider', { transform: 'scaleX(0)' });
+  gsap.set(['#heroDate', '#heroVenue', '#heroDress', '#scrollHint'], { opacity: 0, y: 6 });
+
+  const heroTL = gsap.timeline({ delay: 0.2 });
+
+  heroTL
+    .to('.corner', { opacity: 1, duration: 0.5, stagger: 0.04, ease: 'power1.out' })
+    .to('#sigText', { clipPath: 'inset(0 0% 0 0)', duration: 1.8, ease: 'power3.out' }, 0.25)
+    // Details appear
+    .to('#heroDivider', { scaleX: 1, duration: 0.5, ease: 'power2.out' }, 1.85)
+    .to('#heroDate', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 2.0)
+    .to('#heroVenue', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 2.1)
+    .to('#heroDress', { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }, 2.2)
+    .to('#scrollHint', { opacity: 1, duration: 0.5 }, 2.5);
+}
+// If scrolled past hero on load: everything is already visible via CSS defaults
 
 
 // ===== HERO PARALLAX ON SCROLL =====
+// Only parallax the background -- content scrolls off naturally
 gsap.to('#heroBg', {
   scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 },
   y: 100
-});
-
-gsap.to('#heroContent', {
-  scrollTrigger: { trigger: '.hero', start: 'top top', end: '60% top', scrub: 1 },
-  y: -50, opacity: 0
-});
-
-// Corners drift outward
-const cornerDirs = [
-  { sel: '.corner.tl', x: -12, y: -12 },
-  { sel: '.corner.tr', x: 12, y: -12 },
-  { sel: '.corner.bl', x: -12, y: 12 },
-  { sel: '.corner.br', x: 12, y: 12 },
-];
-cornerDirs.forEach(({ sel, x, y }) => {
-  gsap.to(sel, {
-    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 },
-    x, y, opacity: 0
-  });
 });
 
 

@@ -9,6 +9,11 @@
   <meta property="og:description" content="You're invited to celebrate the wedding of Stephanie and Corey at Eau Palm Beach Resort & Spa.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://thezapins.com">
+  <meta property="og:image" content="https://thezapins.com/images/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Stephanie & Corey | January 24, 2027">
+  <meta name="twitter:description" content="You're invited to celebrate the wedding of Stephanie and Corey at Eau Palm Beach Resort & Spa.">
+  <meta name="twitter:image" content="https://thezapins.com/images/og-image.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Quicksand:wght@300;400;500&family=Montserrat:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
@@ -18,12 +23,17 @@
 
   <!-- NAV -->
   <nav id="mainNav">
-    <a href="#home">Home</a>
-    <a href="#details">Details</a>
-    <a href="#rsvp">RSVP</a>
-    <a href="#travel">Travel</a>
-    <a href="#photos">Photos</a>
-    <a href="#registry">Registry</a>
+    <div class="nav-links" id="navLinks">
+      <a href="#home">Home</a>
+      <a href="#details">Details</a>
+      <a href="#rsvp">RSVP</a>
+      <a href="#travel">Travel</a>
+      <a href="#photos">Photos</a>
+      <a href="#registry">Registry</a>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
 
   <!-- HERO -->
@@ -119,15 +129,15 @@
       <p class="section-sub reveal">Kindly respond by December 1, 2026</p>
       <div class="section-divider reveal-line"></div>
 
-      <form class="rsvp-form reveal-up" id="rsvpForm">
+      <form class="rsvp-form reveal-up" id="rsvpForm" method="post" action="/api/rsvp">
         <div class="form-row">
           <div class="form-group">
             <label for="rsvpName">Full Name</label>
-            <input type="text" id="rsvpName" name="full_name" placeholder="As it appears on your invitation" required>
+            <input type="text" id="rsvpName" name="full_name" placeholder="" required>
           </div>
           <div class="form-group">
             <label for="rsvpEmail">Email</label>
-            <input type="email" id="rsvpEmail" name="email" placeholder="your@email.com">
+            <input type="email" id="rsvpEmail" name="email" placeholder="your@email.com" required>
           </div>
         </div>
 
@@ -240,9 +250,9 @@
 
   <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox">
-    <button class="lightbox-close" id="lightboxClose">&times;</button>
-    <button class="lightbox-prev" id="lightboxPrev">&#8249;</button>
-    <button class="lightbox-next" id="lightboxNext">&#8250;</button>
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close gallery">&times;</button>
+    <button class="lightbox-prev" id="lightboxPrev" aria-label="Previous photo">&#8249;</button>
+    <button class="lightbox-next" id="lightboxNext" aria-label="Next photo">&#8250;</button>
     <img class="lightbox-img" id="lightboxImg" src="" alt="Gallery photo">
   </div>
 
@@ -254,9 +264,14 @@
       <div class="section-divider reveal-line"></div>
 
       <div class="registry-links">
-        <a href="#" class="registry-link reveal-up" target="_blank" rel="noopener">Amazon</a>
-        <a href="#" class="registry-link reveal-up" target="_blank" rel="noopener">Zola</a>
-        <a href="#" class="registry-link reveal-up" target="_blank" rel="noopener">Crate &amp; Barrel</a>
+        <a href="https://www.crateandbarrel.com/gift-registry/Stephanie-Mosberg-and-Corey-Zapin/r7521271" class="registry-link reveal-up" target="_blank" rel="noopener">
+          <svg class="registry-logo" viewBox="0 0 200 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><text x="0" y="18" font-family="'Montserrat', sans-serif" font-size="14" letter-spacing="1" font-weight="500">CRATE &amp; BARREL</text></svg>
+          <span class="registry-name">Crate &amp; Barrel</span>
+        </a>
+        <a href="https://www.bloomingdales.com/registry/Stephanie-Mosberg-Corey-Zapin/1343176" class="registry-link reveal-up" target="_blank" rel="noopener">
+          <svg class="registry-logo" viewBox="0 0 200 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><text x="0" y="18" font-family="'Montserrat', sans-serif" font-size="14" letter-spacing="1" font-weight="500">BLOOMINGDALE'S</text></svg>
+          <span class="registry-name">Bloomingdale's</span>
+        </a>
       </div>
     </div>
   </section>
