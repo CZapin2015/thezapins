@@ -603,6 +603,59 @@ section { position: relative; z-index: 2; }
   color: #c9a96e;
   border-color: rgba(201, 169, 110, 0.6);
 }
+.hotel-address-link {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; color: rgba(232, 228, 220, 0.85);
+  line-height: 1.5;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201, 169, 110, 0.25);
+  transition: color 0.3s, border-color 0.3s;
+}
+.hotel-address-link:hover {
+  color: #c9a96e;
+  border-color: rgba(201, 169, 110, 0.6);
+}
+.venue-note {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  color: rgba(232, 228, 220, 0.75);
+  text-align: center;
+  margin-bottom: 32px;
+}
+.venue-link {
+  color: rgba(201, 169, 110, 0.85);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201, 169, 110, 0.25);
+  transition: color 0.3s, border-color 0.3s;
+}
+.venue-link:hover {
+  color: #c9a96e;
+  border-color: rgba(201, 169, 110, 0.6);
+}
+.travel-info {
+  text-align: center;
+  margin-top: 40px;
+  opacity: 0; transform: translateY(25px);
+}
+.travel-info h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px; color: #c9a96e;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+.travel-info p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  color: rgba(232, 228, 220, 0.8);
+  line-height: 1.6;
+}
+.travel-info strong {
+  color: rgba(232, 228, 220, 0.95);
+}
+.venue-map {
+  margin-top: 32px;
+  opacity: 0; transform: translateY(25px);
+}
 
 /* ===== GALLERY ===== */
 .gallery-grid {
