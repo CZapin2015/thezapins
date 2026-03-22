@@ -805,8 +805,13 @@ section { position: relative; z-index: 2; }
   font-size: 20px; color: rgba(232, 228, 220, 0.85);
   line-height: 1.5;
   text-decoration: none;
+  display: inline-block;
   border-bottom: 1px solid rgba(201, 169, 110, 0.25);
   transition: color 0.3s, border-color 0.3s;
+}
+.hotel-address-link:visited,
+.hotel-address-link:active {
+  color: rgba(232, 228, 220, 0.85);
 }
 .hotel-address-link:hover {
   color: #c9a96e;
