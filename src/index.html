@@ -55,6 +55,24 @@
       <div class="hero-date" id="heroDate">January 24, 2027</div>
       <div class="hero-venue" id="heroVenue">Eau Palm Beach Resort &amp; Spa</div>
       <div class="hero-dresscode" id="heroDress">Black Tie</div>
+      <div class="hero-countdown" id="heroCountdown">
+        <div class="countdown-item">
+          <span class="countdown-num" id="cdDays">---</span>
+          <span class="countdown-label">Days</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-num" id="cdHours">--</span>
+          <span class="countdown-label">Hours</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-num" id="cdMinutes">--</span>
+          <span class="countdown-label">Min</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-num" id="cdSeconds">--</span>
+          <span class="countdown-label">Sec</span>
+        </div>
+      </div>
     </div>
     <div class="scroll-hint" id="scrollHint">
       Scroll
@@ -109,68 +127,57 @@
         </div>
 
         <div class="form-group">
-          <label>Which Events Will You Be Attending?</label>
-          <div class="event-checklist">
-            <label class="event-check">
-              <input type="checkbox" name="event_welcome" id="eventWelcome" value="1">
-              <span class="check-box"></span>
-              <span class="event-info">
-                <span class="event-name">Welcome Party</span>
-                <span class="event-date">Saturday, January 23</span>
-              </span>
-            </label>
-            <label class="event-check">
-              <input type="checkbox" name="event_wedding" id="eventWedding" value="1">
-              <span class="check-box"></span>
-              <span class="event-info">
-                <span class="event-name">Wedding Ceremony &amp; Reception</span>
-                <span class="event-date">Sunday, January 24</span>
-              </span>
-            </label>
-            <label class="event-check">
-              <input type="checkbox" name="event_brunch" id="eventBrunch" value="1">
-              <span class="check-box"></span>
-              <span class="event-info">
-                <span class="event-name">Farewell Brunch</span>
-                <span class="event-date">Monday, January 25</span>
-              </span>
-            </label>
+          <label>Will You Be Attending?</label>
+          <div class="toggle-group attending-toggle">
+            <button type="button" class="toggle-btn active" data-value="yes" onclick="setAttendingStatus(this)">Attending</button>
+            <button type="button" class="toggle-btn" data-value="no" onclick="setAttendingStatus(this)">Cannot Attend</button>
           </div>
+          <input type="hidden" id="attendingStatus" name="attending_status" value="yes">
         </div>
 
-        <div class="form-group" id="guestCountGroup">
-          <label>Attending With a Guest?</label>
-          <div class="toggle-group">
-            <button type="button" class="toggle-btn active" data-value="1" onclick="setGuestCount(this)">Just Me</button>
-            <button type="button" class="toggle-btn" data-value="2" onclick="setGuestCount(this)">Me + Guest</button>
-          </div>
-          <input type="hidden" id="rsvpGuests" name="guest_count" value="1">
-        </div>
-
-        <div class="form-group" id="mealGroup">
-          <label for="rsvpMeal">Your Meal Preference</label>
-          <select id="rsvpMeal" name="meal_preference">
-            <option value="">Select...</option>
-            <option value="Beef">Beef</option>
-            <option value="Chicken">Chicken</option>
-            <option value="Fish">Fish</option>
-            <option value="Vegetarian">Vegetarian</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="rsvpNotes">Dietary Restrictions or Notes</label>
-          <input type="text" id="rsvpNotes" name="dietary_notes" placeholder="Allergies, special requests...">
-        </div>
-
-        <div class="guest-section" id="guestSection">
-          <div class="guest-section-title">Guest Details</div>
+        <div id="attendanceDetails">
           <div class="form-group">
-            <label for="guestName">Guest Name</label>
-            <input type="text" id="guestName" name="guest_name" placeholder="Guest's full name">
+            <label>Which Events Will You Be Attending?</label>
+            <div class="event-checklist">
+              <label class="event-check">
+                <input type="checkbox" name="event_welcome" id="eventWelcome" value="1">
+                <span class="check-box"></span>
+                <span class="event-info">
+                  <span class="event-name">Welcome Party</span>
+                  <span class="event-date">Saturday, January 23</span>
+                </span>
+              </label>
+              <label class="event-check">
+                <input type="checkbox" name="event_wedding" id="eventWedding" value="1">
+                <span class="check-box"></span>
+                <span class="event-info">
+                  <span class="event-name">Wedding Ceremony &amp; Reception</span>
+                  <span class="event-date">Sunday, January 24</span>
+                </span>
+              </label>
+              <label class="event-check">
+                <input type="checkbox" name="event_brunch" id="eventBrunch" value="1">
+                <span class="check-box"></span>
+                <span class="event-info">
+                  <span class="event-name">Farewell Brunch</span>
+                  <span class="event-date">Monday, January 25</span>
+                </span>
+              </label>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="guestMeal">Guest Meal Preference</label>
-            <select id="guestMeal" name="guest_meal_preference">
+
+          <div class="form-group" id="guestCountGroup">
+            <label>Attending With a Guest?</label>
+            <div class="toggle-group">
+              <button type="button" class="toggle-btn active" data-value="1" onclick="setGuestCount(this)">Just Me</button>
+              <button type="button" class="toggle-btn" data-value="2" onclick="setGuestCount(this)">Me + Guest</button>
+            </div>
+            <input type="hidden" id="rsvpGuests" name="guest_count" value="1">
+          </div>
+
+          <div class="form-group" id="mealGroup">
+            <label for="rsvpMeal">Your Meal Preference</label>
+            <select id="rsvpMeal" name="meal_preference">
               <option value="">Select...</option>
               <option value="Beef">Beef</option>
               <option value="Chicken">Chicken</option>
@@ -179,10 +186,33 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="guestNotes">Guest Dietary Restrictions</label>
-            <input type="text" id="guestNotes" name="guest_dietary_notes" placeholder="Allergies, special requests...">
+            <label for="rsvpNotes">Dietary Restrictions or Notes</label>
+            <input type="text" id="rsvpNotes" name="dietary_notes" placeholder="Allergies, special requests...">
+          </div>
+
+          <div class="guest-section" id="guestSection">
+            <div class="guest-section-title">Guest Details</div>
+            <div class="form-group">
+              <label for="guestName">Guest Name</label>
+              <input type="text" id="guestName" name="guest_name" placeholder="Guest's full name">
+            </div>
+            <div class="form-group">
+              <label for="guestMeal">Guest Meal Preference</label>
+              <select id="guestMeal" name="guest_meal_preference">
+                <option value="">Select...</option>
+                <option value="Beef">Beef</option>
+                <option value="Chicken">Chicken</option>
+                <option value="Fish">Fish</option>
+                <option value="Vegetarian">Vegetarian</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="guestNotes">Guest Dietary Restrictions</label>
+              <input type="text" id="guestNotes" name="guest_dietary_notes" placeholder="Allergies, special requests...">
+            </div>
           </div>
         </div>
+
         <button type="submit" class="rsvp-btn" id="rsvpBtn">
           <span class="btn-text">Submit RSVP</span>
           <span class="btn-loading" style="display:none;">Sending...</span>

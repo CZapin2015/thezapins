@@ -15,7 +15,7 @@ if (window.scrollY < window.innerHeight * 0.3) {
   gsap.set('.corner', { opacity: 0 });
   gsap.set('#sigText', { clipPath: 'inset(0 100% 0 0)' });
   gsap.set('#heroDivider', { transform: 'scaleX(0)' });
-  gsap.set(['#heroDate', '#heroVenue', '#heroDress', '#scrollHint'], { opacity: 0, y: 6 });
+  gsap.set(['#heroDate', '#heroVenue', '#heroDress', '#heroCountdown', '#scrollHint'], { opacity: 0, y: 6 });
 
   const heroTL = gsap.timeline({ delay: 0.2 });
 
@@ -27,9 +27,34 @@ if (window.scrollY < window.innerHeight * 0.3) {
     .to('#heroDate', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 2.0)
     .to('#heroVenue', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 2.1)
     .to('#heroDress', { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }, 2.2)
-    .to('#scrollHint', { opacity: 1, duration: 0.5 }, 2.5);
+    .to('#heroCountdown', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 2.35)
+    .to('#scrollHint', { opacity: 1, duration: 0.5 }, 2.6);
 }
 // If scrolled past hero on load: everything is already visible via CSS defaults
+
+
+// ===== COUNTDOWN TIMER =====
+const weddingDate = new Date('2027-01-24T00:00:00');
+
+function updateCountdown() {
+  const diff = weddingDate - new Date();
+  if (diff <= 0) {
+    const el = document.getElementById('heroCountdown');
+    if (el) el.style.display = 'none';
+    return;
+  }
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff % 86400000) / 3600000);
+  const mins = Math.floor((diff % 3600000) / 60000);
+  const secs = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cdDays').textContent = String(days).padStart(3, '0');
+  document.getElementById('cdHours').textContent = String(hours).padStart(2, '0');
+  document.getElementById('cdMinutes').textContent = String(mins).padStart(2, '0');
+  document.getElementById('cdSeconds').textContent = String(secs).padStart(2, '0');
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
 
 
 // ===== HERO PARALLAX ON SCROLL =====
@@ -166,6 +191,16 @@ navLinks.querySelectorAll('a').forEach(link => {
 });
 
 
+// ===== ATTENDING TOGGLE =====
+function setAttendingStatus(btn) {
+  btn.closest('.toggle-group').querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const attending = btn.dataset.value === 'yes';
+  document.getElementById('attendingStatus').value = attending ? 'yes' : 'no';
+  document.getElementById('attendanceDetails').classList.toggle('hidden', !attending);
+}
+
+
 // ===== TOGGLE BUTTONS =====
 function setGuestCount(btn) {
   const group = btn.parentElement;
@@ -196,18 +231,19 @@ rsvpForm.addEventListener('submit', async (e) => {
   rsvpMessage.textContent = '';
   rsvpMessage.className = 'rsvp-message';
 
-  const eventWelcome = document.getElementById('eventWelcome').checked;
-  const eventWedding = document.getElementById('eventWedding').checked;
-  const eventBrunch = document.getElementById('eventBrunch').checked;
+  const isAttending = document.getElementById('attendingStatus').value === 'yes';
+  const eventWelcome = isAttending && document.getElementById('eventWelcome').checked;
+  const eventWedding = isAttending && document.getElementById('eventWedding').checked;
+  const eventBrunch = isAttending && document.getElementById('eventBrunch').checked;
   const anyEvent = eventWelcome || eventWedding || eventBrunch;
 
   const data = {
     full_name: document.getElementById('rsvpName').value.trim(),
     email: document.getElementById('rsvpEmail').value.trim(),
-    attending: anyEvent ? 'accepted' : 'declined',
-    guest_count: parseInt(document.getElementById('rsvpGuests').value, 10),
-    meal_preference: document.getElementById('rsvpMeal').value,
-    dietary_notes: document.getElementById('rsvpNotes').value.trim(),
+    attending: isAttending ? 'accepted' : 'declined',
+    guest_count: isAttending ? parseInt(document.getElementById('rsvpGuests').value, 10) : 0,
+    meal_preference: isAttending ? document.getElementById('rsvpMeal').value : '',
+    dietary_notes: isAttending ? document.getElementById('rsvpNotes').value.trim() : '',
     event_welcome: eventWelcome,
     event_wedding: eventWedding,
     event_brunch: eventBrunch,
@@ -231,7 +267,7 @@ rsvpForm.addEventListener('submit', async (e) => {
     return;
   }
 
-  if (anyEvent && !data.meal_preference) {
+  if (isAttending && !data.meal_preference) {
     rsvpMessage.textContent = 'Please select a meal preference.';
     rsvpMessage.className = 'rsvp-message error';
     btnText.style.display = 'inline';
@@ -250,15 +286,21 @@ rsvpForm.addEventListener('submit', async (e) => {
     const result = await res.json();
 
     if (res.ok) {
-      rsvpMessage.textContent = anyEvent
+      rsvpMessage.textContent = isAttending
         ? 'Thank you! We can\'t wait to celebrate with you.'
         : 'We\'ll miss you! Thank you for letting us know.';
       rsvpMessage.className = 'rsvp-message success';
       rsvpForm.reset();
-      // Reset toggle to "Just Me"
-      document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
-      document.querySelector('.toggle-btn[data-value="1"]').classList.add('active');
+      // Reset attending toggle to "Attending"
+      document.querySelector('.attending-toggle .toggle-btn[data-value="yes"]').classList.add('active');
+      document.querySelector('.attending-toggle .toggle-btn[data-value="no"]').classList.remove('active');
+      document.getElementById('attendingStatus').value = 'yes';
+      document.getElementById('attendanceDetails').classList.remove('hidden');
+      // Reset guest count to "Just Me"
+      document.querySelector('#guestCountGroup .toggle-btn[data-value="1"]').classList.add('active');
+      document.querySelector('#guestCountGroup .toggle-btn[data-value="2"]').classList.remove('active');
       document.getElementById('rsvpGuests').value = '1';
+      document.getElementById('guestSection').classList.remove('visible');
     } else {
       rsvpMessage.textContent = result.error || 'Something went wrong. Please try again.';
       rsvpMessage.className = 'rsvp-message error';
