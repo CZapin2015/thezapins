@@ -1,0 +1,26 @@
+-- Wedding RSVP Database Schema
+
+CREATE TABLE IF NOT EXISTS wedding_guests (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  full_name TEXT NOT NULL,
+  group_name TEXT,
+  expected_party_size INTEGER DEFAULT 1,
+  created_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS wedding_rsvps (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  full_name TEXT NOT NULL,
+  email TEXT,
+  attending TEXT NOT NULL CHECK(attending IN ('accepted', 'declined')),
+  guest_count INTEGER DEFAULT 1,
+  meal_preference TEXT,
+  dietary_notes TEXT,
+  matched_guest_id INTEGER,
+  matched_guest_name TEXT,
+  created_at TEXT DEFAULT (datetime('now')),
+  FOREIGN KEY (matched_guest_id) REFERENCES wedding_guests(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_rsvps_attending ON wedding_rsvps(attending);
+CREATE INDEX IF NOT EXISTS idx_rsvps_matched ON wedding_rsvps(matched_guest_id);

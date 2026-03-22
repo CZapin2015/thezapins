@@ -1,0 +1,8 @@
+name = "thezapins"
+compatibility_date = "2024-09-23"
+pages_build_output_dir = "./dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "thezapins-db"
+database_id = "65abc9f8-422c-43ae-9c24-75f3253b6ff5"
