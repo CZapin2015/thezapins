@@ -344,10 +344,17 @@ let galleryImages = [
 ];
 let currentImageIndex = 0;
 
+const lightboxCounter = document.getElementById('lightboxCounter');
+
+function updateCounter() {
+  lightboxCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+}
+
 function openLightbox(index) {
   if (!galleryImages.length) return;
   currentImageIndex = index;
   lightboxImg.src = galleryImages[index];
+  updateCounter();
   lightbox.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
@@ -361,10 +368,12 @@ document.getElementById('lightboxClose').addEventListener('click', closeLightbox
 document.getElementById('lightboxPrev').addEventListener('click', () => {
   currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
   lightboxImg.src = galleryImages[currentImageIndex];
+  updateCounter();
 });
 document.getElementById('lightboxNext').addEventListener('click', () => {
   currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
   lightboxImg.src = galleryImages[currentImageIndex];
+  updateCounter();
 });
 
 lightbox.addEventListener('click', (e) => {
