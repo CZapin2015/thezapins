@@ -103,6 +103,8 @@ async function build() {
       let html = fs.readFileSync(srcPath, 'utf8');
       html = html.replace('/styles.css"', `/styles.css?v=${version}"`);
       html = html.replace('/app.js"', `/app.js?v=${version}"`);
+      // Cache-bust OG image URL so platforms fetch the updated version
+      html = html.replace(/og-image\.jpg"/g, `og-image.jpg?v=${version}"`);
       fs.writeFileSync(destPath, html);
     } else {
       fs.copyFileSync(srcPath, destPath);
