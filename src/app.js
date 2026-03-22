@@ -2,6 +2,27 @@
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Safety net: if ScrollTrigger fails or bfcache restores page, force all elements visible
+function forceRevealAll() {
+  document.querySelectorAll('.reveal, .reveal-line, .reveal-up, .reveal-tl, .rsvp-form, .hotel-card, .registry-link, .gallery-img, .venue-map, .travel-info').forEach(el => {
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+  });
+}
+// bfcache restore (iOS Safari back/forward)
+window.addEventListener('pageshow', (e) => {
+  if (e.persisted) {
+    forceRevealAll();
+    ScrollTrigger.refresh();
+  }
+});
+// Fallback timeout - if elements are still hidden after 4s, force them visible
+setTimeout(() => {
+  document.querySelectorAll('.reveal, .reveal-up, .reveal-tl').forEach(el => {
+    if (getComputedStyle(el).opacity === '0') forceRevealAll();
+  });
+}, 4000);
+
 // Wait for fonts before showing hero
 document.fonts.ready.then(() => {
   document.body.classList.add('fonts-loaded');
