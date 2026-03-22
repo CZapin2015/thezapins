@@ -532,6 +532,15 @@ section { position: relative; z-index: 2; }
   text-transform: uppercase;
   display: inline-block; margin-bottom: 16px;
 }
+.hotel-logo {
+  display: block;
+  width: 100%;
+  max-width: 160px;
+  height: 50px;
+  object-fit: contain;
+  margin: 12px auto 18px;
+  opacity: 0.85;
+}
 .hotel-card h3 {
   font-family: 'Cormorant Garamond', serif;
   font-size: 24px; color: #c9a96e;
@@ -726,11 +735,40 @@ footer {
 }
 
 /* ===== RESPONSIVE ===== */
-@media (min-width: 769px) {
+@media (min-width: 841px) {
   .section-title { font-size: 48px; }
   .sig-text { font-size: 96px !important; }
   .hero-date { font-size: 30px; }
   .hero-venue { font-size: 24px; }
+}
+
+/* Hamburger nav — covers Samsung Z Fold 7 inner screen in portrait (~780px) */
+@media (max-width: 840px) {
+  .menu-toggle { display: block; }
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: rgba(10, 22, 40, 0.97);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(201, 169, 110, 0.1);
+    padding: 12px 0;
+    z-index: 99;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a {
+    padding: 16px 24px;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 3px;
+  }
+  .nav-links a:hover { background: rgba(201, 169, 110, 0.06); }
+  .nav-links a:active { background: rgba(201, 169, 110, 0.1); }
 }
 
 @media (max-width: 768px) {
@@ -746,33 +784,6 @@ footer {
   .hotel-cards { grid-template-columns: 1fr; }
   .gallery-grid { grid-template-columns: repeat(2, 1fr); }
   .form-row { grid-template-columns: 1fr; }
-
-  /* Mobile hamburger nav */
-  .menu-toggle { display: block; }
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-    position: absolute;
-    top: 100%;
-    left: 0; right: 0;
-    background: rgba(10, 22, 40, 0.97);
-    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(201, 169, 110, 0.1);
-    padding: 12px 0;
-  }
-  .nav-links.open { display: flex; }
-  .nav-links a {
-    padding: 14px 20px;
-    width: 100%;
-    text-align: center;
-    font-size: 12px;
-    letter-spacing: 3px;
-  }
-  .nav-links a:hover {
-    background: rgba(201, 169, 110, 0.06);
-  }
 
   .section-inner { padding: 80px 20px; }
   .rsvp-form { padding: 30px 20px; }
