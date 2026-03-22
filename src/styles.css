@@ -557,7 +557,16 @@ section { position: relative; z-index: 2; }
   transform: translateY(-2px) !important;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
 }
-/* Featured photo gets no special sizing - uniform grid */
+/* Banner photo spans full width, no cropping */
+.gallery-banner {
+  grid-column: 1 / -1;
+  height: auto;
+}
+.gallery-banner img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
 
 /* ===== LIGHTBOX ===== */
 .lightbox {
