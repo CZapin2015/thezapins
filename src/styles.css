@@ -83,7 +83,7 @@ nav a:hover { color: #c9a96e; }
 
 /* ===== HERO ===== */
 .hero {
-  height: 100vh; min-height: 600px;
+  height: 100dvh; min-height: 600px;
   display: flex; align-items: center; justify-content: center;
   position: relative; overflow: hidden;
 }
