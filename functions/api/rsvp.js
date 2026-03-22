@@ -38,6 +38,19 @@ function json(data, status = 200) {
 
 // POST /api/rsvp - Submit an RSVP
 async function handlePost(request, env) {
+  // Check if RSVPs are open
+  try {
+    const setting = await env.DB.prepare(
+      "SELECT value FROM site_settings WHERE key = 'rsvp_open'"
+    ).first();
+    if (!setting || setting.value !== 'true') {
+      return json({ error: 'RSVPs are not open yet.' }, 403);
+    }
+  } catch {
+    // If settings table doesn't exist, block by default
+    return json({ error: 'RSVPs are not open yet.' }, 403);
+  }
+
   let body;
   try {
     body = await request.json();

@@ -240,6 +240,62 @@ export async function onRequest() {
       font-size: 0.75rem;
     }
 
+    /* Feature flags */
+    .flags {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      padding: 1rem 1.25rem;
+      background: rgba(201, 168, 76, 0.06);
+      border: 1px solid rgba(201, 168, 76, 0.15);
+      border-radius: 8px;
+    }
+    .flag-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(232, 224, 212, 0.8);
+    }
+    .toggle-switch {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      cursor: pointer;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 13px;
+      transition: background 0.3s;
+    }
+    .toggle-track::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 20px; height: 20px;
+      background: #e8e0d4;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+    .toggle-switch input:checked + .toggle-track {
+      background: #c9a84c;
+    }
+    .toggle-switch input:checked + .toggle-track::after {
+      transform: translateX(22px);
+    }
+    .flag-status {
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      min-width: 30px;
+    }
+    .flag-status.on { color: #2ecc71; }
+    .flag-status.off { color: rgba(232, 224, 212, 0.4); }
+
     @media (max-width: 600px) {
       .missing-list { columns: 1; }
       table { font-size: 0.75rem; }
@@ -258,6 +314,15 @@ export async function onRequest() {
     </div>
 
     <div id="dashboard">
+      <div class="flags">
+        <span class="flag-label">RSVP Form</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="rsvp-toggle" onchange="toggleRsvp(this.checked)">
+          <span class="toggle-track"></span>
+        </label>
+        <span class="flag-status off" id="rsvp-status">Off</span>
+      </div>
+
       <div class="stats" id="stats"></div>
 
       <div class="section">
@@ -348,6 +413,7 @@ export async function onRequest() {
 
       document.getElementById('login-section').style.display = 'none';
       document.getElementById('dashboard').style.display = 'block';
+      loadSettings();
 
       const rsvps = data.rsvps || [];
       const missing = data.missing_guests || [];
@@ -414,6 +480,41 @@ export async function onRequest() {
 
     function statCard(num, label) {
       return '<div class="stat-card"><div class="number">' + num + '</div><div class="label">' + label + '</div></div>';
+    }
+
+    async function loadSettings() {
+      try {
+        const res = await fetch('/api/settings');
+        const settings = await res.json();
+        const toggle = document.getElementById('rsvp-toggle');
+        const status = document.getElementById('rsvp-status');
+        toggle.checked = !!settings.rsvp_open;
+        status.textContent = settings.rsvp_open ? 'On' : 'Off';
+        status.className = 'flag-status ' + (settings.rsvp_open ? 'on' : 'off');
+      } catch {}
+    }
+
+    async function toggleRsvp(checked) {
+      const status = document.getElementById('rsvp-status');
+      try {
+        const res = await fetch('/api/settings?key=' + encodeURIComponent(adminKey), {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ setting: 'rsvp_open', value: checked }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          status.textContent = checked ? 'On' : 'Off';
+          status.className = 'flag-status ' + (checked ? 'on' : 'off');
+          showToast('RSVP form ' + (checked ? 'opened' : 'closed'));
+        } else {
+          document.getElementById('rsvp-toggle').checked = !checked;
+          showToast(data.error || 'Failed to update', true);
+        }
+      } catch {
+        document.getElementById('rsvp-toggle').checked = !checked;
+        showToast('Network error', true);
+      }
     }
 
     function esc(s) {

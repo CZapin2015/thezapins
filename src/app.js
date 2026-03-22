@@ -455,6 +455,26 @@ document.addEventListener('keydown', (e) => {
 })();
 
 
+// ===== RSVP FEATURE FLAG =====
+fetch('/api/settings')
+  .then(r => r.json())
+  .then(settings => {
+    if (!settings.rsvp_open) {
+      const rsvpSection = document.getElementById('rsvp');
+      if (rsvpSection) rsvpSection.style.display = 'none';
+      const rsvpNav = document.querySelector('nav a[href="#rsvp"]');
+      if (rsvpNav) rsvpNav.style.display = 'none';
+    }
+  })
+  .catch(() => {
+    // If settings fail to load, hide RSVP by default
+    const rsvpSection = document.getElementById('rsvp');
+    if (rsvpSection) rsvpSection.style.display = 'none';
+    const rsvpNav = document.querySelector('nav a[href="#rsvp"]');
+    if (rsvpNav) rsvpNav.style.display = 'none';
+  });
+
+
 // ===== SMOOTH SCROLL FOR NAV =====
 document.querySelectorAll('nav a').forEach(link => {
   link.addEventListener('click', (e) => {
