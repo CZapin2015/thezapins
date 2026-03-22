@@ -15,7 +15,7 @@ if (window.scrollY < window.innerHeight * 0.3) {
   gsap.set('.corner', { opacity: 0 });
   gsap.set('#sigText', { clipPath: 'inset(0 100% 0 0)' });
   gsap.set('#heroDivider', { transform: 'scaleX(0)' });
-  gsap.set(['#heroDate', '#heroVenue', '#heroDress', '#scrollHint'], { opacity: 0, y: 6 });
+  gsap.set(['#heroDate', '#heroVenue', '#scrollHint'], { opacity: 0, y: 6 });
 
   const heroTL = gsap.timeline({ delay: 0.2 });
 
@@ -29,9 +29,8 @@ if (window.scrollY < window.innerHeight * 0.3) {
     .to('#heroDivider', { scaleX: 1, duration: 0.5, ease: 'power2.out' }, 1.85)
     .to('#heroDate', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 2.0)
     .to('#heroVenue', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 2.1)
-    .to('#heroDress', { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }, 2.2)
     // Countdown cards float in with stagger
-    .from('.countdown-unit', { opacity: 0, y: 15, scale: 0.9, duration: 0.5, stagger: 0.08, ease: 'power2.out' }, 2.3)
+    .from('.countdown-unit', { opacity: 0, y: 15, scale: 0.9, duration: 0.5, stagger: 0.08, ease: 'power2.out' }, 2.2)
     .to('#scrollHint', { opacity: 1, duration: 0.5 }, 2.7);
 }
 // If scrolled past hero on load: everything is already visible via CSS defaults

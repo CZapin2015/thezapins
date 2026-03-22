@@ -240,6 +240,29 @@ nav a:hover { color: #c9a96e; }
   margin-top: 6px;
 }
 
+/* Days unit - hero emphasis */
+.countdown-unit:first-child {
+  padding: 20px 28px 16px;
+  min-width: 100px;
+  border-color: rgba(201, 169, 110, 0.3);
+  background: rgba(10, 22, 40, 0.6);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(201, 169, 110, 0.15),
+    0 0 24px rgba(201, 169, 110, 0.06);
+}
+.countdown-unit:first-child .countdown-num {
+  font-size: 64px;
+  color: #c9a96e;
+  text-shadow: 0 2px 16px rgba(201, 169, 110, 0.3);
+}
+.countdown-unit:first-child .countdown-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: rgba(201, 169, 110, 0.9);
+}
+
 /* ===== SECTIONS ===== */
 section { position: relative; z-index: 2; }
 
@@ -413,6 +436,18 @@ section { position: relative; z-index: 2; }
 }
 .event-main .event-day {
   color: rgba(201, 169, 110, 0.8);
+}
+.event-dresscode {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(201, 169, 110, 0.85);
+  margin-top: 10px;
+  padding: 5px 16px;
+  border: 1px solid rgba(201, 169, 110, 0.3);
+  border-radius: 2px;
+  display: inline-block;
 }
 .event-dot-main {
   width: 14px; height: 14px;
@@ -690,7 +725,7 @@ section { position: relative; z-index: 2; }
 /* ===== TRAVEL ===== */
 .hotel-cards {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 .hotel-card {
@@ -1088,7 +1123,8 @@ footer {
   .sig-text { font-size: 56px !important; }
   .hero-date { font-size: 24px; letter-spacing: 3px; }
   .hero-venue { font-size: 19px; }
-  .hero-dresscode { font-size: 12px; }
+  .countdown-unit:first-child .countdown-num { font-size: 52px; }
+  .countdown-unit:first-child { min-width: 84px; padding: 16px 22px 12px; }
   .section-title { font-size: 38px; }
   .section-sub { font-size: 13px; }
   .gallery-grid { grid-template-columns: repeat(2, 1fr); }
