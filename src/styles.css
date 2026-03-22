@@ -44,33 +44,17 @@ nav a:hover { color: #c9a96e; }
   left: 20px; top: 50%;
   transform: translateY(-50%);
   transition: opacity 0.3s;
+  opacity: 0.85;
 }
 .nav-monogram:hover { opacity: 1; }
-.monogram-svg {
-  height: 32px;
+.nav-monogram-img {
+  height: 34px;
   width: auto;
-  overflow: visible;
 }
-.mono-letter {
-  font-family: 'Playfair Display', serif;
-  font-weight: 400;
-  font-style: italic;
-  fill: rgba(201, 169, 110, 0.75);
-}
-.mono-amp {
-  font-family: 'Allura', cursive;
-  fill: rgba(201, 169, 110, 0.6);
-}
-.nav-monogram:hover .mono-letter { fill: #c9a96e; }
-.nav-monogram:hover .mono-amp { fill: rgba(201, 169, 110, 0.85); }
-.monogram-footer {
-  height: 56px;
-}
-.monogram-footer .mono-letter {
-  fill: rgba(201, 169, 110, 0.4);
-}
-.monogram-footer .mono-amp {
-  fill: rgba(201, 169, 110, 0.3);
+.footer-monogram-img {
+  height: 60px;
+  width: auto;
+  opacity: 0.5;
 }
 
 /* Hamburger toggle - hidden on desktop */
