@@ -50,11 +50,11 @@ document.querySelectorAll('.reveal').forEach(el => {
   });
 });
 
-// Divider lines scale in
+// Divider lines and flourishes scale in
 document.querySelectorAll('.reveal-line').forEach(el => {
   gsap.to(el, {
     scrollTrigger: { trigger: el, start: 'top 88%' },
-    scaleX: 1, duration: 0.8, ease: 'power2.out'
+    scaleX: 1, opacity: 1, duration: 0.8, ease: 'power2.out'
   });
 });
 
@@ -112,20 +112,23 @@ document.querySelectorAll('.registry-link').forEach((link, i) => {
 
 // ===== GOLD PARTICLES =====
 const particleContainer = document.getElementById('particles');
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 18; i++) {
   const p = document.createElement('div');
   p.className = 'particle';
-  p.style.left = (10 + Math.random() * 80) + '%';
+  const size = 1 + Math.random() * 1.5;
+  p.style.width = size + 'px';
+  p.style.height = size + 'px';
+  p.style.left = (5 + Math.random() * 90) + '%';
   p.style.top = (Math.random() * 100) + '%';
   particleContainer.appendChild(p);
 
   gsap.to(p, {
-    opacity: 0.08 + Math.random() * 0.08,
-    y: -25 - Math.random() * 35,
-    duration: 5 + Math.random() * 5,
+    opacity: 0.06 + Math.random() * 0.1,
+    y: -20 - Math.random() * 40,
+    duration: 5 + Math.random() * 6,
     repeat: -1, yoyo: true,
     ease: 'sine.inOut',
-    delay: Math.random() * 6
+    delay: Math.random() * 8
   });
 }
 
