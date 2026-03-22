@@ -11,9 +11,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 .amp {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-weight: 300;
+  font-family: 'Allura', cursive;
 }
 
 /* ===== NAV ===== */
