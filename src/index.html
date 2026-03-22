@@ -120,29 +120,56 @@
       <div class="section-divider reveal-line"></div>
 
       <form class="rsvp-form reveal-up" id="rsvpForm">
-        <div class="form-group">
-          <label for="rsvpName">Full Name</label>
-          <input type="text" id="rsvpName" name="full_name" placeholder="As it appears on your invitation" required>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="rsvpName">Full Name</label>
+            <input type="text" id="rsvpName" name="full_name" placeholder="As it appears on your invitation" required>
+          </div>
+          <div class="form-group">
+            <label for="rsvpEmail">Email</label>
+            <input type="email" id="rsvpEmail" name="email" placeholder="your@email.com">
+          </div>
         </div>
+
         <div class="form-group">
-          <label for="rsvpEmail">Email</label>
-          <input type="email" id="rsvpEmail" name="email" placeholder="your@email.com">
+          <label>Which Events Will You Be Attending?</label>
+          <div class="event-checklist">
+            <label class="event-check">
+              <input type="checkbox" name="event_welcome" id="eventWelcome" value="1">
+              <span class="check-box"></span>
+              <span class="event-info">
+                <span class="event-name">Welcome Party</span>
+                <span class="event-date">Friday, January 23</span>
+              </span>
+            </label>
+            <label class="event-check">
+              <input type="checkbox" name="event_wedding" id="eventWedding" value="1">
+              <span class="check-box"></span>
+              <span class="event-info">
+                <span class="event-name">Wedding Ceremony &amp; Reception</span>
+                <span class="event-date">Saturday, January 24</span>
+              </span>
+            </label>
+            <label class="event-check">
+              <input type="checkbox" name="event_brunch" id="eventBrunch" value="1">
+              <span class="check-box"></span>
+              <span class="event-info">
+                <span class="event-name">Sunday Brunch</span>
+                <span class="event-date">Sunday, January 25</span>
+              </span>
+            </label>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="rsvpAttending">Will You Be Attending?</label>
-          <select id="rsvpAttending" name="attending" required>
-            <option value="">Select...</option>
-            <option value="accepted">Joyfully Accept</option>
-            <option value="declined">Respectfully Decline</option>
-          </select>
-        </div>
+
         <div class="form-group" id="guestCountGroup">
-          <label for="rsvpGuests">Number of Guests</label>
-          <select id="rsvpGuests" name="guest_count">
-            <option value="1">1</option>
-            <option value="2">2</option>
-          </select>
+          <label>Attending With a Guest?</label>
+          <div class="toggle-group">
+            <button type="button" class="toggle-btn active" data-value="1" onclick="setGuestCount(this)">Just Me</button>
+            <button type="button" class="toggle-btn" data-value="2" onclick="setGuestCount(this)">Me + Guest</button>
+          </div>
+          <input type="hidden" id="rsvpGuests" name="guest_count" value="1">
         </div>
+
         <div class="form-group" id="mealGroup">
           <label for="rsvpMeal">Meal Preference</label>
           <select id="rsvpMeal" name="meal_preference">
@@ -151,6 +178,7 @@
             <option value="Chicken">Chicken</option>
             <option value="Fish">Fish</option>
             <option value="Vegetarian">Vegetarian</option>
+            <option value="Kosher">Kosher</option>
           </select>
         </div>
         <div class="form-group">

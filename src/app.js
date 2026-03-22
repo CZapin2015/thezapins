@@ -144,20 +144,18 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 
+// ===== TOGGLE BUTTONS =====
+function setGuestCount(btn) {
+  const group = btn.parentElement;
+  group.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('rsvpGuests').value = btn.dataset.value;
+}
+
 // ===== RSVP FORM =====
 const rsvpForm = document.getElementById('rsvpForm');
 const rsvpMessage = document.getElementById('rsvpMessage');
 const rsvpBtn = document.getElementById('rsvpBtn');
-const attendingSelect = document.getElementById('rsvpAttending');
-const guestCountGroup = document.getElementById('guestCountGroup');
-const mealGroup = document.getElementById('mealGroup');
-
-// Show/hide meal and guest count based on attending
-attendingSelect.addEventListener('change', () => {
-  const declined = attendingSelect.value === 'declined';
-  guestCountGroup.style.display = declined ? 'none' : 'block';
-  mealGroup.style.display = declined ? 'none' : 'block';
-});
 
 rsvpForm.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -170,14 +168,31 @@ rsvpForm.addEventListener('submit', async (e) => {
   rsvpMessage.textContent = '';
   rsvpMessage.className = 'rsvp-message';
 
+  const eventWelcome = document.getElementById('eventWelcome').checked;
+  const eventWedding = document.getElementById('eventWedding').checked;
+  const eventBrunch = document.getElementById('eventBrunch').checked;
+  const anyEvent = eventWelcome || eventWedding || eventBrunch;
+
   const data = {
     full_name: document.getElementById('rsvpName').value.trim(),
     email: document.getElementById('rsvpEmail').value.trim(),
-    attending: attendingSelect.value,
+    attending: anyEvent ? 'accepted' : 'declined',
     guest_count: parseInt(document.getElementById('rsvpGuests').value, 10),
     meal_preference: document.getElementById('rsvpMeal').value,
     dietary_notes: document.getElementById('rsvpNotes').value.trim(),
+    event_welcome: eventWelcome,
+    event_wedding: eventWedding,
+    event_brunch: eventBrunch,
   };
+
+  if (!data.full_name) {
+    rsvpMessage.textContent = 'Please enter your name.';
+    rsvpMessage.className = 'rsvp-message error';
+    btnText.style.display = 'inline';
+    btnLoading.style.display = 'none';
+    rsvpBtn.disabled = false;
+    return;
+  }
 
   try {
     const res = await fetch('/api/rsvp', {
@@ -189,11 +204,15 @@ rsvpForm.addEventListener('submit', async (e) => {
     const result = await res.json();
 
     if (res.ok) {
-      rsvpMessage.textContent = data.attending === 'accepted'
+      rsvpMessage.textContent = anyEvent
         ? 'Thank you! We can\'t wait to celebrate with you.'
         : 'We\'ll miss you! Thank you for letting us know.';
       rsvpMessage.className = 'rsvp-message success';
       rsvpForm.reset();
+      // Reset toggle to "Just Me"
+      document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector('.toggle-btn[data-value="1"]').classList.add('active');
+      document.getElementById('rsvpGuests').value = '1';
     } else {
       rsvpMessage.textContent = result.error || 'Something went wrong. Please try again.';
       rsvpMessage.className = 'rsvp-message error';
