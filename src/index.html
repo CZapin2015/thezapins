@@ -14,6 +14,7 @@
   <meta name="twitter:title" content="Stephanie & Corey | January 24, 2027">
   <meta name="twitter:description" content="You're invited to celebrate the wedding of Stephanie and Corey at Eau Palm Beach Resort & Spa.">
   <meta name="twitter:image" content="https://thezapins.com/images/og-image.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Quicksand:wght@300;400;500&family=Montserrat:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
@@ -55,6 +56,12 @@
       <div class="hero-date" id="heroDate">January 24, 2027</div>
       <div class="hero-venue" id="heroVenue">Eau Palm Beach Resort &amp; Spa</div>
       <div class="hero-dresscode" id="heroDress">Black Tie</div>
+      <div class="hero-countdown" id="heroCountdown">
+        <div class="countdown-item"><span class="countdown-num" id="countDays">---</span><span class="countdown-label">Days</span></div>
+        <div class="countdown-item"><span class="countdown-num" id="countHours">--</span><span class="countdown-label">Hours</span></div>
+        <div class="countdown-item"><span class="countdown-num" id="countMins">--</span><span class="countdown-label">Minutes</span></div>
+        <div class="countdown-item"><span class="countdown-num" id="countSecs">--</span><span class="countdown-label">Seconds</span></div>
+      </div>
     </div>
     <div class="scroll-hint" id="scrollHint">
       Scroll
@@ -141,6 +148,16 @@
           </div>
         </div>
 
+        <div class="form-group" id="attendingGroup">
+          <label>Will You Be Joining Us?</label>
+          <div class="toggle-group">
+            <button type="button" class="toggle-btn active" data-value="yes" onclick="setAttending(this)">Joyfully Accept</button>
+            <button type="button" class="toggle-btn" data-value="no" onclick="setAttending(this)">Regretfully Decline</button>
+          </div>
+          <input type="hidden" id="rsvpAttending" name="attending_choice" value="yes">
+        </div>
+
+        <div id="attendingDetails">
         <div class="form-group">
           <label>Which Events Will You Be Attending?</label>
           <div class="event-checklist">
@@ -195,11 +212,12 @@
           <label for="rsvpNotes">Dietary Restrictions or Notes</label>
           <input type="text" id="rsvpNotes" name="dietary_notes" placeholder="Allergies, special requests...">
         </div>
+        </div><!-- /attendingDetails -->
         <button type="submit" class="rsvp-btn" id="rsvpBtn">
           <span class="btn-text">Submit RSVP</span>
           <span class="btn-loading" style="display:none;">Sending...</span>
         </button>
-        <div class="rsvp-message" id="rsvpMessage"></div>
+        <div class="rsvp-message" id="rsvpMessage" aria-live="polite"></div>
       </form>
     </div>
   </section>
@@ -246,6 +264,7 @@
         <div class="gallery-img reveal-up" onclick="openLightbox(6)"><img src="/images/gallery/thumbs/CS9A1904.jpg" alt="Couple at the proposal scene" loading="lazy"></div>
         <div class="gallery-img reveal-up" onclick="openLightbox(7)"><img src="/images/gallery/thumbs/CS9A2170.jpg" alt="Guitar Hotel at night" loading="lazy"></div>
       </div>
+      <button class="gallery-show-all" id="galleryShowAll">View All Photos</button>
     </div>
   </section>
 
@@ -283,6 +302,11 @@
     <div class="footer-monogram">S &amp; C</div>
     <div class="footer-date">01.24.2027</div>
   </footer>
+
+  <!-- BACK TO TOP -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
 
   <!-- PARTICLES -->
   <div class="particles" id="particles"></div>
