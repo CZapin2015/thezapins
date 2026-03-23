@@ -16,13 +16,29 @@ window.addEventListener('pageshow', (e) => {
     ScrollTrigger.refresh();
   }
 });
-// Fallback: if GSAP/ScrollTrigger failed to load, force elements visible
-// Only checks once after 6s, and only if ScrollTrigger has zero triggers (broken state)
-setTimeout(() => {
-  if (!ScrollTrigger.getAll || ScrollTrigger.getAll().length === 0) {
-    forceRevealAll();
-  }
-}, 6000);
+// Fallback: IntersectionObserver catches any element ScrollTrigger missed.
+// When an element enters the viewport and is still hidden after a short grace
+// period (letting ScrollTrigger fire first), force it visible.
+const revealFallback = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      // Give ScrollTrigger 300ms to handle it naturally
+      setTimeout(() => {
+        if (getComputedStyle(el).opacity === '0') {
+          el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        }
+      }, 300);
+      revealFallback.unobserve(el);
+    }
+  });
+}, { rootMargin: '0px 0px 50px 0px' });
+
+document.querySelectorAll('.reveal, .reveal-line, .reveal-up, .reveal-tl, .registry-link').forEach(el => {
+  revealFallback.observe(el);
+});
 
 // Wait for fonts before showing hero
 document.fonts.ready.then(() => {
