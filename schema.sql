@@ -25,5 +25,10 @@ CREATE TABLE IF NOT EXISTS wedding_rsvps (
   FOREIGN KEY (matched_guest_id) REFERENCES wedding_guests(id)
 );
 
+-- Plus-one guest details
+ALTER TABLE wedding_rsvps ADD COLUMN guest_name TEXT;
+ALTER TABLE wedding_rsvps ADD COLUMN guest_meal_preference TEXT;
+ALTER TABLE wedding_rsvps ADD COLUMN guest_dietary_notes TEXT;
+
 CREATE INDEX IF NOT EXISTS idx_rsvps_attending ON wedding_rsvps(attending);
 CREATE INDEX IF NOT EXISTS idx_rsvps_matched ON wedding_rsvps(matched_guest_id);

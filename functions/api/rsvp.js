@@ -58,7 +58,7 @@ async function handlePost(request, env) {
     return json({ error: 'Invalid JSON body' }, 400);
   }
 
-  const { full_name, email, attending, guest_count, meal_preference, dietary_notes, event_welcome, event_wedding, event_brunch } = body;
+  const { full_name, email, attending, guest_count, meal_preference, dietary_notes, event_welcome, event_wedding, event_brunch, guest_name, guest_meal_preference, guest_dietary_notes } = body;
 
   if (!full_name || !full_name.trim()) {
     return json({ error: 'full_name is required' }, 400);
@@ -98,8 +98,8 @@ async function handlePost(request, env) {
   // Insert the RSVP
   try {
     await env.DB.prepare(
-      `INSERT INTO wedding_rsvps (full_name, email, attending, guest_count, meal_preference, dietary_notes, event_welcome, event_wedding, event_brunch, matched_guest_id, matched_guest_name)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO wedding_rsvps (full_name, email, attending, guest_count, meal_preference, dietary_notes, event_welcome, event_wedding, event_brunch, matched_guest_id, matched_guest_name, guest_name, guest_meal_preference, guest_dietary_notes)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
       .bind(
         trimmedName,
@@ -112,7 +112,10 @@ async function handlePost(request, env) {
         event_wedding ? 1 : 0,
         event_brunch ? 1 : 0,
         matchedGuestId,
-        matchedGuestName
+        matchedGuestName,
+        guest_name || null,
+        guest_meal_preference || null,
+        guest_dietary_notes || null
       )
       .run();
   } catch (err) {

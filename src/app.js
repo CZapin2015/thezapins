@@ -257,17 +257,28 @@ rsvpForm.addEventListener('submit', async (e) => {
   const anyEvent = eventWelcome || eventWedding || eventBrunch;
   const isAccepting = document.getElementById('rsvpAttendance').value === 'accept';
 
+  const guestCount = parseInt(document.getElementById('rsvpGuests').value, 10);
   const data = {
     full_name: document.getElementById('rsvpName').value.trim(),
     email: document.getElementById('rsvpEmail').value.trim(),
     attending: isAccepting ? 'accepted' : 'declined',
-    guest_count: parseInt(document.getElementById('rsvpGuests').value, 10),
+    guest_count: guestCount,
     meal_preference: document.getElementById('rsvpMeal').value,
     dietary_notes: document.getElementById('rsvpNotes').value.trim(),
     event_welcome: eventWelcome,
     event_wedding: eventWedding,
     event_brunch: eventBrunch,
   };
+
+  // Include plus-one details if bringing a guest
+  if (guestCount > 1) {
+    const gn = document.getElementById('guestName');
+    const gm = document.getElementById('guestMeal');
+    const gd = document.getElementById('guestNotes');
+    if (gn) data.guest_name = gn.value.trim();
+    if (gm) data.guest_meal_preference = gm.value;
+    if (gd) data.guest_dietary_notes = gd.value.trim();
+  }
 
   if (!data.full_name) {
     rsvpMessage.textContent = 'Please enter your name.';

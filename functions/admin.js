@@ -15,7 +15,7 @@ export async function onRequest() {
       background: #0a1628;
       color: #e8e0d4;
       min-height: 100vh;
-      padding: 2rem 1rem;
+      padding: 0 1rem 2rem;
     }
 
     h1, h2, h3 {
@@ -24,9 +24,7 @@ export async function onRequest() {
     }
 
     h1 {
-      text-align: center;
       font-size: 2.4rem;
-      margin-bottom: 2rem;
       letter-spacing: 0.05em;
     }
 
@@ -42,13 +40,52 @@ export async function onRequest() {
       margin: 0 auto;
     }
 
+    /* Header bar */
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 0;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+    }
+    .admin-header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .admin-header-left a { display: flex; }
+    .admin-header-left img {
+      width: 36px; height: 36px;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+    .admin-header-left img:hover { opacity: 1; }
+    .logout-btn {
+      padding: 0.4rem 1rem;
+      font-size: 0.7rem;
+      background: transparent;
+      color: rgba(232, 224, 212, 0.5);
+      border: 1px solid rgba(232, 224, 212, 0.15);
+      border-radius: 3px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      display: none;
+    }
+    .logout-btn:hover {
+      color: #e8e0d4;
+      border-color: rgba(232, 224, 212, 0.4);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
     /* Login */
     #login-section {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 1rem;
-      margin-top: 4rem;
+      margin-top: 3rem;
     }
 
     #login-section input {
@@ -64,6 +101,15 @@ export async function onRequest() {
     }
 
     #login-section input::placeholder { color: rgba(232, 224, 212, 0.4); }
+
+    /* Fix browser autofill white background */
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus {
+      -webkit-box-shadow: 0 0 0 30px #0e1b30 inset !important;
+      -webkit-text-fill-color: #e8e0d4 !important;
+      border: 1px solid rgba(201, 168, 76, 0.4) !important;
+    }
 
     button {
       font-family: 'Montserrat', sans-serif;
@@ -89,6 +135,26 @@ export async function onRequest() {
 
     /* Dashboard */
     #dashboard { display: none; }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .export-btn {
+      padding: 0.4rem 1.2rem;
+      font-size: 0.75rem;
+      background: rgba(201, 168, 76, 0.12);
+      color: #c9a84c;
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      border-radius: 4px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .export-btn:hover { background: rgba(201, 168, 76, 0.2); }
 
     .stats {
       display: grid;
@@ -124,6 +190,25 @@ export async function onRequest() {
     /* Tables */
     .section { margin-bottom: 2.5rem; }
 
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+    .search-box {
+      font-family: 'Montserrat', sans-serif;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid rgba(201, 168, 76, 0.25);
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.04);
+      color: #e8e0d4;
+      font-size: 0.8rem;
+      width: 240px;
+      margin-bottom: 0.75rem;
+    }
+    .search-box::placeholder { color: rgba(232, 224, 212, 0.3); }
+    .search-box:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 30px #0e1b30 inset !important;
+      -webkit-text-fill-color: #e8e0d4 !important;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -139,6 +224,7 @@ export async function onRequest() {
       text-transform: uppercase;
       font-size: 0.7rem;
       letter-spacing: 0.08em;
+      white-space: nowrap;
     }
 
     td {
@@ -300,13 +386,20 @@ export async function onRequest() {
       .missing-list { columns: 1; }
       table { font-size: 0.75rem; }
       th, td { padding: 0.4rem; }
+      .admin-header h1 { font-size: 1.6rem; }
+      .search-box { width: 100%; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <a href="/" style="display:inline-block;margin-bottom:1.5rem;"><img src="/monogram.svg" alt="S&C" style="width:42px;height:42px;opacity:0.85;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'"></a>
-    <h1>RSVP Dashboard</h1>
+    <div class="admin-header">
+      <div class="admin-header-left">
+        <a href="/"><img src="/monogram.svg" alt="S&C"></a>
+        <h1>RSVP Dashboard</h1>
+      </div>
+      <button class="logout-btn" id="logout-btn" onclick="logout()">Logout</button>
+    </div>
 
     <div id="login-section">
       <input type="password" id="key-input" placeholder="Admin password" />
@@ -324,6 +417,10 @@ export async function onRequest() {
         <span class="flag-status off" id="rsvp-status">Off</span>
       </div>
 
+      <div class="toolbar">
+        <button class="export-btn" onclick="exportCSV()">Export CSV</button>
+      </div>
+
       <div class="stats" id="stats"></div>
 
       <div class="section">
@@ -333,23 +430,26 @@ export async function onRequest() {
 
       <div class="section">
         <h2>All RSVPs</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Status</th>
-              <th>Events</th>
-              <th>Guests</th>
-              <th>Meal</th>
-              <th>Notes</th>
-              <th>Matched</th>
-              <th>Date</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="rsvp-table"></tbody>
-        </table>
+        <input type="text" class="search-box" id="rsvp-search" placeholder="Search by name or email..." oninput="filterTable()">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Events</th>
+                <th>Guests</th>
+                <th>Meal</th>
+                <th>Notes</th>
+                <th>Matched</th>
+                <th>Date</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="rsvp-table"></tbody>
+          </table>
+        </div>
       </div>
 
       <div class="section">
@@ -363,6 +463,7 @@ export async function onRequest() {
 
   <script>
     let adminKey = sessionStorage.getItem('adminKey') || '';
+    let currentRsvps = [];
     const keyInput = document.getElementById('key-input');
     keyInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') loadDashboard();
@@ -370,6 +471,12 @@ export async function onRequest() {
 
     // Auto-login if key is stored
     if (adminKey) loadDashboard();
+
+    function logout() {
+      sessionStorage.removeItem('adminKey');
+      adminKey = '';
+      location.reload();
+    }
 
     function showToast(msg, isError) {
       const t = document.getElementById('toast');
@@ -394,6 +501,43 @@ export async function onRequest() {
       }
     }
 
+    function filterTable() {
+      const q = document.getElementById('rsvp-search').value.toLowerCase();
+      document.querySelectorAll('#rsvp-table tr').forEach(row => {
+        const name = row.cells[0]?.textContent.toLowerCase() || '';
+        const email = row.cells[1]?.textContent.toLowerCase() || '';
+        row.style.display = (name.includes(q) || email.includes(q)) ? '' : 'none';
+      });
+    }
+
+    function exportCSV() {
+      if (!currentRsvps.length) { showToast('No RSVPs to export', true); return; }
+      const headers = ['Name', 'Email', 'Status', 'Welcome Party', 'Ceremony', 'Farewell Brunch', 'Guest Count', 'Meal', 'Dietary Notes', 'Guest Name', 'Guest Meal', 'Guest Dietary Notes', 'Date'];
+      const rows = currentRsvps.map(r => [
+        r.full_name,
+        r.email || '',
+        r.attending,
+        r.event_welcome ? 'Yes' : 'No',
+        r.event_wedding ? 'Yes' : 'No',
+        r.event_brunch ? 'Yes' : 'No',
+        r.guest_count || 1,
+        r.meal_preference || '',
+        r.dietary_notes || '',
+        r.guest_name || '',
+        r.guest_meal_preference || '',
+        r.guest_dietary_notes || '',
+        r.created_at ? r.created_at.split('T')[0] : ''
+      ]);
+      const csv = [headers, ...rows].map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'rsvps-' + new Date().toISOString().split('T')[0] + '.csv';
+      a.click();
+      URL.revokeObjectURL(a.href);
+      showToast('CSV downloaded');
+    }
+
     async function loadDashboard() {
       const key = keyInput.value.trim() || adminKey;
       const errorEl = document.getElementById('error-msg');
@@ -414,9 +558,11 @@ export async function onRequest() {
 
       document.getElementById('login-section').style.display = 'none';
       document.getElementById('dashboard').style.display = 'block';
+      document.getElementById('logout-btn').style.display = 'block';
       loadSettings();
 
       const rsvps = data.rsvps || [];
+      currentRsvps = rsvps;
       const missing = data.missing_guests || [];
       const accepted = rsvps.filter(r => r.attending === 'accepted');
       const declined = rsvps.filter(r => r.attending === 'declined');
@@ -429,11 +575,15 @@ export async function onRequest() {
         statCard(declined.length, 'Declined') +
         statCard(missing.length, 'No Response');
 
-      // Meal breakdown
+      // Meal breakdown - count primary and guest meals separately
       const meals = {};
       accepted.forEach(r => {
         const m = r.meal_preference || 'Not specified';
-        meals[m] = (meals[m] || 0) + (r.guest_count || 1);
+        meals[m] = (meals[m] || 0) + 1;
+        if ((r.guest_count || 1) > 1) {
+          const gm = r.guest_meal_preference || 'Not specified';
+          meals[gm] = (meals[gm] || 0) + 1;
+        }
       });
       document.getElementById('meals').innerHTML = Object.entries(meals)
         .map(([k, v]) => '<div class="meal-item"><strong>' + v + '</strong> ' + esc(k) + '</div>')
@@ -477,6 +627,9 @@ export async function onRequest() {
         (g.group_name ? ' <span>(' + esc(g.group_name) + ')</span>' : '') +
         '</li>'
       ).join('');
+
+      // Clear search on reload
+      document.getElementById('rsvp-search').value = '';
     }
 
     function statCard(num, label) {
