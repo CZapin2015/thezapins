@@ -1072,12 +1072,9 @@ section { position: relative; z-index: 2; }
   font-weight: 500;
   color: rgba(201, 169, 110, 0.65);
 }
-/* Airport card distance colors */
+/* Airport card distance colors -- labels steel, times gold */
 #locationMap .map-card-airport .map-card-dist-label {
   color: rgba(138, 155, 181, 0.4);
-}
-#locationMap .map-card-airport .map-card-dist-time {
-  color: rgba(138, 155, 181, 0.55);
 }
 
 /* Pin pulse animation for venue */
