@@ -519,6 +519,7 @@ document.addEventListener('keydown', (e) => {
       address: '100 S Ocean Blvd, Manalapan, FL 33462',
       color: '#c9a96e',
       isVenue: true,
+      isAirport: false,
       driveTime: ''
     },
     {
@@ -529,6 +530,7 @@ document.addEventListener('keydown', (e) => {
       address: '2842 S Ocean Blvd, Palm Beach, FL 33480',
       color: '#4a6fa5',
       isVenue: false,
+      isAirport: false,
       driveTime: '18 min from venue'
     },
     {
@@ -539,7 +541,19 @@ document.addEventListener('keydown', (e) => {
       address: '2870 S Ocean Blvd, Palm Beach, FL 33480',
       color: '#4a6fa5',
       isVenue: false,
+      isAirport: false,
       driveTime: '12 min from venue'
+    },
+    {
+      name: 'Palm Beach Intl Airport',
+      badge: 'Nearest Airport',
+      lat: 26.6832,
+      lng: -80.0956,
+      address: '1000 James L Turnage Blvd, West Palm Beach, FL 33415',
+      color: '#8a9bb5',
+      isVenue: false,
+      isAirport: true,
+      driveTime: '20 min from venue'
     }
   ];
 
@@ -625,7 +639,7 @@ document.addEventListener('keydown', (e) => {
       card.href = directionsUrl;
       card.target = '_blank';
       card.rel = 'noopener';
-      card.className = loc.isVenue ? 'map-card map-card-venue' : 'map-card map-card-hotel';
+      card.className = 'map-card ' + (loc.isVenue ? 'map-card-venue' : loc.isAirport ? 'map-card-airport' : 'map-card-hotel');
 
       // Name + hover arrow
       const nameRow = document.createElement('span');
@@ -640,13 +654,14 @@ document.addEventListener('keydown', (e) => {
       nameRow.appendChild(arrow);
       card.appendChild(nameRow);
 
-      // Badge or drive time
-      if (loc.isVenue) {
+      // Badge and/or drive time
+      if (loc.isVenue || loc.isAirport) {
         const badge = document.createElement('span');
         badge.className = 'map-card-badge';
         badge.textContent = loc.badge;
         card.appendChild(badge);
-      } else if (loc.driveTime) {
+      }
+      if (loc.driveTime) {
         const time = document.createElement('span');
         time.className = 'map-card-drive';
         time.textContent = loc.driveTime;

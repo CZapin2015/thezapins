@@ -959,6 +959,20 @@ section { position: relative; z-index: 2; }
 #locationMap .map-card-hotel .map-card-name {
   color: #d4ddef;
 }
+/* Airport card -- muted steel */
+#locationMap .map-card-airport {
+  border-color: rgba(138, 155, 181, 0.15);
+}
+#locationMap .map-card-airport:hover {
+  border-color: rgba(138, 155, 181, 0.3);
+}
+#locationMap .map-card-airport .map-card-name {
+  color: #a0b0c8;
+  font-size: 14px;
+}
+#locationMap .map-card-airport .map-card-badge {
+  color: rgba(138, 155, 181, 0.55);
+}
 /* Hover arrow (hidden until hover) */
 #locationMap .map-card-arrow {
   font-size: 16px;
