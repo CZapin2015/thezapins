@@ -26,12 +26,12 @@ function generateOgImage() {
   const now = new Date();
   const diff = wedding - now;
   const days = Math.floor(diff / 86400000);
-  // Single centered days-only countdown box
+  // Single centered days-only countdown box (caches well since days changes slowly)
   function countdownDays(value) {
     return `
-      <rect x="555" y="390" width="90" height="80" rx="12" fill="rgba(10,22,40,0.6)" stroke="rgba(201,169,110,0.2)" stroke-width="1"/>
-      <text x="600" y="435" text-anchor="middle" font-family="Georgia, serif" font-size="42" font-weight="300" fill="rgba(232,228,220,0.95)">${value}</text>
-      <text x="600" y="458" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" letter-spacing="2" fill="rgba(201,169,110,0.7)">DAYS</text>
+      <rect x="540" y="390" width="120" height="86" rx="12" fill="rgba(10,22,40,0.45)" stroke="rgba(201,169,110,0.15)" stroke-width="1"/>
+      <text x="600" y="440" text-anchor="middle" font-family="Georgia, serif" font-size="56" font-weight="400" fill="#c9a96e">${value}</text>
+      <text x="600" y="463" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" letter-spacing="3" font-weight="500" fill="rgba(201,169,110,0.95)">DAYS</text>
     `;
   }
 
