@@ -665,13 +665,13 @@ document.addEventListener('keydown', (e) => {
       nameRow.appendChild(arrow);
       card.appendChild(nameRow);
 
-      // Badge and/or drive time
-      if (loc.isVenue || loc.isAirport) {
-        const badge = document.createElement('span');
-        badge.className = 'map-card-badge';
-        badge.textContent = loc.badge;
-        card.appendChild(badge);
-      }
+      // Badge (all card types)
+      const badge = document.createElement('span');
+      badge.className = 'map-card-badge';
+      badge.textContent = loc.badge;
+      card.appendChild(badge);
+
+      // Drive time (if present, visually separated)
       if (loc.driveTime) {
         const time = document.createElement('span');
         time.className = 'map-card-drive';

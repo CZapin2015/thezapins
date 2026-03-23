@@ -914,7 +914,7 @@ section { position: relative; z-index: 2; }
 #locationMap .map-card {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 0;
   padding: 10px 14px;
   background: rgba(12, 22, 42, 0.85);
   backdrop-filter: blur(12px);
@@ -936,7 +936,7 @@ section { position: relative; z-index: 2; }
   transition-duration: 0.1s;
 }
 
-/* Venue card -- prominent gold accent + glow */
+/* --- VENUE card: gold, largest, prominent --- */
 #locationMap .map-card-venue {
   padding: 12px 16px;
   border-color: rgba(201, 169, 110, 0.2);
@@ -946,44 +946,71 @@ section { position: relative; z-index: 2; }
   border-color: rgba(201, 169, 110, 0.35);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), 0 0 28px rgba(201, 169, 110, 0.1);
 }
-
-/* Card name row with hover arrow */
-#locationMap .map-card-name-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-#locationMap .map-card-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 600;
-  font-size: 15px;
-  line-height: 1.2;
-}
 #locationMap .map-card-venue .map-card-name {
   color: #c9a96e;
   font-size: 17px;
 }
+#locationMap .map-card-venue .map-card-badge {
+  color: rgba(201, 169, 110, 0.5);
+}
+#locationMap .map-card-venue .map-card-arrow {
+  color: rgba(201, 169, 110, 0.5);
+}
+
+/* --- HOTEL cards: cool blue-white, medium --- */
 #locationMap .map-card-hotel .map-card-name {
   color: #d4ddef;
+  font-size: 15px;
 }
-/* Airport card -- muted steel */
+#locationMap .map-card-hotel .map-card-badge {
+  color: rgba(160, 176, 200, 0.5);
+}
+#locationMap .map-card-hotel .map-card-drive {
+  color: rgba(201, 169, 110, 0.55);
+}
+#locationMap .map-card-hotel .map-card-arrow {
+  color: rgba(160, 176, 200, 0.5);
+}
+
+/* --- AIRPORT card: muted steel, smallest --- */
 #locationMap .map-card-airport {
-  border-color: rgba(138, 155, 181, 0.15);
+  padding: 8px 12px;
+  border-color: rgba(138, 155, 181, 0.12);
 }
 #locationMap .map-card-airport:hover {
-  border-color: rgba(138, 155, 181, 0.3);
+  border-color: rgba(138, 155, 181, 0.25);
 }
 #locationMap .map-card-airport .map-card-name {
   color: #a0b0c8;
-  font-size: 14px;
+  font-size: 13px;
 }
 #locationMap .map-card-airport .map-card-badge {
-  color: rgba(138, 155, 181, 0.55);
+  color: rgba(138, 155, 181, 0.45);
 }
-/* Hover arrow (hidden until hover) */
+#locationMap .map-card-airport .map-card-drive {
+  color: rgba(138, 155, 181, 0.5);
+}
+#locationMap .map-card-airport .map-card-arrow {
+  color: rgba(138, 155, 181, 0.5);
+}
+
+/* --- Shared card elements --- */
+
+/* Name row with hover arrow */
+#locationMap .map-card-name-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+#locationMap .map-card-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* Hover arrow (hidden until hover, color set per card type) */
 #locationMap .map-card-arrow {
-  font-size: 16px;
-  color: rgba(201, 169, 110, 0.5);
+  font-size: 14px;
   opacity: 0;
   transform: translateX(-3px);
   transition: opacity 0.25s ease, transform 0.25s ease;
@@ -993,22 +1020,22 @@ section { position: relative; z-index: 2; }
   transform: translateX(0);
 }
 
-/* Badge for venue */
+/* Type badge -- smallest, most muted, uppercase tracking */
 #locationMap .map-card-badge {
   font-family: 'Montserrat', sans-serif;
-  font-size: 8px;
+  font-size: 7.5px;
   letter-spacing: 1.8px;
   text-transform: uppercase;
-  color: rgba(201, 169, 110, 0.55);
-  margin-top: 1px;
+  margin-top: 4px;
 }
-/* Drive time for hotels */
+
+/* Drive time -- slightly larger than badge, different weight */
 #locationMap .map-card-drive {
   font-family: 'Montserrat', sans-serif;
-  font-size: 10px;
-  letter-spacing: 0.5px;
-  color: rgba(201, 169, 110, 0.6);
-  margin-top: 1px;
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  margin-top: 3px;
 }
 
 /* Pin pulse animation for venue */
@@ -1021,18 +1048,22 @@ section { position: relative; z-index: 2; }
 /* Responsive map */
 @media (max-width: 768px) {
   #locationMap { height: 380px; }
-  #locationMap .map-card { padding: 8px 11px; }
-  #locationMap .map-card-name { font-size: 13px; }
+  #locationMap .map-card { padding: 7px 10px; }
+  #locationMap .map-card-venue { padding: 9px 12px; }
+  #locationMap .map-card-airport { padding: 6px 9px; }
   #locationMap .map-card-venue .map-card-name { font-size: 15px; }
-  #locationMap .map-card-venue { padding: 10px 13px; }
+  #locationMap .map-card-hotel .map-card-name { font-size: 13px; }
+  #locationMap .map-card-airport .map-card-name { font-size: 12px; }
   #locationMap .map-connector { display: none; }
 }
 @media (max-width: 420px) {
   #locationMap { height: 320px; }
-  #locationMap .map-card { padding: 6px 9px; }
-  #locationMap .map-card-name { font-size: 12px; }
+  #locationMap .map-card { padding: 5px 8px; }
+  #locationMap .map-card-venue { padding: 7px 10px; }
+  #locationMap .map-card-airport { padding: 5px 7px; }
   #locationMap .map-card-venue .map-card-name { font-size: 13px; }
-  #locationMap .map-card-venue { padding: 8px 10px; }
+  #locationMap .map-card-hotel .map-card-name { font-size: 12px; }
+  #locationMap .map-card-airport .map-card-name { font-size: 11px; }
 }
 
 /* ===== GALLERY ===== */
