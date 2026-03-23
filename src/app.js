@@ -607,7 +607,10 @@ document.addEventListener('keydown', (e) => {
       }
     });
 
-    locations.forEach(loc => {
+    // Order: venue first, then hotels, then airport for staggered entrance
+    const ordered = [...locations].sort((a, b) => a.isVenue ? -1 : b.isVenue ? 1 : a.isAirport ? 1 : b.isAirport ? -1 : 0);
+
+    ordered.forEach((loc, i) => {
       const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(loc.address)}`;
       const pinSize = loc.isVenue ? 22 : 16;
       const cardOnLeft = loc.isAirport;
@@ -617,7 +620,8 @@ document.addEventListener('keydown', (e) => {
       composite.href = directionsUrl;
       composite.target = '_blank';
       composite.rel = 'noopener';
-      composite.className = 'map-marker-composite' + (cardOnLeft ? ' map-marker-left' : '');
+      composite.className = 'map-marker-composite map-marker-enter' + (cardOnLeft ? ' map-marker-left' : '');
+      composite.style.animationDelay = (i * 0.2) + 's';
 
       // Card
       const card = document.createElement('div');
@@ -665,17 +669,17 @@ document.addEventListener('keydown', (e) => {
         position: relative;
       `;
 
-      // Pulse ring for venue
+      // Breathing glow halo for venue pin
       if (loc.isVenue) {
-        const pulse = document.createElement('div');
-        pulse.style.cssText = `
-          position: absolute; inset: -6px;
-          border: 1.5px solid ${loc.color};
+        const glow = document.createElement('div');
+        glow.style.cssText = `
+          position: absolute; inset: -10px;
           border-radius: 50%;
-          animation: pinPulse 2.5s ease-out infinite;
+          background: radial-gradient(circle, ${loc.color}40 0%, ${loc.color}15 40%, transparent 70%);
+          animation: venueGlow 3s ease-in-out infinite;
           pointer-events: none;
         `;
-        pin.appendChild(pulse);
+        pin.appendChild(glow);
       }
 
       // Assemble: card-on-left or card-on-right
@@ -701,6 +705,29 @@ document.addEventListener('keydown', (e) => {
       // Pin is at the edge of the composite, offset inward by half pin size
       marker.setOffset([cardOnLeft ? (pinSize / 2) : -(pinSize / 2), 0]);
       marker.addTo(map);
+    });
+
+    // Route line connecting coastal locations (Eau -> Fairfield -> Tideline)
+    const coastal = locations.filter(l => !l.isAirport).sort((a, b) => a.lat - b.lat);
+    map.addSource('route', {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: coastal.map(l => [l.lng, l.lat])
+        }
+      }
+    });
+    map.addLayer({
+      id: 'route-line',
+      type: 'line',
+      source: 'route',
+      paint: {
+        'line-color': 'rgba(201, 169, 110, 0.18)',
+        'line-width': 2,
+        'line-dasharray': [4, 4]
+      }
     });
 
     // Fit bounds: heavy right padding pushes pins/cards left over map geography
