@@ -519,7 +519,7 @@ document.addEventListener('keydown', (e) => {
       address: '100 S Ocean Blvd, Manalapan, FL 33462',
       color: '#c9a96e',
       isVenue: true,
-      distance: ''
+      driveTime: ''
     },
     {
       name: 'Tideline Ocean Resort & Spa',
@@ -529,7 +529,7 @@ document.addEventListener('keydown', (e) => {
       address: '2842 S Ocean Blvd, Palm Beach, FL 33480',
       color: '#4a6fa5',
       isVenue: false,
-      distance: '~9 mi / 18 min'
+      driveTime: '18 min from venue'
     },
     {
       name: 'Fairfield Inn & Suites',
@@ -539,23 +539,25 @@ document.addEventListener('keydown', (e) => {
       address: '2870 S Ocean Blvd, Palm Beach, FL 33480',
       color: '#4a6fa5',
       isVenue: false,
-      distance: '~5 mi / 12 min'
+      driveTime: '12 min from venue'
     }
   ];
 
+  // Center shifted east to focus on coastal venues, less empty inland
   const map = new mapboxgl.Map({
     container: 'locationMap',
     style: 'mapbox://styles/mapbox/dark-v11',
-    center: [-80.04, 26.64],
-    zoom: 11,
+    center: [-80.045, 26.635],
+    zoom: 11.3,
     scrollZoom: false,
-    attributionControl: false
+    attributionControl: false,
+    dragRotate: false,
+    pitchWithRotate: false,
+    touchZoomRotate: true
   });
 
-  map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-left');
-
   map.on('load', () => {
-    // Minimal overrides: deep navy water + gold labels to match site palette
+    // Deep navy water for contrast against dark-v11 gray land
     try { map.setPaintProperty('water', 'fill-color', '#091a30'); } catch(e) {}
 
     // Gold-tinted place labels
@@ -565,52 +567,92 @@ document.addEventListener('keydown', (e) => {
       }
     });
 
+    // Dim road labels to reduce noise
+    map.getStyle().layers.forEach(layer => {
+      if (layer.type === 'symbol' && layer.id.includes('road')) {
+        try { map.setPaintProperty(layer.id, 'text-opacity', 0.4); } catch(e) {}
+      }
+    });
+
     locations.forEach(loc => {
       const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(loc.address)}`;
-      const pinSize = loc.isVenue ? 18 : 12;
+      const pinSize = loc.isVenue ? 22 : 16;
 
-      // Create label element (tappable for directions)
-      const label = document.createElement('a');
-      label.href = directionsUrl;
-      label.target = '_blank';
-      label.rel = 'noopener';
-      label.className = loc.isVenue ? 'map-label-venue' : 'map-label-hotel';
-      label.textContent = loc.name;
-      if (loc.distance) {
-        const dist = document.createElement('span');
-        dist.className = 'map-label-distance';
-        dist.textContent = loc.distance;
-        label.appendChild(dist);
-      }
+      // === Pin dot ===
+      const pinWrap = document.createElement('div');
+      pinWrap.style.cssText = `width: ${pinSize}px; height: ${pinSize}px; position: relative;`;
 
-      // Create pin element
-      const pin = document.createElement('div');
-      pin.style.cssText = `
-        width: ${pinSize}px; height: ${pinSize}px;
+      const pinDot = document.createElement('div');
+      pinDot.style.cssText = `
+        width: 100%; height: 100%;
         background: ${loc.color};
-        border: 2px solid ${loc.isVenue ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.2)'};
+        border: 2px solid ${loc.isVenue ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.25)'};
         border-radius: 50%;
-        box-shadow: 0 0 ${loc.isVenue ? '16' : '10'}px ${loc.color}55, 0 2px 6px rgba(0,0,0,0.4);
+        box-shadow: 0 0 ${loc.isVenue ? '18' : '10'}px ${loc.color}66, 0 2px 8px rgba(0,0,0,0.5);
         cursor: pointer;
       `;
-      pin.addEventListener('click', () => window.open(directionsUrl, '_blank'));
+      pinDot.addEventListener('click', () => window.open(directionsUrl, '_blank'));
+      pinWrap.appendChild(pinDot);
 
-      // Add pin marker
-      new mapboxgl.Marker({ element: pin, anchor: 'center' })
+      // Pulse ring for venue
+      if (loc.isVenue) {
+        const pulse = document.createElement('div');
+        pulse.style.cssText = `
+          position: absolute; inset: -6px;
+          border: 1.5px solid ${loc.color};
+          border-radius: 50%;
+          animation: pinPulse 2.5s ease-out infinite;
+          pointer-events: none;
+        `;
+        pinWrap.appendChild(pulse);
+      }
+
+      new mapboxgl.Marker({ element: pinWrap, anchor: 'center' })
         .setLngLat([loc.lng, loc.lat])
         .addTo(map);
 
-      // Add label marker (offset to the right of pin)
-      new mapboxgl.Marker({ element: label, anchor: 'left' })
+      // === Info card ===
+      const card = document.createElement('a');
+      card.href = directionsUrl;
+      card.target = '_blank';
+      card.rel = 'noopener';
+      card.className = loc.isVenue ? 'map-card map-card-venue' : 'map-card map-card-hotel';
+
+      // Name row
+      const name = document.createElement('span');
+      name.className = 'map-card-name';
+      name.textContent = loc.name;
+      card.appendChild(name);
+
+      // Badge or drive time
+      if (loc.isVenue) {
+        const badge = document.createElement('span');
+        badge.className = 'map-card-badge';
+        badge.textContent = loc.badge;
+        card.appendChild(badge);
+      } else if (loc.driveTime) {
+        const time = document.createElement('span');
+        time.className = 'map-card-drive';
+        time.textContent = loc.driveTime;
+        card.appendChild(time);
+      }
+
+      // Directions CTA
+      const cta = document.createElement('span');
+      cta.className = 'map-card-cta';
+      cta.textContent = 'Directions';
+      card.appendChild(cta);
+
+      new mapboxgl.Marker({ element: card, anchor: 'left' })
         .setLngLat([loc.lng, loc.lat])
-        .setOffset([pinSize / 2 + 6, 0])
+        .setOffset([pinSize / 2 + 10, 0])
         .addTo(map);
     });
 
-    // Fit bounds to show all markers
+    // Fit bounds with asymmetric padding (more on left to shift content right)
     const bounds = new mapboxgl.LngLatBounds();
     locations.forEach(loc => bounds.extend([loc.lng, loc.lat]));
-    map.fitBounds(bounds, { padding: 50 });
+    map.fitBounds(bounds, { padding: { top: 50, bottom: 80, left: 30, right: 120 } });
   });
 })();
 

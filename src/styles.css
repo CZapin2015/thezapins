@@ -872,68 +872,126 @@ section { position: relative; z-index: 2; }
   text-align: center;
   margin-bottom: 20px;
 }
+/* Map container with vignette edge fade */
+.map-wrapper {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(201, 169, 110, 0.1);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(201, 169, 110, 0.05);
+}
+.map-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  pointer-events: none;
+  z-index: 2;
+  box-shadow: inset 0 0 40px 12px rgba(11, 18, 36, 0.5);
+}
 #locationMap {
   width: 100%;
-  height: 380px;
-  border-radius: 10px;
-  border: 1px solid rgba(201, 169, 110, 0.12);
+  height: 420px;
   z-index: 1;
+  display: block;
 }
-/* Hide Mapbox attribution/logo */
+/* Hide Mapbox attribution/logo and zoom controls (reference map, not interactive explorer) */
 #locationMap .mapboxgl-ctrl-attrib,
-#locationMap .mapboxgl-ctrl-logo { display: none !important; }
-/* Style zoom controls to match site */
-#locationMap .mapboxgl-ctrl-group {
-  background: rgba(14, 27, 48, 0.9) !important;
-  border: 1px solid rgba(201, 169, 110, 0.15) !important;
-  border-radius: 6px !important;
-}
-#locationMap .mapboxgl-ctrl-group button {
-  color: rgba(201, 169, 110, 0.7) !important;
-}
-#locationMap .mapboxgl-ctrl-group button:hover {
-  background: rgba(201, 169, 110, 0.1) !important;
-}
-#locationMap .mapboxgl-ctrl-group button span {
-  filter: invert(1) sepia(1) saturate(0.5) hue-rotate(0deg) brightness(0.8);
-}
-/* Venue label -- gold, large, tappable */
-#locationMap .map-label-venue {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 17px;
-  font-weight: 600;
-  color: #c9a96e;
-  text-shadow: 0 1px 5px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.6);
-  white-space: nowrap;
+#locationMap .mapboxgl-ctrl-logo,
+#locationMap .mapboxgl-ctrl-group { display: none !important; }
+
+/* Frosted-glass info cards */
+#locationMap .map-card {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 14px;
+  background: rgba(12, 22, 42, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(201, 169, 110, 0.12);
+  border-radius: 8px;
   text-decoration: none;
   cursor: pointer;
-  display: block;
-  padding: 4px 0;
+  white-space: nowrap;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
-#locationMap .map-label-venue:hover { color: #e0c78a; }
-/* Hotel labels -- bright, tappable, with distance sub-line */
-#locationMap .map-label-hotel {
+#locationMap .map-card:hover {
+  background: rgba(16, 28, 52, 0.92);
+  border-color: rgba(201, 169, 110, 0.25);
+  transform: translateX(2px);
+}
+/* Venue card -- gold accent */
+#locationMap .map-card-venue {
+  border-color: rgba(201, 169, 110, 0.2);
+}
+#locationMap .map-card-venue:hover {
+  border-color: rgba(201, 169, 110, 0.35);
+}
+/* Card name */
+#locationMap .map-card-name {
   font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
   font-size: 15px;
-  font-weight: 600;
-  color: #d4ddef;
-  text-shadow: 0 1px 5px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.7);
-  white-space: nowrap;
-  text-decoration: none;
-  cursor: pointer;
-  display: block;
-  padding: 4px 0;
+  line-height: 1.2;
 }
-#locationMap .map-label-hotel:hover { color: #fff; }
-/* Distance sub-label under hotel names */
-#locationMap .map-label-distance {
-  display: block;
+#locationMap .map-card-venue .map-card-name {
+  color: #c9a96e;
+  font-size: 16px;
+}
+#locationMap .map-card-hotel .map-card-name {
+  color: #d4ddef;
+}
+/* Badge for venue */
+#locationMap .map-card-badge {
   font-family: 'Montserrat', sans-serif;
-  font-size: 9px;
-  letter-spacing: 1px;
+  font-size: 8px;
+  letter-spacing: 1.8px;
   text-transform: uppercase;
   color: rgba(201, 169, 110, 0.6);
+}
+/* Drive time for hotels */
+#locationMap .map-card-drive {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: rgba(201, 169, 110, 0.65);
+}
+/* Directions CTA */
+#locationMap .map-card-cta {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
   margin-top: 2px;
+  transition: color 0.25s ease;
+}
+#locationMap .map-card:hover .map-card-cta {
+  color: rgba(201, 169, 110, 0.7);
+}
+
+/* Pin pulse animation for venue */
+@keyframes pinPulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  70% { transform: scale(2.2); opacity: 0; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* Responsive map */
+@media (max-width: 768px) {
+  #locationMap { height: 350px; }
+  #locationMap .map-card { padding: 8px 11px; }
+  #locationMap .map-card-name { font-size: 13px; }
+  #locationMap .map-card-venue .map-card-name { font-size: 14px; }
+}
+@media (max-width: 420px) {
+  #locationMap { height: 300px; }
+  #locationMap .map-card { padding: 6px 9px; }
+  #locationMap .map-card-name { font-size: 12px; }
+  #locationMap .map-card-venue .map-card-name { font-size: 13px; }
+  #locationMap .map-card-cta { display: none; }
 }
 
 /* ===== GALLERY ===== */
