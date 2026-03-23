@@ -714,10 +714,9 @@ section { position: relative; z-index: 2; }
 }
 
 /* ===== TRAVEL ===== */
-.hotel-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+/* Primary venue card - full width, prominent */
+.hotel-venue {
+  margin-bottom: 40px;
 }
 .hotel-card {
   background: rgba(18, 28, 48, 0.7);
@@ -734,6 +733,23 @@ section { position: relative; z-index: 2; }
     inset 0 1px 0 rgba(201, 169, 110, 0.06);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s, border-color 0.4s;
 }
+.hotel-card-primary {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 48px 40px;
+  border-color: rgba(201, 169, 110, 0.3);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    0 12px 40px rgba(0, 0, 0, 0.15),
+    0 0 40px rgba(201, 169, 110, 0.06),
+    inset 0 1px 0 rgba(201, 169, 110, 0.1);
+}
+.hotel-card-primary .hotel-logo {
+  width: 260px; height: 110px;
+}
+.hotel-card-primary .hotel-note {
+  font-size: 20px;
+}
 .hotel-card:hover {
   transform: translateY(-6px);
   box-shadow:
@@ -742,6 +758,34 @@ section { position: relative; z-index: 2; }
     0 0 30px rgba(201, 169, 110, 0.04);
   border-color: rgba(201, 169, 110, 0.25);
 }
+
+/* Secondary hotel cards - smaller, side by side */
+.hotel-alt-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  color: rgba(232, 228, 220, 0.5);
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 300;
+}
+.hotel-cards-alt {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.hotel-card-secondary {
+  padding: 28px 22px;
+  opacity: 0.85;
+}
+.hotel-card-secondary .hotel-logo {
+  width: 160px; height: 70px;
+}
+.hotel-card-secondary .hotel-note {
+  font-size: 16px;
+}
+
 .hotel-logo {
   width: 220px; height: 100px;
   object-fit: contain;
@@ -749,7 +793,7 @@ section { position: relative; z-index: 2; }
   opacity: 0.85;
 }
 .eau-logo {
-  width: 220px; height: 100px;
+  width: 260px; height: 110px;
 }
 .hotel-badge {
   font-family: 'Montserrat', sans-serif;
@@ -759,6 +803,13 @@ section { position: relative; z-index: 2; }
   padding: 5px 14px; border-radius: 12px;
   text-transform: uppercase;
   display: inline-block; margin-bottom: 16px;
+}
+.hotel-badge-primary {
+  color: rgba(201, 169, 110, 0.9);
+  background: rgba(201, 169, 110, 0.15);
+  font-size: 12px;
+  letter-spacing: 2.5px;
+  padding: 6px 18px;
 }
 .hotel-card h3 {
   font-family: 'Cormorant Garamond', serif;
@@ -1376,7 +1427,9 @@ footer {
   .nav-links a:hover {
     background: rgba(201, 169, 110, 0.06);
   }
-  .hotel-cards { grid-template-columns: 1fr; }
+  .hotel-cards-alt { grid-template-columns: 1fr; }
+  .hotel-card-primary { padding: 36px 28px; }
+  .hotel-card-primary .hotel-logo { width: 200px; height: 90px; }
   .hotel-logo { width: 140px; height: 60px; }
   .form-row { grid-template-columns: 1fr; }
 }
