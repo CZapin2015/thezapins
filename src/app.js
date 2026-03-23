@@ -520,7 +520,8 @@ document.addEventListener('keydown', (e) => {
       color: '#c9a96e',
       isVenue: true,
       isAirport: false,
-      distances: []
+      distances: [],
+      mobileYOffset: 20
     },
     {
       name: 'Tideline Ocean Resort & Spa',
@@ -531,7 +532,8 @@ document.addEventListener('keydown', (e) => {
       color: '#4a6fa5',
       isVenue: false,
       isAirport: false,
-      distances: [{ label: 'Venue', time: '18 min' }, { label: 'PBI', time: '10 min' }]
+      distances: [{ label: 'Venue', time: '18 min' }, { label: 'PBI', time: '10 min' }],
+      mobileYOffset: -20
     },
     {
       name: 'Fairfield Inn & Suites',
@@ -711,7 +713,8 @@ document.addEventListener('keydown', (e) => {
       marker.setLngLat([loc.lng, loc.lat]);
       // Offset to center the pin dot on the geographic point
       // Pin is at the edge of the composite, offset inward by half pin size
-      marker.setOffset([cardOnLeft ? (pinSize / 2) : -(pinSize / 2), 0]);
+      const yOff = (isMobile && loc.mobileYOffset) ? loc.mobileYOffset : 0;
+      marker.setOffset([cardOnLeft ? (pinSize / 2) : -(pinSize / 2), yOff]);
       marker.addTo(map);
     });
 
@@ -722,10 +725,10 @@ document.addEventListener('keydown', (e) => {
     const isMobile = w < 600;
     const isTablet = w < 900;
     map.fitBounds(bounds, { padding: {
-      top: isMobile ? 60 : 50,
-      bottom: isMobile ? 60 : 80,
-      left: isMobile ? Math.round(w * 0.42) : isTablet ? 80 : 160,
-      right: isMobile ? Math.round(w * 0.42) : isTablet ? Math.round(w * 0.45) : 200
+      top: isMobile ? 40 : 50,
+      bottom: isMobile ? 40 : 80,
+      left: isMobile ? Math.round(w * 0.3) : isTablet ? 80 : 160,
+      right: isMobile ? Math.round(w * 0.35) : isTablet ? Math.round(w * 0.45) : 200
     }});
 
   });
