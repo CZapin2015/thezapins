@@ -536,8 +536,8 @@ document.addEventListener('keydown', (e) => {
     {
       name: 'Fairfield Inn & Suites',
       badge: 'Nearby Hotel',
-      lat: 26.6455,
-      lng: -80.0553,
+      lat: 26.6350,
+      lng: -80.0370,
       address: '2870 S Ocean Blvd, Palm Beach, FL 33480',
       color: '#4a6fa5',
       isVenue: false,
