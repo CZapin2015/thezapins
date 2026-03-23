@@ -737,6 +737,8 @@ section { position: relative; z-index: 2; }
   max-width: 520px;
   margin: 0 auto;
   padding: 48px 40px;
+  opacity: 1;
+  transform: none;
   border-color: rgba(201, 169, 110, 0.3);
   box-shadow:
     0 4px 16px rgba(0, 0, 0, 0.2),
