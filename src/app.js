@@ -669,10 +669,10 @@ document.addEventListener('keydown', (e) => {
       if (loc.isVenue) {
         const pulse = document.createElement('div');
         pulse.style.cssText = `
-          position: absolute; inset: -10px;
+          position: absolute; inset: -6px;
+          border: 1.5px solid ${loc.color};
           border-radius: 50%;
-          background: radial-gradient(circle, ${loc.color}40 0%, ${loc.color}15 40%, transparent 70%);
-          animation: venueGlow 3s ease-in-out infinite;
+          animation: pinPulse 2.5s ease-out infinite;
           pointer-events: none;
         `;
         pin.appendChild(pulse);
@@ -701,29 +701,6 @@ document.addEventListener('keydown', (e) => {
       // Pin is at the edge of the composite, offset inward by half pin size
       marker.setOffset([cardOnLeft ? (pinSize / 2) : -(pinSize / 2), 0]);
       marker.addTo(map);
-    });
-
-    // Route line connecting coastal locations (Eau -> Fairfield -> Tideline)
-    const coastal = locations.filter(l => !l.isAirport).sort((a, b) => a.lat - b.lat);
-    map.addSource('route', {
-      type: 'geojson',
-      data: {
-        type: 'Feature',
-        geometry: {
-          type: 'LineString',
-          coordinates: coastal.map(l => [l.lng, l.lat])
-        }
-      }
-    });
-    map.addLayer({
-      id: 'route-line',
-      type: 'line',
-      source: 'route',
-      paint: {
-        'line-color': 'rgba(201, 169, 110, 0.18)',
-        'line-width': 2,
-        'line-dasharray': [4, 4]
-      }
     });
 
     // Fit bounds: heavy right padding pushes pins/cards left over map geography
