@@ -200,6 +200,7 @@ nav a:hover { color: #c9a96e; }
 .countdown {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 18px;
   margin-top: 24px;
 }
