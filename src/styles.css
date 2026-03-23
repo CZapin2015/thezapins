@@ -1022,7 +1022,7 @@ section { position: relative; z-index: 2; }
   border-color: rgba(138, 155, 181, 0.25);
 }
 #locationMap .map-card-airport .map-card-name {
-  color: #b8aa98;
+  color: #ddd8cf;
   font-size: 13px;
 }
 #locationMap .map-card-airport .map-card-badge {
