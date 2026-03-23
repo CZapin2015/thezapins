@@ -520,7 +520,7 @@ document.addEventListener('keydown', (e) => {
       color: '#c9a96e',
       isVenue: true,
       isAirport: false,
-      driveTime: ''
+      driveTime: '20 min from PBI airport'
     },
     {
       name: 'Tideline Ocean Resort & Spa',
@@ -531,7 +531,7 @@ document.addEventListener('keydown', (e) => {
       color: '#4a6fa5',
       isVenue: false,
       isAirport: false,
-      driveTime: '18 min from venue'
+      driveTime: '18 min from venue \u00b7 10 min from PBI'
     },
     {
       name: 'Fairfield Inn & Suites',
@@ -542,7 +542,7 @@ document.addEventListener('keydown', (e) => {
       color: '#4a6fa5',
       isVenue: false,
       isAirport: false,
-      driveTime: '12 min from venue'
+      driveTime: '12 min from venue \u00b7 15 min from PBI'
     },
     {
       name: 'Palm Beach Intl Airport',
@@ -590,16 +590,7 @@ document.addEventListener('keydown', (e) => {
     locations.forEach(loc => {
       const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(loc.address)}`;
       const pinSize = loc.isVenue ? 22 : 16;
-      const connectorLen = loc.isVenue ? 18 : 14;
-
-      // === Connector line (pin to card) ===
-      const connector = document.createElement('div');
-      connector.className = 'map-connector';
-      connector.style.cssText = `width: ${connectorLen}px;`;
-      new mapboxgl.Marker({ element: connector, anchor: 'left' })
-        .setLngLat([loc.lng, loc.lat])
-        .setOffset([pinSize / 2 + 1, 0])
-        .addTo(map);
+      const connectorLen = 16;
 
       // === Pin dot ===
       const pinWrap = document.createElement('div');
@@ -667,6 +658,15 @@ document.addEventListener('keydown', (e) => {
         time.textContent = loc.driveTime;
         card.appendChild(time);
       }
+
+      // === Connector line (pin to card) ===
+      const connector = document.createElement('div');
+      connector.className = 'map-connector';
+      connector.style.cssText = `width: ${connectorLen}px;`;
+      new mapboxgl.Marker({ element: connector, anchor: 'left' })
+        .setLngLat([loc.lng, loc.lat])
+        .setOffset([pinSize / 2 + 1, 0])
+        .addTo(map);
 
       new mapboxgl.Marker({ element: card, anchor: 'left' })
         .setLngLat([loc.lng, loc.lat])
