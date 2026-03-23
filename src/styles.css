@@ -1095,7 +1095,15 @@ section { position: relative; z-index: 2; }
   #locationMap .map-card-hotel .map-card-name { font-size: 11px; }
   #locationMap .map-card-airport .map-card-name { font-size: 10px; }
   #locationMap .map-card-badge { font-size: 6.5px; }
-  #locationMap .map-card-distances { display: none; }
+  #locationMap .map-card-distances {
+    flex-direction: row;
+    gap: 8px;
+    margin-top: 3px;
+    padding-top: 3px;
+  }
+  #locationMap .map-card-dist-row { gap: 3px; }
+  #locationMap .map-card-dist-label { font-size: 6px; min-width: auto; }
+  #locationMap .map-card-dist-time { font-size: 8px; }
   #locationMap .map-connector { display: none; }
 }
 @media (max-width: 420px) {
