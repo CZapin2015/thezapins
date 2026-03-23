@@ -104,11 +104,7 @@ nav a:hover { color: #c9a96e; }
   );
 }
 .hero-glow {
-  position: absolute; top: 45%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 700px; height: 500px;
-  background: radial-gradient(ellipse, rgba(201, 169, 110, 0.06) 0%, transparent 60%);
-  pointer-events: none;
+  display: none;
 }
 
 /* Corner frames */
@@ -263,26 +259,12 @@ section { position: relative; z-index: 2; }
   background: linear-gradient(180deg, #0a1628 0%, #0d1a2e 50%, #0a1628 100%);
   position: relative; overflow: hidden;
 }
-#rsvp::before {
-  content: '';
-  position: absolute; top: 40%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 500px; height: 400px;
-  background: radial-gradient(ellipse, rgba(201, 169, 110, 0.035) 0%, transparent 65%);
-  pointer-events: none;
-}
+#rsvp::before { display: none; }
 #travel {
   background: linear-gradient(180deg, #0e1b30 0%, #0f1d33 50%, #0e1b30 100%);
   position: relative; overflow: hidden;
 }
-#travel::before {
-  content: '';
-  position: absolute; top: 35%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px; height: 350px;
-  background: radial-gradient(ellipse, rgba(201, 169, 110, 0.03) 0%, transparent 60%);
-  pointer-events: none;
-}
+#travel::before { display: none; }
 #photos {
   background: linear-gradient(180deg, #0a1628 0%, #0d1a2e 50%, #0a1628 100%);
 }
@@ -290,14 +272,7 @@ section { position: relative; z-index: 2; }
   background: linear-gradient(180deg, #0e1b30 0%, #0f1d33 50%, #0e1b30 100%);
   position: relative; overflow: hidden;
 }
-#registry::before {
-  content: '';
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 500px; height: 350px;
-  background: radial-gradient(ellipse, rgba(201, 169, 110, 0.04) 0%, transparent 60%);
-  pointer-events: none;
-}
+#registry::before { display: none; }
 
 .section-inner {
   max-width: 900px; margin: 0 auto;
@@ -328,13 +303,7 @@ section { position: relative; z-index: 2; }
 /* ===== WEDDING DETAILS ===== */
 #details { position: relative; overflow: hidden; }
 #details .section-inner { padding: 110px 28px; }
-.details-glow {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px; height: 400px;
-  background: radial-gradient(ellipse, rgba(201, 169, 110, 0.05) 0%, transparent 65%);
-  pointer-events: none;
-}
+.details-glow { display: none; }
 
 /* Event Timeline */
 .event-timeline {
