@@ -520,7 +520,7 @@ document.addEventListener('keydown', (e) => {
       color: '#c9a96e',
       isVenue: true,
       isAirport: false,
-      driveTime: '20 min from PBI airport'
+      driveTime: ''
     },
     {
       name: 'Tideline Ocean Resort & Spa',
