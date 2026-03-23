@@ -900,14 +900,22 @@ section { position: relative; z-index: 2; }
 #locationMap .mapboxgl-ctrl-logo,
 #locationMap .mapboxgl-ctrl-group { display: none !important; }
 
-/* Connector line from pin to card */
+/* Composite marker: pin + connector + card in one row */
+#locationMap .map-marker-composite {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+/* Connector line between pin and card */
 #locationMap .map-connector {
+  width: 14px;
   height: 2px;
   border-radius: 1px;
   background: linear-gradient(90deg, rgba(201, 169, 110, 0.35), rgba(201, 169, 110, 0.1));
-  pointer-events: none;
+  flex-shrink: 0;
 }
-#locationMap .map-connector-left {
+#locationMap .map-marker-left .map-connector {
   background: linear-gradient(270deg, rgba(201, 169, 110, 0.35), rgba(201, 169, 110, 0.1));
 }
 
@@ -928,11 +936,11 @@ section { position: relative; z-index: 2; }
   transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
-#locationMap .map-card:hover {
+#locationMap .map-marker-composite:hover .map-card {
   background: rgba(16, 28, 52, 0.92);
   border-color: rgba(201, 169, 110, 0.22);
 }
-#locationMap .map-card:active {
+#locationMap .map-marker-composite:active .map-card {
   transform: scale(0.97);
   transition-duration: 0.1s;
 }
@@ -943,7 +951,7 @@ section { position: relative; z-index: 2; }
   border-color: rgba(201, 169, 110, 0.2);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45), 0 0 20px rgba(201, 169, 110, 0.06);
 }
-#locationMap .map-card-venue:hover {
+#locationMap .map-marker-composite:hover .map-card-venue {
   border-color: rgba(201, 169, 110, 0.35);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), 0 0 28px rgba(201, 169, 110, 0.1);
 }
@@ -978,7 +986,7 @@ section { position: relative; z-index: 2; }
   padding: 8px 12px;
   border-color: rgba(138, 155, 181, 0.12);
 }
-#locationMap .map-card-airport:hover {
+#locationMap .map-marker-composite:hover .map-card-airport {
   border-color: rgba(138, 155, 181, 0.25);
 }
 #locationMap .map-card-airport .map-card-name {
@@ -1016,7 +1024,7 @@ section { position: relative; z-index: 2; }
   transform: translateX(-3px);
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
-#locationMap .map-card:hover .map-card-arrow {
+#locationMap .map-marker-composite:hover .map-card-arrow {
   opacity: 1;
   transform: translateX(0);
 }

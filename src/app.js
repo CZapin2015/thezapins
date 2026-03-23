@@ -547,8 +547,8 @@ document.addEventListener('keydown', (e) => {
     {
       name: 'Palm Beach Intl Airport',
       badge: 'Nearest Airport',
-      lat: 26.6866,
-      lng: -80.0926,
+      lat: 26.6850,
+      lng: -80.0990,
       address: '1000 James L Turnage Blvd, West Palm Beach, FL 33415',
       color: '#8a9bb5',
       isVenue: false,
@@ -610,49 +610,19 @@ document.addEventListener('keydown', (e) => {
     locations.forEach(loc => {
       const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(loc.address)}`;
       const pinSize = loc.isVenue ? 22 : 16;
-      const connectorLen = 16;
+      const cardOnLeft = loc.isAirport;
 
-      // === Pin dot ===
-      const pinWrap = document.createElement('div');
-      pinWrap.style.cssText = `width: ${pinSize}px; height: ${pinSize}px; position: relative;`;
+      // === Single composite marker: pin + connector + card in one element ===
+      const composite = document.createElement('a');
+      composite.href = directionsUrl;
+      composite.target = '_blank';
+      composite.rel = 'noopener';
+      composite.className = 'map-marker-composite' + (cardOnLeft ? ' map-marker-left' : '');
 
-      const pinDot = document.createElement('div');
-      pinDot.style.cssText = `
-        width: 100%; height: 100%;
-        background: ${loc.color};
-        border: 2px solid ${loc.isVenue ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.25)'};
-        border-radius: 50%;
-        box-shadow: 0 0 ${loc.isVenue ? '18' : '10'}px ${loc.color}66, 0 2px 8px rgba(0,0,0,0.5);
-        cursor: pointer;
-      `;
-      pinDot.addEventListener('click', () => window.open(directionsUrl, '_blank'));
-      pinWrap.appendChild(pinDot);
-
-      // Pulse ring for venue
-      if (loc.isVenue) {
-        const pulse = document.createElement('div');
-        pulse.style.cssText = `
-          position: absolute; inset: -6px;
-          border: 1.5px solid ${loc.color};
-          border-radius: 50%;
-          animation: pinPulse 2.5s ease-out infinite;
-          pointer-events: none;
-        `;
-        pinWrap.appendChild(pulse);
-      }
-
-      new mapboxgl.Marker({ element: pinWrap, anchor: 'center' })
-        .setLngLat([loc.lng, loc.lat])
-        .addTo(map);
-
-      // === Info card ===
-      const card = document.createElement('a');
-      card.href = directionsUrl;
-      card.target = '_blank';
-      card.rel = 'noopener';
+      // Card
+      const card = document.createElement('div');
       card.className = 'map-card ' + (loc.isVenue ? 'map-card-venue' : loc.isAirport ? 'map-card-airport' : 'map-card-hotel');
 
-      // Name + hover arrow
       const nameRow = document.createElement('span');
       nameRow.className = 'map-card-name-row';
       const nameText = document.createElement('span');
@@ -665,13 +635,11 @@ document.addEventListener('keydown', (e) => {
       nameRow.appendChild(arrow);
       card.appendChild(nameRow);
 
-      // Badge (all card types)
       const badge = document.createElement('span');
       badge.className = 'map-card-badge';
       badge.textContent = loc.badge;
       card.appendChild(badge);
 
-      // Drive time (if present, visually separated)
       if (loc.driveTime) {
         const time = document.createElement('span');
         time.className = 'map-card-drive';
@@ -679,21 +647,60 @@ document.addEventListener('keydown', (e) => {
         card.appendChild(time);
       }
 
-      // === Connector line (pin to card) ===
-      const cardOnLeft = loc.isAirport;
-      const pinEdge = pinSize / 2 + 2; // pin radius + border
+      // Connector line
       const connector = document.createElement('div');
-      connector.className = 'map-connector' + (cardOnLeft ? ' map-connector-left' : '');
-      connector.style.cssText = `width: ${connectorLen}px; height: 2px;`;
-      new mapboxgl.Marker({ element: connector, anchor: cardOnLeft ? 'right' : 'left' })
-        .setLngLat([loc.lng, loc.lat])
-        .setOffset([cardOnLeft ? -pinEdge : pinEdge, 0])
-        .addTo(map);
+      connector.className = 'map-connector';
 
-      new mapboxgl.Marker({ element: card, anchor: cardOnLeft ? 'right' : 'left' })
-        .setLngLat([loc.lng, loc.lat])
-        .setOffset([cardOnLeft ? -(pinEdge + connectorLen) : (pinEdge + connectorLen), 0])
-        .addTo(map);
+      // Pin dot
+      const pin = document.createElement('div');
+      pin.className = 'map-pin';
+      pin.style.cssText = `
+        width: ${pinSize}px; height: ${pinSize}px;
+        box-sizing: border-box;
+        background: ${loc.color};
+        border: 2px solid ${loc.isVenue ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.25)'};
+        border-radius: 50%;
+        box-shadow: 0 0 ${loc.isVenue ? '18' : '10'}px ${loc.color}66, 0 2px 8px rgba(0,0,0,0.5);
+        flex-shrink: 0;
+        position: relative;
+      `;
+
+      // Pulse ring for venue
+      if (loc.isVenue) {
+        const pulse = document.createElement('div');
+        pulse.style.cssText = `
+          position: absolute; inset: -6px;
+          border: 1.5px solid ${loc.color};
+          border-radius: 50%;
+          animation: pinPulse 2.5s ease-out infinite;
+          pointer-events: none;
+        `;
+        pin.appendChild(pulse);
+      }
+
+      // Assemble: card-on-left or card-on-right
+      if (cardOnLeft) {
+        composite.appendChild(card);
+        composite.appendChild(connector);
+        composite.appendChild(pin);
+      } else {
+        composite.appendChild(pin);
+        composite.appendChild(connector);
+        composite.appendChild(card);
+      }
+
+      // Anchor the composite so the pin dot sits at the geographic point
+      // For right-side cards: anchor 'left' with negative offset to center pin
+      // For left-side cards: anchor 'right' with positive offset to center pin
+      const marker = new mapboxgl.Marker({
+        element: composite,
+        anchor: cardOnLeft ? 'right' : 'left'
+      });
+      marker.setLngLat([loc.lng, loc.lat]);
+      // Offset to center the pin dot on the geographic point
+      // Pin is at the edge of the composite, offset inward by half pin size
+      marker.setOffset([cardOnLeft ? (pinSize / 2) : -(pinSize / 2), 0]);
+      marker.addTo(map);
     });
 
     // Fit bounds: heavy right padding pushes pins/cards left over map geography
