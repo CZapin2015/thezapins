@@ -931,6 +931,10 @@ section { position: relative; z-index: 2; }
   background: rgba(16, 28, 52, 0.92);
   border-color: rgba(201, 169, 110, 0.22);
 }
+#locationMap .map-card:active {
+  transform: scale(0.97);
+  transition-duration: 0.1s;
+}
 
 /* Venue card -- prominent gold accent + glow */
 #locationMap .map-card-venue {

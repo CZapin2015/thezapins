@@ -566,7 +566,8 @@ document.addEventListener('keydown', (e) => {
     attributionControl: false,
     dragRotate: false,
     pitchWithRotate: false,
-    touchZoomRotate: true
+    touchZoomRotate: false,
+    doubleClickZoom: false
   });
 
   map.on('load', () => {
@@ -585,6 +586,16 @@ document.addEventListener('keydown', (e) => {
       if (layer.type === 'symbol' && layer.id.includes('airport')) {
         try {
           map.setFilter(layer.id, ['!=', ['get', 'ref'], 'LNA']);
+        } catch(e) {}
+      }
+    });
+
+    // Hide "West Palm Beach" city label -- competes with Tideline card
+    map.getStyle().layers.forEach(layer => {
+      if (layer.type === 'symbol' && (layer.id.includes('place') || layer.id.includes('label'))) {
+        try {
+          const existing = map.getFilter(layer.id);
+          map.setFilter(layer.id, ['all', ...(existing ? [existing] : []), ['!=', ['get', 'name'], 'West Palm Beach']]);
         } catch(e) {}
       }
     });
