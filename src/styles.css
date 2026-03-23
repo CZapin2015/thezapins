@@ -902,12 +902,13 @@ section { position: relative; z-index: 2; }
 
 /* Connector line from pin to card */
 #locationMap .map-connector {
-  height: 1px;
-  background: linear-gradient(90deg, rgba(201, 169, 110, 0.3), rgba(201, 169, 110, 0.08));
+  height: 2px;
+  border-radius: 1px;
+  background: linear-gradient(90deg, rgba(201, 169, 110, 0.35), rgba(201, 169, 110, 0.1));
   pointer-events: none;
 }
 #locationMap .map-connector-left {
-  background: linear-gradient(270deg, rgba(201, 169, 110, 0.3), rgba(201, 169, 110, 0.08));
+  background: linear-gradient(270deg, rgba(201, 169, 110, 0.35), rgba(201, 169, 110, 0.1));
 }
 
 /* Frosted-glass info cards */

@@ -547,8 +547,8 @@ document.addEventListener('keydown', (e) => {
     {
       name: 'Palm Beach Intl Airport',
       badge: 'Nearest Airport',
-      lat: 26.6832,
-      lng: -80.0956,
+      lat: 26.6866,
+      lng: -80.0926,
       address: '1000 James L Turnage Blvd, West Palm Beach, FL 33415',
       color: '#8a9bb5',
       isVenue: false,
@@ -681,17 +681,18 @@ document.addEventListener('keydown', (e) => {
 
       // === Connector line (pin to card) ===
       const cardOnLeft = loc.isAirport;
+      const pinEdge = pinSize / 2 + 2; // pin radius + border
       const connector = document.createElement('div');
       connector.className = 'map-connector' + (cardOnLeft ? ' map-connector-left' : '');
-      connector.style.cssText = `width: ${connectorLen}px;`;
+      connector.style.cssText = `width: ${connectorLen}px; height: 2px;`;
       new mapboxgl.Marker({ element: connector, anchor: cardOnLeft ? 'right' : 'left' })
         .setLngLat([loc.lng, loc.lat])
-        .setOffset([cardOnLeft ? -(pinSize / 2 + 1) : (pinSize / 2 + 1), 0])
+        .setOffset([cardOnLeft ? -pinEdge : pinEdge, 0])
         .addTo(map);
 
       new mapboxgl.Marker({ element: card, anchor: cardOnLeft ? 'right' : 'left' })
         .setLngLat([loc.lng, loc.lat])
-        .setOffset([cardOnLeft ? -(pinSize / 2 + connectorLen + 2) : (pinSize / 2 + connectorLen + 2), 0])
+        .setOffset([cardOnLeft ? -(pinEdge + connectorLen) : (pinEdge + connectorLen), 0])
         .addTo(map);
     });
 
