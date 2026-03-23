@@ -715,10 +715,18 @@ document.addEventListener('keydown', (e) => {
       marker.addTo(map);
     });
 
-    // Fit bounds: heavy right padding pushes pins/cards left over map geography
+    // Fit bounds: responsive padding so cards stay visible at all widths
     const bounds = new mapboxgl.LngLatBounds();
     locations.forEach(loc => bounds.extend([loc.lng, loc.lat]));
-    map.fitBounds(bounds, { padding: { top: 50, bottom: 80, left: 160, right: 200 } });
+    const w = mapEl.offsetWidth;
+    const isMobile = w < 600;
+    const isTablet = w < 900;
+    map.fitBounds(bounds, { padding: {
+      top: isMobile ? 70 : 50,
+      bottom: isMobile ? 70 : 80,
+      left: isMobile ? 10 : isTablet ? 80 : 160,
+      right: isMobile ? Math.round(w * 0.55) : isTablet ? Math.round(w * 0.45) : 200
+    }});
 
   });
 })();
