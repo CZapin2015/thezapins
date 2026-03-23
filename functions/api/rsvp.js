@@ -132,10 +132,22 @@ async function handlePost(request, env) {
       dietary_notes: dietary_notes || '', guest_name: guest_name || '',
       guest_meal_preference: guest_meal_preference || '', guest_dietary_notes: guest_dietary_notes || ''
     };
+    // Google Apps Script redirects POSTs (302), dropping the body.
+    // Follow redirect manually to preserve the payload.
     fetch(env.GOOGLE_SHEET_WEBHOOK, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(sheetData)
+      body: JSON.stringify(sheetData),
+      redirect: 'manual'
+    }).then(res => {
+      if (res.status >= 300 && res.status < 400) {
+        const loc = res.headers.get('Location');
+        if (loc) return fetch(loc, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(sheetData)
+        });
+      }
     }).catch(() => {});
   }
 
