@@ -945,34 +945,37 @@ section { position: relative; z-index: 2; }
   transition-duration: 0.1s;
 }
 
-/* --- VENUE card: gold, largest, prominent, eye-catching --- */
+/* --- VENUE card: gold, dominant, unmissable --- */
 #locationMap .map-card-venue {
-  padding: 14px 18px;
-  border-color: rgba(201, 169, 110, 0.28);
-  background: rgba(16, 24, 46, 0.9);
+  padding: 16px 20px;
+  border: 1.5px solid rgba(201, 169, 110, 0.35);
+  background: linear-gradient(135deg, rgba(20, 28, 50, 0.92), rgba(28, 22, 38, 0.92));
+  border-radius: 10px;
   box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.5),
-    0 0 24px rgba(201, 169, 110, 0.08),
-    inset 0 1px 0 rgba(201, 169, 110, 0.08);
+    0 6px 28px rgba(0, 0, 0, 0.55),
+    0 0 40px rgba(201, 169, 110, 0.1),
+    0 0 80px rgba(201, 169, 110, 0.04),
+    inset 0 1px 0 rgba(201, 169, 110, 0.12);
 }
 #locationMap .map-marker-composite:hover .map-card-venue {
-  border-color: rgba(201, 169, 110, 0.4);
+  border-color: rgba(201, 169, 110, 0.5);
   box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.55),
-    0 0 32px rgba(201, 169, 110, 0.12),
-    inset 0 1px 0 rgba(201, 169, 110, 0.1);
+    0 8px 36px rgba(0, 0, 0, 0.6),
+    0 0 50px rgba(201, 169, 110, 0.15),
+    0 0 100px rgba(201, 169, 110, 0.06),
+    inset 0 1px 0 rgba(201, 169, 110, 0.15);
 }
 #locationMap .map-card-venue .map-card-name {
-  color: #c9a96e;
-  font-size: 18px;
+  color: #d4b878;
+  font-size: 19px;
 }
 #locationMap .map-card-venue .map-card-badge {
-  color: rgba(201, 169, 110, 0.6);
-  font-size: 8px;
-  letter-spacing: 2.2px;
+  color: rgba(201, 169, 110, 0.7);
+  font-size: 8.5px;
+  letter-spacing: 2.5px;
 }
 #locationMap .map-card-venue .map-card-arrow {
-  color: rgba(201, 169, 110, 0.5);
+  color: rgba(201, 169, 110, 0.6);
 }
 
 /* --- HOTEL cards: cool blue-white, medium --- */
