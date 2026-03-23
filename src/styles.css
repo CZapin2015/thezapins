@@ -1018,17 +1018,11 @@ section { position: relative; z-index: 2; }
   border: 1.5px solid rgba(201, 169, 110, 0.35);
   background: linear-gradient(135deg, rgba(20, 28, 50, 0.92), rgba(28, 22, 38, 0.92));
   border-radius: 10px;
-  box-shadow:
-    0 6px 28px rgba(0, 0, 0, 0.55),
-    0 0 24px rgba(201, 169, 110, 0.12),
-    inset 0 1px 0 rgba(201, 169, 110, 0.12);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 #locationMap .map-marker-composite:hover .map-card-venue {
   border-color: rgba(201, 169, 110, 0.5);
-  box-shadow:
-    0 8px 36px rgba(0, 0, 0, 0.6),
-    0 0 32px rgba(201, 169, 110, 0.18),
-    inset 0 1px 0 rgba(201, 169, 110, 0.15);
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.6);
 }
 #locationMap .map-card-venue .map-card-name {
   color: #d4b878;
