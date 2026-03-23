@@ -1088,29 +1088,25 @@ section { position: relative; z-index: 2; }
 @media (max-width: 768px) {
   .map-wrapper { overflow: visible; }
   #locationMap { height: 440px; }
-  #locationMap .map-card { padding: 6px 9px; }
-  #locationMap .map-card-venue { padding: 8px 11px; border-radius: 8px; }
-  #locationMap .map-card-airport { padding: 5px 8px; }
-  #locationMap .map-card-venue .map-card-name { font-size: 15px; }
-  #locationMap .map-card-hotel .map-card-name { font-size: 12px; }
-  #locationMap .map-card-airport .map-card-name { font-size: 11px; }
-  #locationMap .map-card-badge { font-size: 7px; }
-  #locationMap .map-card-dist-time { font-size: 9px; }
-  #locationMap .map-card-dist-label { font-size: 7px; min-width: 30px; }
+  #locationMap .map-card { padding: 5px 8px; }
+  #locationMap .map-card-venue { padding: 7px 10px; border-radius: 8px; }
+  #locationMap .map-card-airport { padding: 4px 7px; }
+  #locationMap .map-card-venue .map-card-name { font-size: 14px; }
+  #locationMap .map-card-hotel .map-card-name { font-size: 11px; }
+  #locationMap .map-card-airport .map-card-name { font-size: 10px; }
+  #locationMap .map-card-badge { font-size: 6.5px; }
+  #locationMap .map-card-distances { display: none; }
   #locationMap .map-connector { display: none; }
 }
 @media (max-width: 420px) {
-  #locationMap { height: 420px; }
-  #locationMap .map-card { padding: 5px 7px; }
-  #locationMap .map-card-venue { padding: 7px 9px; }
-  #locationMap .map-card-airport { padding: 4px 6px; }
+  #locationMap { height: 400px; }
+  #locationMap .map-card { padding: 4px 7px; }
+  #locationMap .map-card-venue { padding: 6px 9px; }
+  #locationMap .map-card-airport { padding: 3px 6px; }
   #locationMap .map-card-venue .map-card-name { font-size: 13px; }
-  #locationMap .map-card-hotel .map-card-name { font-size: 11px; }
-  #locationMap .map-card-airport .map-card-name { font-size: 10px; }
-  #locationMap .map-card-badge { font-size: 6.5px; letter-spacing: 1.2px; }
-  #locationMap .map-card-distances { margin-top: 3px; padding-top: 3px; }
-  #locationMap .map-card-dist-time { font-size: 8.5px; }
-  #locationMap .map-card-dist-label { font-size: 6.5px; min-width: 26px; }
+  #locationMap .map-card-hotel .map-card-name { font-size: 10px; }
+  #locationMap .map-card-airport .map-card-name { font-size: 9px; }
+  #locationMap .map-card-badge { font-size: 6px; letter-spacing: 1px; }
 }
 
 /* ===== GALLERY ===== */
