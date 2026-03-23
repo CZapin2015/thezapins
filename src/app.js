@@ -547,10 +547,24 @@ document.addEventListener('keydown', (e) => {
     attributionControl: false
   });
 
+  // Expose map for console testing
+  window._leafletMap = map;
+
   // CartoDB Voyager (natural colors + area labels) -- CSS filter darkens while preserving hues
   L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
     subdomains: 'abcd',
     maxZoom: 19
+  }).addTo(map);
+
+  // Ocean overlay for clear land/water contrast
+  L.polygon([
+    [27.1, -80.028], [27.1, -79.4],
+    [26.3, -79.4], [26.3, -80.028]
+  ], {
+    color: 'none',
+    fillColor: '#0a1e3a',
+    fillOpacity: 0.75,
+    interactive: false
   }).addTo(map);
 
   locations.forEach(loc => {
