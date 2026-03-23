@@ -305,6 +305,7 @@ export async function onRequest() {
 </head>
 <body>
   <div class="container">
+    <a href="/" style="display:inline-block;margin-bottom:1.5rem;"><img src="/monogram.svg" alt="S&C" style="width:42px;height:42px;opacity:0.85;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'"></a>
     <h1>RSVP Dashboard</h1>
 
     <div id="login-section">
