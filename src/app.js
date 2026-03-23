@@ -660,24 +660,25 @@ document.addEventListener('keydown', (e) => {
       }
 
       // === Connector line (pin to card) ===
+      const cardOnLeft = loc.isAirport;
       const connector = document.createElement('div');
-      connector.className = 'map-connector';
+      connector.className = 'map-connector' + (cardOnLeft ? ' map-connector-left' : '');
       connector.style.cssText = `width: ${connectorLen}px;`;
-      new mapboxgl.Marker({ element: connector, anchor: 'left' })
+      new mapboxgl.Marker({ element: connector, anchor: cardOnLeft ? 'right' : 'left' })
         .setLngLat([loc.lng, loc.lat])
-        .setOffset([pinSize / 2 + 1, 0])
+        .setOffset([cardOnLeft ? -(pinSize / 2 + 1) : (pinSize / 2 + 1), 0])
         .addTo(map);
 
-      new mapboxgl.Marker({ element: card, anchor: 'left' })
+      new mapboxgl.Marker({ element: card, anchor: cardOnLeft ? 'right' : 'left' })
         .setLngLat([loc.lng, loc.lat])
-        .setOffset([pinSize / 2 + connectorLen + 2, 0])
+        .setOffset([cardOnLeft ? -(pinSize / 2 + connectorLen + 2) : (pinSize / 2 + connectorLen + 2), 0])
         .addTo(map);
     });
 
     // Fit bounds: heavy right padding pushes pins/cards left over map geography
     const bounds = new mapboxgl.LngLatBounds();
     locations.forEach(loc => bounds.extend([loc.lng, loc.lat]));
-    map.fitBounds(bounds, { padding: { top: 50, bottom: 80, left: 20, right: 200 } });
+    map.fitBounds(bounds, { padding: { top: 50, bottom: 80, left: 160, right: 200 } });
   });
 })();
 

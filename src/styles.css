@@ -906,6 +906,9 @@ section { position: relative; z-index: 2; }
   background: linear-gradient(90deg, rgba(201, 169, 110, 0.3), rgba(201, 169, 110, 0.08));
   pointer-events: none;
 }
+#locationMap .map-connector-left {
+  background: linear-gradient(270deg, rgba(201, 169, 110, 0.3), rgba(201, 169, 110, 0.08));
+}
 
 /* Frosted-glass info cards */
 #locationMap .map-card {
