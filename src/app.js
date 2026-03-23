@@ -543,12 +543,11 @@ document.addEventListener('keydown', (e) => {
     }
   ];
 
-  // Center shifted east to focus on coastal venues, less empty inland
   const map = new mapboxgl.Map({
     container: 'locationMap',
     style: 'mapbox://styles/mapbox/dark-v11',
-    center: [-80.045, 26.635],
-    zoom: 11.3,
+    center: [-80.042, 26.635],
+    zoom: 11.5,
     scrollZoom: false,
     attributionControl: false,
     dragRotate: false,
@@ -557,8 +556,8 @@ document.addEventListener('keydown', (e) => {
   });
 
   map.on('load', () => {
-    // Deep navy water for contrast against dark-v11 gray land
-    try { map.setPaintProperty('water', 'fill-color', '#091a30'); } catch(e) {}
+    // Navy water with enough contrast to reveal Intracoastal
+    try { map.setPaintProperty('water', 'fill-color', '#06152b'); } catch(e) {}
 
     // Gold-tinted place labels
     map.getStyle().layers.forEach(layer => {
@@ -570,13 +569,23 @@ document.addEventListener('keydown', (e) => {
     // Dim road labels to reduce noise
     map.getStyle().layers.forEach(layer => {
       if (layer.type === 'symbol' && layer.id.includes('road')) {
-        try { map.setPaintProperty(layer.id, 'text-opacity', 0.4); } catch(e) {}
+        try { map.setPaintProperty(layer.id, 'text-opacity', 0.35); } catch(e) {}
       }
     });
 
     locations.forEach(loc => {
       const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(loc.address)}`;
       const pinSize = loc.isVenue ? 22 : 16;
+      const connectorLen = loc.isVenue ? 18 : 14;
+
+      // === Connector line (pin to card) ===
+      const connector = document.createElement('div');
+      connector.className = 'map-connector';
+      connector.style.cssText = `width: ${connectorLen}px;`;
+      new mapboxgl.Marker({ element: connector, anchor: 'left' })
+        .setLngLat([loc.lng, loc.lat])
+        .setOffset([pinSize / 2 + 1, 0])
+        .addTo(map);
 
       // === Pin dot ===
       const pinWrap = document.createElement('div');
@@ -618,11 +627,18 @@ document.addEventListener('keydown', (e) => {
       card.rel = 'noopener';
       card.className = loc.isVenue ? 'map-card map-card-venue' : 'map-card map-card-hotel';
 
-      // Name row
-      const name = document.createElement('span');
-      name.className = 'map-card-name';
-      name.textContent = loc.name;
-      card.appendChild(name);
+      // Name + hover arrow
+      const nameRow = document.createElement('span');
+      nameRow.className = 'map-card-name-row';
+      const nameText = document.createElement('span');
+      nameText.className = 'map-card-name';
+      nameText.textContent = loc.name;
+      nameRow.appendChild(nameText);
+      const arrow = document.createElement('span');
+      arrow.className = 'map-card-arrow';
+      arrow.innerHTML = '&#8250;';
+      nameRow.appendChild(arrow);
+      card.appendChild(nameRow);
 
       // Badge or drive time
       if (loc.isVenue) {
@@ -637,22 +653,16 @@ document.addEventListener('keydown', (e) => {
         card.appendChild(time);
       }
 
-      // Directions CTA
-      const cta = document.createElement('span');
-      cta.className = 'map-card-cta';
-      cta.textContent = 'Directions';
-      card.appendChild(cta);
-
       new mapboxgl.Marker({ element: card, anchor: 'left' })
         .setLngLat([loc.lng, loc.lat])
-        .setOffset([pinSize / 2 + 10, 0])
+        .setOffset([pinSize / 2 + connectorLen + 2, 0])
         .addTo(map);
     });
 
-    // Fit bounds with asymmetric padding (more on left to shift content right)
+    // Fit bounds: heavy right padding pushes pins/cards left over map geography
     const bounds = new mapboxgl.LngLatBounds();
     locations.forEach(loc => bounds.extend([loc.lng, loc.lat]));
-    map.fitBounds(bounds, { padding: { top: 50, bottom: 80, left: 30, right: 120 } });
+    map.fitBounds(bounds, { padding: { top: 50, bottom: 80, left: 20, right: 200 } });
   });
 })();
 

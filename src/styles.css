@@ -891,7 +891,7 @@ section { position: relative; z-index: 2; }
 }
 #locationMap {
   width: 100%;
-  height: 420px;
+  height: 490px;
   z-index: 1;
   display: block;
 }
@@ -899,6 +899,13 @@ section { position: relative; z-index: 2; }
 #locationMap .mapboxgl-ctrl-attrib,
 #locationMap .mapboxgl-ctrl-logo,
 #locationMap .mapboxgl-ctrl-group { display: none !important; }
+
+/* Connector line from pin to card */
+#locationMap .map-connector {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(201, 169, 110, 0.3), rgba(201, 169, 110, 0.08));
+  pointer-events: none;
+}
 
 /* Frosted-glass info cards */
 #locationMap .map-card {
@@ -909,27 +916,36 @@ section { position: relative; z-index: 2; }
   background: rgba(12, 22, 42, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(201, 169, 110, 0.12);
+  border: 1px solid rgba(201, 169, 110, 0.1);
   border-radius: 8px;
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
-  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 #locationMap .map-card:hover {
   background: rgba(16, 28, 52, 0.92);
-  border-color: rgba(201, 169, 110, 0.25);
-  transform: translateX(2px);
+  border-color: rgba(201, 169, 110, 0.22);
 }
-/* Venue card -- gold accent */
+
+/* Venue card -- prominent gold accent + glow */
 #locationMap .map-card-venue {
+  padding: 12px 16px;
   border-color: rgba(201, 169, 110, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45), 0 0 20px rgba(201, 169, 110, 0.06);
 }
 #locationMap .map-card-venue:hover {
   border-color: rgba(201, 169, 110, 0.35);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), 0 0 28px rgba(201, 169, 110, 0.1);
 }
-/* Card name */
+
+/* Card name row with hover arrow */
+#locationMap .map-card-name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 #locationMap .map-card-name {
   font-family: 'Cormorant Garamond', serif;
   font-weight: 600;
@@ -938,38 +954,40 @@ section { position: relative; z-index: 2; }
 }
 #locationMap .map-card-venue .map-card-name {
   color: #c9a96e;
-  font-size: 16px;
+  font-size: 17px;
 }
 #locationMap .map-card-hotel .map-card-name {
   color: #d4ddef;
 }
+/* Hover arrow (hidden until hover) */
+#locationMap .map-card-arrow {
+  font-size: 16px;
+  color: rgba(201, 169, 110, 0.5);
+  opacity: 0;
+  transform: translateX(-3px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+#locationMap .map-card:hover .map-card-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 /* Badge for venue */
 #locationMap .map-card-badge {
   font-family: 'Montserrat', sans-serif;
   font-size: 8px;
   letter-spacing: 1.8px;
   text-transform: uppercase;
-  color: rgba(201, 169, 110, 0.6);
+  color: rgba(201, 169, 110, 0.55);
+  margin-top: 1px;
 }
 /* Drive time for hotels */
 #locationMap .map-card-drive {
   font-family: 'Montserrat', sans-serif;
   font-size: 10px;
   letter-spacing: 0.5px;
-  color: rgba(201, 169, 110, 0.65);
-}
-/* Directions CTA */
-#locationMap .map-card-cta {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 8px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.35);
-  margin-top: 2px;
-  transition: color 0.25s ease;
-}
-#locationMap .map-card:hover .map-card-cta {
-  color: rgba(201, 169, 110, 0.7);
+  color: rgba(201, 169, 110, 0.6);
+  margin-top: 1px;
 }
 
 /* Pin pulse animation for venue */
@@ -981,17 +999,19 @@ section { position: relative; z-index: 2; }
 
 /* Responsive map */
 @media (max-width: 768px) {
-  #locationMap { height: 350px; }
+  #locationMap { height: 380px; }
   #locationMap .map-card { padding: 8px 11px; }
   #locationMap .map-card-name { font-size: 13px; }
-  #locationMap .map-card-venue .map-card-name { font-size: 14px; }
+  #locationMap .map-card-venue .map-card-name { font-size: 15px; }
+  #locationMap .map-card-venue { padding: 10px 13px; }
+  #locationMap .map-connector { display: none; }
 }
 @media (max-width: 420px) {
-  #locationMap { height: 300px; }
+  #locationMap { height: 320px; }
   #locationMap .map-card { padding: 6px 9px; }
   #locationMap .map-card-name { font-size: 12px; }
   #locationMap .map-card-venue .map-card-name { font-size: 13px; }
-  #locationMap .map-card-cta { display: none; }
+  #locationMap .map-card-venue { padding: 8px 10px; }
 }
 
 /* ===== GALLERY ===== */
