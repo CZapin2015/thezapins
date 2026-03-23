@@ -843,6 +843,11 @@ section { position: relative; z-index: 2; }
   margin-top: 40px;
   opacity: 0; transform: translateY(25px);
 }
+.venue-map iframe {
+  border: 0;
+  border-radius: 10px;
+  filter: invert(90%) hue-rotate(180deg) saturate(0.6) brightness(0.7) contrast(1.1);
+}
 .map-label {
   font-family: 'Cormorant Garamond', serif;
   font-size: 26px; color: #c9a96e;
