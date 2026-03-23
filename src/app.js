@@ -262,7 +262,7 @@ rsvpForm.addEventListener('submit', async (e) => {
     full_name: document.getElementById('rsvpName').value.trim(),
     email: document.getElementById('rsvpEmail').value.trim(),
     attending: isAccepting ? 'accepted' : 'declined',
-    guest_count: guestCount,
+    guest_count: isAccepting ? guestCount : 0,
     meal_preference: document.getElementById('rsvpMeal').value,
     dietary_notes: document.getElementById('rsvpNotes').value.trim(),
     event_welcome: eventWelcome,
