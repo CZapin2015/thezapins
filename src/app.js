@@ -555,51 +555,13 @@ document.addEventListener('keydown', (e) => {
   map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-left');
 
   map.on('load', () => {
-    // Navy/gold palette overrides matching thezapins site palette
-    const waterColor = '#0a1e3a';       // deep navy water
-    const landColor = '#12282d';        // dark teal-green land
-    const landUseColor = '#162e34';     // slightly lighter teal for landuse zones
-    const buildingColor = '#10242a';    // dark teal buildings
-    const labelColor = 'hsl(38, 35%, 62%)'; // warm gold labels
-    const roadColor = '#1a3a42';        // teal-tinted roads
-    const roadCasing = '#0e2228';       // darker teal road edges
+    // Minimal overrides: deep navy water + gold labels to match site palette
+    try { map.setPaintProperty('water', 'fill-color', '#091a30'); } catch(e) {}
 
-    // Background (land base color)
-    try { map.setPaintProperty('background', 'background-color', landColor); } catch(e) {}
-
-    // Water
-    try { map.setPaintProperty('water', 'fill-color', waterColor); } catch(e) {}
-
-    // Land use & land cover layers
-    map.getStyle().layers.forEach(layer => {
-      try {
-        if (layer.type === 'fill') {
-          if (layer.id.includes('landuse') || layer.id.includes('landcover') || layer.id.includes('national-park')) {
-            map.setPaintProperty(layer.id, 'fill-color', landUseColor);
-          } else if (layer.id.includes('building')) {
-            map.setPaintProperty(layer.id, 'fill-color', buildingColor);
-          }
-        }
-      } catch(e) {}
-    });
-
-    // Roads - teal tint
-    map.getStyle().layers.forEach(layer => {
-      if (layer.type === 'line' && (layer.id.includes('road') || layer.id.includes('bridge') || layer.id.includes('tunnel'))) {
-        try {
-          if (layer.id.includes('case') || layer.id.includes('casing')) {
-            map.setPaintProperty(layer.id, 'line-color', roadCasing);
-          } else {
-            map.setPaintProperty(layer.id, 'line-color', roadColor);
-          }
-        } catch(e) {}
-      }
-    });
-
-    // Place labels - gold tint
+    // Gold-tinted place labels
     map.getStyle().layers.forEach(layer => {
       if (layer.type === 'symbol' && (layer.id.includes('label') || layer.id.includes('place'))) {
-        try { map.setPaintProperty(layer.id, 'text-color', labelColor); } catch(e) {}
+        try { map.setPaintProperty(layer.id, 'text-color', 'hsl(38, 35%, 62%)'); } catch(e) {}
       }
     });
 
