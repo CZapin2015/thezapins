@@ -521,7 +521,7 @@ document.addEventListener('keydown', (e) => {
       isVenue: true,
       isAirport: false,
       distances: [],
-      mobileYOffset: 20
+      mobileYOffset: 18
     },
     {
       name: 'Tideline Ocean Resort & Spa',
@@ -533,7 +533,7 @@ document.addEventListener('keydown', (e) => {
       isVenue: false,
       isAirport: false,
       distances: [{ label: 'Venue', time: '18 min' }, { label: 'PBI', time: '10 min' }],
-      mobileYOffset: -20
+      mobileYOffset: -18
     },
     {
       name: 'Fairfield Inn & Suites',
@@ -608,6 +608,8 @@ document.addEventListener('keydown', (e) => {
         try { map.setPaintProperty(layer.id, 'text-opacity', 0.35); } catch(e) {}
       }
     });
+
+    const isMobileView = mapEl.offsetWidth < 600;
 
     locations.forEach(loc => {
       const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(loc.address)}`;
@@ -713,7 +715,7 @@ document.addEventListener('keydown', (e) => {
       marker.setLngLat([loc.lng, loc.lat]);
       // Offset to center the pin dot on the geographic point
       // Pin is at the edge of the composite, offset inward by half pin size
-      const yOff = (isMobile && loc.mobileYOffset) ? loc.mobileYOffset : 0;
+      const yOff = (isMobileView && loc.mobileYOffset) ? loc.mobileYOffset : 0;
       marker.setOffset([cardOnLeft ? (pinSize / 2) : -(pinSize / 2), yOff]);
       marker.addTo(map);
     });
@@ -725,10 +727,10 @@ document.addEventListener('keydown', (e) => {
     const isMobile = w < 600;
     const isTablet = w < 900;
     map.fitBounds(bounds, { padding: {
-      top: isMobile ? 40 : 50,
-      bottom: isMobile ? 40 : 80,
-      left: isMobile ? Math.round(w * 0.3) : isTablet ? 80 : 160,
-      right: isMobile ? Math.round(w * 0.35) : isTablet ? Math.round(w * 0.45) : 200
+      top: isMobile ? 60 : 50,
+      bottom: isMobile ? 60 : 80,
+      left: isMobile ? Math.round(w * 0.42) : isTablet ? 80 : 160,
+      right: isMobile ? Math.round(w * 0.42) : isTablet ? Math.round(w * 0.45) : 200
     }});
 
   });
