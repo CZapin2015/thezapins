@@ -888,58 +888,30 @@ section { position: relative; z-index: 2; }
 }
 /* Airport info card */
 .airport-card {
-  max-width: 420px;
-  margin: 0 auto 40px;
-  opacity: 0; transform: translateY(25px);
-}
-.airport-card-inner {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 22px 28px;
-  background: rgba(232, 228, 220, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(201, 169, 110, 0.18);
-  border-radius: 14px;
-  transition: border-color 0.4s ease;
-}
-.airport-card-inner:hover {
-  border-color: rgba(201, 169, 110, 0.35);
-}
-.airport-icon {
-  flex-shrink: 0;
-  width: 40px; height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(201, 169, 110, 0.6);
-}
-.airport-icon svg {
-  width: 28px; height: 28px;
-}
-.airport-details {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 44px;
+  opacity: 0; transform: translateY(25px);
 }
 .airport-label {
   font-family: 'Montserrat', sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 2.5px;
   text-transform: uppercase;
-  color: rgba(201, 169, 110, 0.6);
+  color: rgba(201, 169, 110, 0.55);
 }
 .airport-logo {
-  height: 22px;
+  height: 32px;
   width: auto;
   object-fit: contain;
-  filter: brightness(0.85);
+  filter: brightness(0.9);
 }
 .airport-distance {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 17px;
-  color: rgba(232, 228, 220, 0.6);
+  font-size: 19px;
+  color: rgba(232, 228, 220, 0.55);
   letter-spacing: 0.3px;
 }
 .travel-divider {
