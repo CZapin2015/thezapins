@@ -232,40 +232,11 @@ nav a:hover { color: #c9a96e; }
   margin-top: 6px;
 }
 
-/* Days unit - hero emphasis */
+/* Days unit - hero emphasis (number pops, container stays cohesive) */
 .countdown-unit:first-child {
   padding: 24px 34px 18px;
   min-width: 120px;
-  border-color: rgba(201, 169, 110, 0.45);
-  background: rgba(10, 22, 40, 0.7);
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    0 2px 8px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(201, 169, 110, 0.2),
-    0 0 40px rgba(201, 169, 110, 0.1),
-    0 0 80px rgba(201, 169, 110, 0.04);
   transform: scale(1.08);
-  animation: days-glow 4s ease-in-out infinite;
-}
-@keyframes days-glow {
-  0%, 100% {
-    border-color: rgba(201, 169, 110, 0.45);
-    box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.3),
-      0 2px 8px rgba(0, 0, 0, 0.2),
-      inset 0 1px 0 rgba(201, 169, 110, 0.2),
-      0 0 40px rgba(201, 169, 110, 0.1),
-      0 0 80px rgba(201, 169, 110, 0.04);
-  }
-  50% {
-    border-color: rgba(201, 169, 110, 0.6);
-    box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.3),
-      0 2px 8px rgba(0, 0, 0, 0.2),
-      inset 0 1px 0 rgba(201, 169, 110, 0.25),
-      0 0 50px rgba(201, 169, 110, 0.15),
-      0 0 100px rgba(201, 169, 110, 0.06);
-  }
 }
 .countdown-unit:first-child .countdown-num {
   font-size: 72px;
