@@ -686,10 +686,11 @@ document.addEventListener('keydown', (e) => {
         const pulse = document.createElement('div');
         pulse.style.cssText = `
           position: absolute; inset: -6px;
-          border: 1.5px solid ${loc.color};
           border-radius: 50%;
           animation: pinPulse 2.5s ease-out infinite;
           pointer-events: none;
+          will-change: transform, opacity;
+          box-shadow: 0 0 0 1.5px ${loc.color};
         `;
         pin.appendChild(pulse);
       }
