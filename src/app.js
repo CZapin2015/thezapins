@@ -607,10 +607,7 @@ document.addEventListener('keydown', (e) => {
       }
     });
 
-    // Order: venue first, then hotels, then airport for staggered entrance
-    const ordered = [...locations].sort((a, b) => a.isVenue ? -1 : b.isVenue ? 1 : a.isAirport ? 1 : b.isAirport ? -1 : 0);
-
-    ordered.forEach((loc, i) => {
+    locations.forEach(loc => {
       const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(loc.address)}`;
       const pinSize = loc.isVenue ? 22 : 16;
       const cardOnLeft = loc.isAirport;
@@ -620,8 +617,7 @@ document.addEventListener('keydown', (e) => {
       composite.href = directionsUrl;
       composite.target = '_blank';
       composite.rel = 'noopener';
-      composite.className = 'map-marker-composite map-marker-enter' + (cardOnLeft ? ' map-marker-left' : '');
-      composite.style.animationDelay = (i * 0.2) + 's';
+      composite.className = 'map-marker-composite' + (cardOnLeft ? ' map-marker-left' : '');
 
       // Card
       const card = document.createElement('div');
@@ -669,17 +665,17 @@ document.addEventListener('keydown', (e) => {
         position: relative;
       `;
 
-      // Breathing glow halo for venue pin
+      // Pulse ring for venue
       if (loc.isVenue) {
-        const glow = document.createElement('div');
-        glow.style.cssText = `
+        const pulse = document.createElement('div');
+        pulse.style.cssText = `
           position: absolute; inset: -10px;
           border-radius: 50%;
           background: radial-gradient(circle, ${loc.color}40 0%, ${loc.color}15 40%, transparent 70%);
           animation: venueGlow 3s ease-in-out infinite;
           pointer-events: none;
         `;
-        pin.appendChild(glow);
+        pin.appendChild(pulse);
       }
 
       // Assemble: card-on-left or card-on-right
@@ -734,6 +730,7 @@ document.addEventListener('keydown', (e) => {
     const bounds = new mapboxgl.LngLatBounds();
     locations.forEach(loc => bounds.extend([loc.lng, loc.lat]));
     map.fitBounds(bounds, { padding: { top: 50, bottom: 80, left: 160, right: 200 } });
+
   });
 })();
 
