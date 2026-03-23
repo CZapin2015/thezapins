@@ -632,7 +632,7 @@ document.addEventListener('keydown', (e) => {
       nameRow.className = 'map-card-name-row';
       const nameText = document.createElement('span');
       nameText.className = 'map-card-name';
-      nameText.textContent = loc.name;
+      nameText.innerHTML = loc.name.replace(/&/g, '<span class="amp">&amp;</span>');
       nameRow.appendChild(nameText);
       const arrow = document.createElement('span');
       arrow.className = 'map-card-arrow';
