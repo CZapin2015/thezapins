@@ -780,7 +780,7 @@ document.querySelectorAll('nav a').forEach(link => {
 
 // ===== COUNTDOWN =====
 function updateCountdown() {
-  const wedding = new Date('2027-01-24T17:00:00-05:00');
+  const wedding = new Date('2027-01-24T00:00:00-05:00');
   const now = new Date();
   const diff = wedding - now;
   if (diff <= 0) return;

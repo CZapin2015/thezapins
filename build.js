@@ -22,7 +22,7 @@ function copyDir(src, dest) {
 }
 
 function generateOgImage() {
-  const wedding = new Date('2027-01-24T17:00:00-05:00');
+  const wedding = new Date('2027-01-24T00:00:00-05:00');
   const now = new Date();
   const diff = wedding - now;
   const days = Math.floor(diff / 86400000);
