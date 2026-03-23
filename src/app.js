@@ -520,7 +520,7 @@ document.addEventListener('keydown', (e) => {
       color: '#c9a96e',
       isVenue: true,
       isAirport: false,
-      driveTime: ''
+      distances: []
     },
     {
       name: 'Tideline Ocean Resort & Spa',
@@ -531,7 +531,7 @@ document.addEventListener('keydown', (e) => {
       color: '#4a6fa5',
       isVenue: false,
       isAirport: false,
-      driveTime: '18 min from venue \u00b7 10 min from PBI'
+      distances: [{ label: 'Venue', time: '18 min' }, { label: 'PBI', time: '10 min' }]
     },
     {
       name: 'Fairfield Inn & Suites',
@@ -542,7 +542,7 @@ document.addEventListener('keydown', (e) => {
       color: '#4a6fa5',
       isVenue: false,
       isAirport: false,
-      driveTime: '12 min from venue \u00b7 15 min from PBI'
+      distances: [{ label: 'Venue', time: '12 min' }, { label: 'PBI', time: '15 min' }]
     },
     {
       name: 'Palm Beach Intl Airport',
@@ -553,7 +553,7 @@ document.addEventListener('keydown', (e) => {
       color: '#8a9bb5',
       isVenue: false,
       isAirport: true,
-      driveTime: '20 min from venue'
+      distances: [{ label: 'Venue', time: '20 min' }]
     }
   ];
 
@@ -640,11 +640,23 @@ document.addEventListener('keydown', (e) => {
       badge.textContent = loc.badge;
       card.appendChild(badge);
 
-      if (loc.driveTime) {
-        const time = document.createElement('span');
-        time.className = 'map-card-drive';
-        time.textContent = loc.driveTime;
-        card.appendChild(time);
+      if (loc.distances && loc.distances.length) {
+        const grid = document.createElement('div');
+        grid.className = 'map-card-distances';
+        loc.distances.forEach(d => {
+          const row = document.createElement('div');
+          row.className = 'map-card-dist-row';
+          const label = document.createElement('span');
+          label.className = 'map-card-dist-label';
+          label.textContent = d.label;
+          const time = document.createElement('span');
+          time.className = 'map-card-dist-time';
+          time.textContent = d.time;
+          row.appendChild(label);
+          row.appendChild(time);
+          grid.appendChild(row);
+        });
+        card.appendChild(grid);
       }
 
       // Connector line

@@ -986,9 +986,6 @@ section { position: relative; z-index: 2; }
 #locationMap .map-card-hotel .map-card-badge {
   color: rgba(160, 176, 200, 0.5);
 }
-#locationMap .map-card-hotel .map-card-drive {
-  color: rgba(201, 169, 110, 0.55);
-}
 #locationMap .map-card-hotel .map-card-arrow {
   color: rgba(160, 176, 200, 0.5);
 }
@@ -1007,9 +1004,6 @@ section { position: relative; z-index: 2; }
 }
 #locationMap .map-card-airport .map-card-badge {
   color: rgba(138, 155, 181, 0.45);
-}
-#locationMap .map-card-airport .map-card-drive {
-  color: rgba(138, 155, 181, 0.5);
 }
 #locationMap .map-card-airport .map-card-arrow {
   color: rgba(138, 155, 181, 0.5);
@@ -1050,13 +1044,40 @@ section { position: relative; z-index: 2; }
   margin-top: 4px;
 }
 
-/* Drive time -- slightly larger than badge, different weight */
-#locationMap .map-card-drive {
+/* Distance grid -- label/time pairs */
+#locationMap .map-card-distances {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px solid rgba(201, 169, 110, 0.08);
+}
+#locationMap .map-card-dist-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+#locationMap .map-card-dist-label {
   font-family: 'Montserrat', sans-serif;
-  font-size: 9.5px;
-  font-weight: 400;
-  letter-spacing: 0.3px;
-  margin-top: 3px;
+  font-size: 7.5px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(160, 176, 200, 0.4);
+  min-width: 36px;
+}
+#locationMap .map-card-dist-time {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(201, 169, 110, 0.65);
+}
+/* Airport card distance colors */
+#locationMap .map-card-airport .map-card-dist-label {
+  color: rgba(138, 155, 181, 0.4);
+}
+#locationMap .map-card-airport .map-card-dist-time {
+  color: rgba(138, 155, 181, 0.55);
 }
 
 /* Pin pulse animation for venue */
