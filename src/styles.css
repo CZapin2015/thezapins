@@ -674,7 +674,7 @@ section { position: relative; z-index: 2; }
   font-size: 18px; text-align: center;
   min-height: 24px;
 }
-.rsvp-message.success { color: rgba(130, 200, 130, 0.9); }
+.rsvp-message.success { color: #c9a96e; }
 .rsvp-message.error { color: rgba(220, 120, 120, 0.9); }
 #attendingFields {
   max-height: 2000px; overflow: hidden;
