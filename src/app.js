@@ -69,26 +69,19 @@ gsap.to('#heroBg', {
 
 // Titles and subtitles fade up with scale
 document.querySelectorAll('.reveal').forEach(el => {
-  gsap.fromTo(el,
-    { opacity: 0, y: 12, scale: 0.96 },
-    {
-      scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' },
-      opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power2.out',
-      immediateRender: true
-    }
-  );
+  gsap.set(el, { scale: 0.96 });
+  gsap.to(el, {
+    scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' },
+    opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power2.out'
+  });
 });
 
 // Divider lines and flourishes scale in
 document.querySelectorAll('.reveal-line').forEach(el => {
-  gsap.fromTo(el,
-    { scaleX: 0, opacity: 0 },
-    {
-      scrollTrigger: { trigger: el, start: 'top 88%' },
-      scaleX: 1, opacity: 1, duration: 0.8, ease: 'power2.out',
-      immediateRender: true
-    }
-  );
+  gsap.to(el, {
+    scrollTrigger: { trigger: el, start: 'top 88%' },
+    scaleX: 1, opacity: 1, duration: 0.8, ease: 'power2.out'
+  });
 });
 
 // Generic cards/items that fade up with scale
@@ -97,16 +90,13 @@ document.querySelectorAll('.reveal-up').forEach((el, i) => {
   const siblings = Array.from(parent.children).filter(c => c.classList.contains('reveal-up'));
   const index = siblings.indexOf(el);
 
-  gsap.fromTo(el,
-    { opacity: 0, y: 12, scale: 0.95 },
-    {
-      scrollTrigger: { trigger: el, start: 'top 90%' },
-      opacity: 1, y: 0, scale: 1, duration: 0.7,
-      delay: index * 0.12,
-      ease: 'power2.out',
-      immediateRender: true
-    }
-  );
+  gsap.set(el, { scale: 0.95 });
+  gsap.to(el, {
+    scrollTrigger: { trigger: el, start: 'top 90%' },
+    opacity: 1, y: 0, scale: 1, duration: 0.7,
+    delay: index * 0.12,
+    ease: 'power2.out'
+  });
 });
 
 
@@ -126,32 +116,24 @@ gsap.to('#timelineLine', {
 
 // Timeline items fade in and light up
 document.querySelectorAll('.reveal-tl').forEach((item, i) => {
-  gsap.fromTo(item,
-    { opacity: 0, y: 12 },
-    {
-      scrollTrigger: { trigger: item, start: 'top 88%' },
-      opacity: 1, y: 0, duration: 0.5,
-      delay: i * 0.15,
-      ease: 'power2.out',
-      immediateRender: true,
-      onComplete: () => item.classList.add('lit')
-    }
-  );
+  gsap.to(item, {
+    scrollTrigger: { trigger: item, start: 'top 88%' },
+    opacity: 1, y: 0, duration: 0.5,
+    delay: i * 0.15,
+    ease: 'power2.out',
+    onComplete: () => item.classList.add('lit')
+  });
 });
 
 
 // ===== REGISTRY LINKS =====
 document.querySelectorAll('.registry-link').forEach((link, i) => {
-  gsap.fromTo(link,
-    { opacity: 0, y: 12 },
-    {
-      scrollTrigger: { trigger: link, start: 'top 90%' },
-      opacity: 1, y: 0, duration: 0.5,
-      delay: i * 0.1,
-      ease: 'power2.out',
-      immediateRender: true
-    }
-  );
+  gsap.to(link, {
+    scrollTrigger: { trigger: link, start: 'top 90%' },
+    opacity: 1, y: 0, duration: 0.5,
+    delay: i * 0.1,
+    ease: 'power2.out'
+  });
 });
 
 
