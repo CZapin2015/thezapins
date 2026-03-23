@@ -1141,6 +1141,15 @@ section { position: relative; z-index: 2; }
 }
 
 /* ===== GALLERY ===== */
+.gallery-hint {
+  text-align: center;
+  color: rgba(201, 169, 110, 0.5);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: -4px 0 18px;
+}
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
