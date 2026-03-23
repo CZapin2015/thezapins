@@ -243,9 +243,7 @@ nav a:hover { color: #c9a96e; }
   font-size: 72px;
   font-weight: 400;
   color: #c9a96e;
-  text-shadow:
-    0 2px 16px rgba(201, 169, 110, 0.35),
-    0 0 40px rgba(201, 169, 110, 0.12);
+  text-shadow: 0 2px 12px rgba(201, 169, 110, 0.3);
 }
 .countdown-unit:first-child .countdown-label {
   font-size: 12px;
@@ -311,7 +309,6 @@ section { position: relative; z-index: 2; }
   text-align: center; letter-spacing: 2px;
   font-weight: 400;
   opacity: 0; transform: translateY(20px);
-  text-shadow: 0 0 40px rgba(201, 169, 110, 0.15);
 }
 .section-sub {
   font-family: 'Montserrat', sans-serif;
@@ -370,7 +367,6 @@ section { position: relative; z-index: 2; }
 .event-item.lit .event-dot {
   background: rgba(201, 169, 110, 0.5);
   border-color: rgba(201, 169, 110, 0.7);
-  box-shadow: 0 0 12px rgba(201, 169, 110, 0.25);
 }
 .event-content {
   padding: 20px 24px;
@@ -387,8 +383,7 @@ section { position: relative; z-index: 2; }
   transform: translateY(-3px);
   box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.2),
-    0 16px 48px rgba(0, 0, 0, 0.15),
-    0 0 20px rgba(201, 169, 110, 0.03);
+    0 16px 48px rgba(0, 0, 0, 0.15);
 }
 .event-day {
   font-family: 'Montserrat', sans-serif;
@@ -449,7 +444,6 @@ section { position: relative; z-index: 2; }
 .event-item.lit .event-dot-main {
   background: #c9a96e;
   border-color: #c9a96e;
-  box-shadow: 0 0 18px rgba(201, 169, 110, 0.35);
 }
 
 /* Timeline */
@@ -478,7 +472,6 @@ section { position: relative; z-index: 2; }
 .timeline-item.lit::before {
   background: rgba(201, 169, 110, 0.4);
   border-color: rgba(201, 169, 110, 0.6);
-  box-shadow: 0 0 12px rgba(201, 169, 110, 0.2);
 }
 .timeline-item h4 {
   font-family: 'Montserrat', sans-serif;
@@ -743,7 +736,6 @@ section { position: relative; z-index: 2; }
   box-shadow:
     0 4px 16px rgba(0, 0, 0, 0.2),
     0 12px 40px rgba(0, 0, 0, 0.15),
-    0 0 40px rgba(201, 169, 110, 0.06),
     inset 0 1px 0 rgba(201, 169, 110, 0.1);
 }
 .hotel-card-primary .hotel-logo {
@@ -756,8 +748,7 @@ section { position: relative; z-index: 2; }
   transform: translateY(-6px);
   box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.25),
-    0 20px 60px rgba(0, 0, 0, 0.2),
-    0 0 30px rgba(201, 169, 110, 0.04);
+    0 20px 60px rgba(0, 0, 0, 0.2);
   border-color: rgba(201, 169, 110, 0.25);
 }
 
@@ -1203,8 +1194,7 @@ section { position: relative; z-index: 2; }
   transform: translateY(-6px) !important;
   box-shadow:
     0 16px 48px rgba(0, 0, 0, 0.4),
-    0 6px 16px rgba(0, 0, 0, 0.3),
-    0 0 30px rgba(201, 169, 110, 0.06);
+    0 6px 16px rgba(0, 0, 0, 0.3);
   border-color: rgba(201, 169, 110, 0.25);
 }
 .gallery-img:hover img {
@@ -1359,8 +1349,7 @@ section { position: relative; z-index: 2; }
   transform: translateY(-8px);
   box-shadow:
     0 12px 32px rgba(0, 0, 0, 0.25),
-    0 24px 64px rgba(0, 0, 0, 0.15),
-    0 0 40px rgba(201, 169, 110, 0.06);
+    0 24px 64px rgba(0, 0, 0, 0.15);
 }
 .registry-link:hover .registry-logo { opacity: 1; }
 .registry-link:hover .registry-cta { color: rgba(201, 169, 110, 0.8); }
