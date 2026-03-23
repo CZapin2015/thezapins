@@ -503,6 +503,101 @@ document.addEventListener('keydown', (e) => {
 })();
 
 
+// ===== AREA MAP (Leaflet) =====
+(function initMap() {
+  const mapEl = document.getElementById('locationMap');
+  if (!mapEl || typeof L === 'undefined') return;
+
+  const locations = [
+    {
+      name: 'Eau Palm Beach Resort & Spa',
+      badge: 'Wedding Venue',
+      lat: 26.5742,
+      lng: -80.0382,
+      address: '100 S Ocean Blvd, Manalapan, FL 33462',
+      color: '#c9a96e'
+    },
+    {
+      name: 'Tideline Ocean Resort & Spa',
+      badge: 'Nearby Hotel',
+      lat: 26.6980,
+      lng: -80.0335,
+      address: '2842 S Ocean Blvd, Palm Beach, FL 33480',
+      color: '#8a9bb5'
+    },
+    {
+      name: 'Fairfield Inn & Suites',
+      badge: 'Nearby Hotel',
+      lat: 26.6455,
+      lng: -80.0553,
+      address: '2870 S Ocean Blvd, Palm Beach, FL 33480',
+      color: '#8a9bb5'
+    }
+  ];
+
+  // Center map to fit all three pins
+  const centerLat = locations.reduce((s, l) => s + l.lat, 0) / locations.length;
+  const centerLng = locations.reduce((s, l) => s + l.lng, 0) / locations.length;
+
+  const map = L.map('locationMap', {
+    center: [centerLat, centerLng],
+    zoom: 12,
+    zoomControl: true,
+    scrollWheelZoom: false,
+    attributionControl: false
+  });
+
+  // CartoDB Voyager (natural colors + area labels) -- CSS filter darkens while preserving hues
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    subdomains: 'abcd',
+    maxZoom: 19
+  }).addTo(map);
+
+  locations.forEach(loc => {
+    const isVenue = loc.badge === 'Wedding Venue';
+    const pinSize = isVenue ? 18 : 12;
+    const pinColor = isVenue ? '#c9a96e' : '#4a6fa5';
+
+    const icon = L.divIcon({
+      className: 'custom-map-pin',
+      html: `<div style="
+        width: ${pinSize}px; height: ${pinSize}px;
+        background: ${pinColor};
+        border: 2px solid ${isVenue ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.2)'};
+        border-radius: 50%;
+        box-shadow: 0 0 ${isVenue ? '16' : '10'}px ${pinColor}55, 0 2px 6px rgba(0,0,0,0.4);
+      "></div>`,
+      iconSize: [pinSize, pinSize],
+      iconAnchor: [pinSize / 2, pinSize / 2],
+      popupAnchor: [0, -(pinSize / 2 + 4)]
+    });
+
+    const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(loc.address)}`;
+
+    const popup = `
+      <div class="popup-badge">${loc.badge}</div>
+      <div class="popup-name">${loc.name}</div>
+      <div class="popup-address">${loc.address}</div>
+      <a href="${directionsUrl}" target="_blank" rel="noopener" class="popup-directions">Get Directions &rarr;</a>
+    `;
+
+    const marker = L.marker([loc.lat, loc.lng], { icon }).addTo(map).bindPopup(popup);
+
+    // Permanent visible label
+    marker.bindTooltip(loc.name, {
+      permanent: true,
+      direction: 'right',
+      offset: [pinSize / 2 + 4, 0],
+      className: isVenue ? 'map-label-venue' : 'map-label-hotel'
+    });
+  });
+
+  // Fit bounds to show all markers with padding
+  const bounds = L.latLngBounds(locations.map(l => [l.lat, l.lng]));
+  map.fitBounds(bounds, { padding: [40, 40] });
+})();
+
+
 // ===== RSVP FEATURE FLAG =====
 fetch('/api/settings')
   .then(r => r.json())
