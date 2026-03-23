@@ -510,6 +510,13 @@ document.addEventListener('keydown', (e) => {
 
   mapboxgl.accessToken = 'pk.eyJ1IjoiY29yZXl6YXBpbiIsImEiOiJjbW4zNnYwM3oxYzAyMnFwcDV3enh3cm5vIn0.eLmJZXknCCFLnrNYQltmQw';
 
+  // "Tap" on mobile, "Click" on desktop (based on hamburger visibility)
+  const mapSub = document.getElementById('mapSub');
+  if (mapSub) {
+    const isMobile = getComputedStyle(document.getElementById('menuToggle')).display !== 'none';
+    mapSub.textContent = isMobile ? 'Tap a location for directions' : 'Click a location for directions';
+  }
+
   const locations = [
     {
       name: 'Eau Palm Beach Resort & Spa',
