@@ -580,6 +580,15 @@ document.addEventListener('keydown', (e) => {
       }
     });
 
+    // Hide LNA (Lantana) airport label -- irrelevant, clutters map
+    map.getStyle().layers.forEach(layer => {
+      if (layer.type === 'symbol' && layer.id.includes('airport')) {
+        try {
+          map.setFilter(layer.id, ['!=', ['get', 'ref'], 'LNA']);
+        } catch(e) {}
+      }
+    });
+
     // Dim road labels to reduce noise
     map.getStyle().layers.forEach(layer => {
       if (layer.type === 'symbol' && layer.id.includes('road')) {
