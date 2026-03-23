@@ -722,10 +722,10 @@ document.addEventListener('keydown', (e) => {
     const isMobile = w < 600;
     const isTablet = w < 900;
     map.fitBounds(bounds, { padding: {
-      top: isMobile ? 70 : 50,
-      bottom: isMobile ? 70 : 80,
-      left: isMobile ? 10 : isTablet ? 80 : 160,
-      right: isMobile ? Math.round(w * 0.55) : isTablet ? Math.round(w * 0.45) : 200
+      top: isMobile ? 60 : 50,
+      bottom: isMobile ? 60 : 80,
+      left: isMobile ? Math.round(w * 0.42) : isTablet ? 80 : 160,
+      right: isMobile ? Math.round(w * 0.42) : isTablet ? Math.round(w * 0.45) : 200
     }});
 
   });

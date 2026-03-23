@@ -1087,7 +1087,7 @@ section { position: relative; z-index: 2; }
 /* Responsive map */
 @media (max-width: 768px) {
   .map-wrapper { overflow: visible; }
-  #locationMap { height: 380px; }
+  #locationMap { height: 440px; }
   #locationMap .map-card { padding: 6px 9px; }
   #locationMap .map-card-venue { padding: 8px 11px; border-radius: 8px; }
   #locationMap .map-card-airport { padding: 5px 8px; }
@@ -1100,7 +1100,7 @@ section { position: relative; z-index: 2; }
   #locationMap .map-connector { display: none; }
 }
 @media (max-width: 420px) {
-  #locationMap { height: 340px; }
+  #locationMap { height: 420px; }
   #locationMap .map-card { padding: 5px 7px; }
   #locationMap .map-card-venue { padding: 7px 9px; }
   #locationMap .map-card-airport { padding: 4px 6px; }
