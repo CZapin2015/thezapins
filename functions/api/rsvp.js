@@ -123,6 +123,22 @@ async function handlePost(request, env) {
     return json({ error: 'Failed to save RSVP' }, 500);
   }
 
+  // Fire-and-forget: send RSVP data to Google Sheet
+  if (env.GOOGLE_SHEET_WEBHOOK) {
+    const sheetData = {
+      full_name: trimmedName, email: email || '', attending,
+      event_welcome: !!event_welcome, event_wedding: !!event_wedding, event_brunch: !!event_brunch,
+      guest_count: guest_count || 1, meal_preference: meal_preference || '',
+      dietary_notes: dietary_notes || '', guest_name: guest_name || '',
+      guest_meal_preference: guest_meal_preference || '', guest_dietary_notes: guest_dietary_notes || ''
+    };
+    fetch(env.GOOGLE_SHEET_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(sheetData)
+    }).catch(() => {});
+  }
+
   return json({
     success: true,
     matched_guest: matchedGuestName,
