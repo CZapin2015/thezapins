@@ -16,12 +16,13 @@ window.addEventListener('pageshow', (e) => {
     ScrollTrigger.refresh();
   }
 });
-// Fallback timeout - if elements are still hidden after 4s, force them visible
+// Fallback: if GSAP/ScrollTrigger failed to load, force elements visible
+// Only checks once after 6s, and only if ScrollTrigger has zero triggers (broken state)
 setTimeout(() => {
-  document.querySelectorAll('.reveal, .reveal-up, .reveal-tl').forEach(el => {
-    if (getComputedStyle(el).opacity === '0') forceRevealAll();
-  });
-}, 4000);
+  if (!ScrollTrigger.getAll || ScrollTrigger.getAll().length === 0) {
+    forceRevealAll();
+  }
+}, 6000);
 
 // Wait for fonts before showing hero
 document.fonts.ready.then(() => {
