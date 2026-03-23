@@ -503,10 +503,12 @@ document.addEventListener('keydown', (e) => {
 })();
 
 
-// ===== AREA MAP (Leaflet) =====
+// ===== AREA MAP (Mapbox GL) =====
 (function initMap() {
   const mapEl = document.getElementById('locationMap');
-  if (!mapEl || typeof L === 'undefined') return;
+  if (!mapEl || typeof mapboxgl === 'undefined') return;
+
+  mapboxgl.accessToken = 'pk.eyJ1IjoiY29yZXl6YXBpbiIsImEiOiJjbW4zNnYwM3oxYzAyMnFwcDV3enh3cm5vIn0.eLmJZXknCCFLnrNYQltmQw';
 
   const locations = [
     {
@@ -515,7 +517,9 @@ document.addEventListener('keydown', (e) => {
       lat: 26.5742,
       lng: -80.0382,
       address: '100 S Ocean Blvd, Manalapan, FL 33462',
-      color: '#c9a96e'
+      color: '#c9a96e',
+      isVenue: true,
+      distance: ''
     },
     {
       name: 'Tideline Ocean Resort & Spa',
@@ -523,7 +527,9 @@ document.addEventListener('keydown', (e) => {
       lat: 26.6980,
       lng: -80.0335,
       address: '2842 S Ocean Blvd, Palm Beach, FL 33480',
-      color: '#8a9bb5'
+      color: '#4a6fa5',
+      isVenue: false,
+      distance: '~9 mi / 18 min'
     },
     {
       name: 'Fairfield Inn & Suites',
@@ -531,84 +537,71 @@ document.addEventListener('keydown', (e) => {
       lat: 26.6455,
       lng: -80.0553,
       address: '2870 S Ocean Blvd, Palm Beach, FL 33480',
-      color: '#8a9bb5'
+      color: '#4a6fa5',
+      isVenue: false,
+      distance: '~5 mi / 12 min'
     }
   ];
 
-  // Center map to fit all three pins
-  const centerLat = locations.reduce((s, l) => s + l.lat, 0) / locations.length;
-  const centerLng = locations.reduce((s, l) => s + l.lng, 0) / locations.length;
-
-  const map = L.map('locationMap', {
-    center: [centerLat, centerLng],
-    zoom: 12,
-    zoomControl: true,
-    scrollWheelZoom: false,
+  const map = new mapboxgl.Map({
+    container: 'locationMap',
+    style: 'mapbox://styles/mapbox/dark-v11',
+    center: [-80.04, 26.64],
+    zoom: 11,
+    scrollZoom: false,
     attributionControl: false
   });
 
-  // Expose map for console testing
-  window._leafletMap = map;
+  map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-left');
 
-  // CartoDB Voyager (natural colors + area labels) -- CSS filter darkens while preserving hues
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-    subdomains: 'abcd',
-    maxZoom: 19
-  }).addTo(map);
+  map.on('load', () => {
+    locations.forEach(loc => {
+      const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(loc.address)}`;
+      const pinSize = loc.isVenue ? 18 : 12;
 
-  // Ocean overlay for clear land/water contrast
-  L.polygon([
-    [27.1, -80.028], [27.1, -79.4],
-    [26.3, -79.4], [26.3, -80.028]
-  ], {
-    color: 'none',
-    fillColor: '#0a1e3a',
-    fillOpacity: 0.75,
-    interactive: false
-  }).addTo(map);
+      // Create label element (tappable for directions)
+      const label = document.createElement('a');
+      label.href = directionsUrl;
+      label.target = '_blank';
+      label.rel = 'noopener';
+      label.className = loc.isVenue ? 'map-label-venue' : 'map-label-hotel';
+      label.textContent = loc.name;
+      if (loc.distance) {
+        const dist = document.createElement('span');
+        dist.className = 'map-label-distance';
+        dist.textContent = loc.distance;
+        label.appendChild(dist);
+      }
 
-  locations.forEach(loc => {
-    const isVenue = loc.badge === 'Wedding Venue';
-    const pinSize = isVenue ? 18 : 12;
-    const pinColor = isVenue ? '#c9a96e' : '#4a6fa5';
-
-    const icon = L.divIcon({
-      className: 'custom-map-pin',
-      html: `<div style="
+      // Create pin element
+      const pin = document.createElement('div');
+      pin.style.cssText = `
         width: ${pinSize}px; height: ${pinSize}px;
-        background: ${pinColor};
-        border: 2px solid ${isVenue ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.2)'};
+        background: ${loc.color};
+        border: 2px solid ${loc.isVenue ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.2)'};
         border-radius: 50%;
-        box-shadow: 0 0 ${isVenue ? '16' : '10'}px ${pinColor}55, 0 2px 6px rgba(0,0,0,0.4);
-      "></div>`,
-      iconSize: [pinSize, pinSize],
-      iconAnchor: [pinSize / 2, pinSize / 2],
-      popupAnchor: [0, -(pinSize / 2 + 4)]
+        box-shadow: 0 0 ${loc.isVenue ? '16' : '10'}px ${loc.color}55, 0 2px 6px rgba(0,0,0,0.4);
+        cursor: pointer;
+      `;
+      pin.addEventListener('click', () => window.open(directionsUrl, '_blank'));
+
+      // Add pin marker
+      new mapboxgl.Marker({ element: pin, anchor: 'center' })
+        .setLngLat([loc.lng, loc.lat])
+        .addTo(map);
+
+      // Add label marker (offset to the right of pin)
+      new mapboxgl.Marker({ element: label, anchor: 'left' })
+        .setLngLat([loc.lng, loc.lat])
+        .setOffset([pinSize / 2 + 6, 0])
+        .addTo(map);
     });
 
-    const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(loc.address)}`;
-
-    const popup = `
-      <div class="popup-badge">${loc.badge}</div>
-      <div class="popup-name">${loc.name}</div>
-      <div class="popup-address">${loc.address}</div>
-      <a href="${directionsUrl}" target="_blank" rel="noopener" class="popup-directions">Get Directions &rarr;</a>
-    `;
-
-    const marker = L.marker([loc.lat, loc.lng], { icon }).addTo(map).bindPopup(popup);
-
-    // Permanent visible label
-    marker.bindTooltip(loc.name, {
-      permanent: true,
-      direction: 'right',
-      offset: [pinSize / 2 + 4, 0],
-      className: isVenue ? 'map-label-venue' : 'map-label-hotel'
-    });
+    // Fit bounds to show all markers
+    const bounds = new mapboxgl.LngLatBounds();
+    locations.forEach(loc => bounds.extend([loc.lng, loc.lat]));
+    map.fitBounds(bounds, { padding: 50 });
   });
-
-  // Fit bounds to show all markers with padding
-  const bounds = L.latLngBounds(locations.map(l => [l.lat, l.lng]));
-  map.fitBounds(bounds, { padding: [40, 40] });
 })();
 
 

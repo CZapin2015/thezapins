@@ -22,6 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Quicksand:wght@300;400;500&family=Montserrat:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -270,28 +271,24 @@
           <div class="hotel-badge">Nearby Option</div>
           <img src="/images/tideline-logo.svg" alt="Tideline Ocean Resort &amp; Spa" class="hotel-logo">
           <a href="https://www.google.com/maps/place/Tideline+Ocean+Resort+%26+Spa/@26.6980,-80.0335,17z" target="_blank" rel="noopener" class="hotel-address-link">2842 S Ocean Blvd, Palm Beach, FL 33480</a>
+          <p class="hotel-distance">~9 mi from venue &middot; 18 min drive</p>
           <p class="hotel-note">A nearby alternative for wedding guests. Booking link coming soon.</p>
         </div>
         <div class="hotel-card reveal-up">
           <div class="hotel-badge">Nearby Option</div>
           <img src="/images/fairfield-logo.png" alt="Fairfield by Marriott Inn &amp; Suites Palm Beach" class="hotel-logo">
           <a href="https://www.google.com/maps/place/Fairfield+by+Marriott+Inn+%26+Suites+Palm+Beach/@26.6455,-80.0353,17z" target="_blank" rel="noopener" class="hotel-address-link">2870 S Ocean Blvd, Palm Beach, FL 33480</a>
+          <p class="hotel-distance">~5 mi from venue &middot; 12 min drive</p>
           <p class="hotel-note">A nearby alternative for wedding guests. Booking link coming soon.</p>
         </div>
       </div>
 
+      <div class="travel-divider reveal-line"></div>
+
       <div class="venue-map reveal-up">
-        <h3 class="map-label">Venue Location</h3>
-        <iframe
-          src="https://maps.google.com/maps?q=Eau+Palm+Beach+Resort+%26+Spa+100+S+Ocean+Blvd+Manalapan+FL+33462&t=&z=14&ie=UTF8&iwloc=&output=embed"
-          width="100%"
-          height="300"
-          style="border:0; border-radius: 10px; opacity: 0.85;"
-          allowfullscreen=""
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          title="Eau Palm Beach Resort &amp; Spa location">
-        </iframe>
+        <h3 class="map-label">Area Map</h3>
+        <p class="map-sub">Tap a pin for directions</p>
+        <div id="locationMap"></div>
       </div>
     </div>
   </section>
@@ -365,6 +362,7 @@
   <!-- PARTICLES -->
   <div class="particles" id="particles"></div>
 
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="/app.js"></script>
