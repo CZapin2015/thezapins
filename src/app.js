@@ -533,25 +533,27 @@ document.addEventListener('keydown', (e) => {
     {
       name: 'Tideline Ocean Resort & Spa',
       badge: 'Nearby Hotel',
-      lat: 26.6980,
-      lng: -80.0335,
+      lat: 26.6177,
+      lng: -80.0373,
       address: '2842 S Ocean Blvd, Palm Beach, FL 33480',
       color: '#4a6fa5',
       isVenue: false,
       isAirport: false,
-      distances: [{ label: 'Venue', time: '18 min' }, { label: 'PBI', time: '10 min' }],
+      distances: [{ label: 'Venue', time: '5 min' }, { label: 'PBI', time: '15 min' }],
       mobileYOffset: -18
     },
     {
       name: 'Fairfield Inn & Suites',
       badge: 'Nearby Hotel',
-      lat: 26.6350,
-      lng: -80.0370,
+      lat: 26.6158,
+      lng: -80.0385,
       address: '2870 S Ocean Blvd, Palm Beach, FL 33480',
       color: '#4a6fa5',
       isVenue: false,
       isAirport: false,
-      distances: [{ label: 'Venue', time: '12 min' }, { label: 'PBI', time: '15 min' }]
+      cardOnLeft: true,
+      distances: [{ label: 'Venue', time: '5 min' }, { label: 'PBI', time: '15 min' }],
+      mobileYOffset: 18
     },
     {
       name: 'Palm Beach Intl Airport',
@@ -621,7 +623,7 @@ document.addEventListener('keydown', (e) => {
     locations.forEach(loc => {
       const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(loc.address)}`;
       const pinSize = loc.isVenue ? 22 : 16;
-      const cardOnLeft = loc.isAirport;
+      const cardOnLeft = loc.isAirport || loc.cardOnLeft;
 
       // === Single composite marker: pin + connector + card in one element ===
       const composite = document.createElement('a');
