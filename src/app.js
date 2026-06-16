@@ -50,7 +50,6 @@ document.fonts.ready.then(() => {
 // Otherwise everything is visible by default (CSS has no hidden states)
 if (window.scrollY < window.innerHeight * 0.3) {
   // Hide elements first, then animate them in
-  gsap.set('.corner', { opacity: 0 });
   gsap.set('#sigText', { clipPath: 'inset(0 100% 0 0)' });
   gsap.set('#heroDivider', { transform: 'scaleX(0)' });
   gsap.set(['#heroDate', '#heroVenue', '#scrollHint'], { opacity: 0, y: 6 });
@@ -58,7 +57,6 @@ if (window.scrollY < window.innerHeight * 0.3) {
   const heroTL = gsap.timeline({ delay: 0.2 });
 
   heroTL
-    .to('.corner', { opacity: 1, duration: 0.5, stagger: 0.04, ease: 'power1.out' })
     .to('#sigText', { clipPath: 'inset(0 0% 0 0)', duration: 1.8, ease: 'power3.out' }, 0.25)
     // Subtle glow pulse on names after reveal
     .to('#sigText', { textShadow: '0 3px 24px rgba(0,0,0,0.6), 0 0 60px rgba(201,169,110,0.2)', duration: 0.8, ease: 'power2.out' }, 1.8)

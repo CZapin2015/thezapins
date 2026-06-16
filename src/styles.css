@@ -107,15 +107,6 @@ nav a:hover { color: #c9a96e; }
   display: none;
 }
 
-/* Corner frames */
-.corner {
-  position: absolute;
-  width: 55px; height: 55px;
-}
-.corner.tl { top: 45px; left: 45px; border-top: 1px solid rgba(201, 169, 110, 0.2); border-left: 1px solid rgba(201, 169, 110, 0.2); }
-.corner.tr { top: 45px; right: 45px; border-top: 1px solid rgba(201, 169, 110, 0.2); border-right: 1px solid rgba(201, 169, 110, 0.2); }
-.corner.bl { bottom: 45px; left: 45px; border-bottom: 1px solid rgba(201, 169, 110, 0.2); border-left: 1px solid rgba(201, 169, 110, 0.2); }
-.corner.br { bottom: 45px; right: 45px; border-bottom: 1px solid rgba(201, 169, 110, 0.2); border-right: 1px solid rgba(201, 169, 110, 0.2); }
 
 /* Hero content */
 .hero-content {
@@ -175,21 +166,21 @@ nav a:hover { color: #c9a96e; }
   transform: translateX(-50%);
   font-family: 'Montserrat', sans-serif;
   font-size: 9px; letter-spacing: 4px;
-  color: rgba(201, 169, 110, 0.45);
+  color: rgba(201, 169, 110, 0.65);
   text-transform: uppercase;
   opacity: 0;
 }
 .scroll-arrow {
   display: block; margin: 8px auto 0;
   width: 10px; height: 10px;
-  border-right: 1px solid rgba(201, 169, 110, 0.45);
-  border-bottom: 1px solid rgba(201, 169, 110, 0.45);
+  border-right: 1px solid rgba(201, 169, 110, 0.65);
+  border-bottom: 1px solid rgba(201, 169, 110, 0.65);
   transform: rotate(45deg);
   animation: bob 2.5s ease-in-out infinite;
 }
 @keyframes bob {
-  0%, 100% { transform: translateY(0) rotate(45deg); opacity: 0.2; }
-  50% { transform: translateY(5px) rotate(45deg); opacity: 0.6; }
+  0%, 100% { transform: translateY(0) rotate(45deg); opacity: 0.35; }
+  50% { transform: translateY(5px) rotate(45deg); opacity: 0.8; }
 }
 
 /* ===== COUNTDOWN ===== */
@@ -1446,11 +1437,6 @@ footer {
 
   .section-inner { padding: 80px 20px; }
   .rsvp-form { padding: 30px 20px; }
-  .corner { width: 35px; height: 35px; }
-  .corner.tl, .corner.bl { left: 20px; }
-  .corner.tr, .corner.br { right: 20px; }
-  .corner.tl, .corner.tr { top: 20px; }
-  .corner.bl, .corner.br { bottom: 20px; }
 }
 
 @media (max-width: 420px) {
