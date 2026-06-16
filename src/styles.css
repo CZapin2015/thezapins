@@ -723,17 +723,6 @@ section { position: relative; z-index: 2; }
 .hotel-card-primary .hotel-note {
   font-size: 20px;
 }
-.venue-soon-pill {
-  display: inline-block;
-  margin-top: 16px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 10px; letter-spacing: 2px;
-  text-transform: uppercase;
-  color: rgba(201, 169, 110, 0.7);
-  border: 1px solid rgba(201, 169, 110, 0.28);
-  border-radius: 14px;
-  padding: 5px 16px;
-}
 .hotel-card:hover {
   transform: translateY(-6px);
   box-shadow:
@@ -833,6 +822,21 @@ section { position: relative; z-index: 2; }
 .hotel-link:hover {
   color: #c9a96e;
   border-color: rgba(201, 169, 110, 0.6);
+}
+.hotel-link-primary {
+  margin-top: 24px;
+  font-size: 13px;
+  letter-spacing: 2.5px;
+  color: rgba(201, 169, 110, 0.95);
+  border: 1px solid rgba(201, 169, 110, 0.5);
+  border-radius: 14px;
+  padding: 12px 28px;
+  background: rgba(201, 169, 110, 0.08);
+}
+.hotel-link-primary:hover {
+  color: #f3e6cf;
+  border-color: rgba(201, 169, 110, 0.85);
+  background: rgba(201, 169, 110, 0.16);
 }
 .hotel-fineprint {
   font-family: 'Cormorant Garamond', serif;
