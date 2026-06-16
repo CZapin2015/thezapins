@@ -816,6 +816,24 @@ section { position: relative; z-index: 2; }
   color: #c9a96e;
   border-color: rgba(201, 169, 110, 0.6);
 }
+.hotel-fineprint {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  color: rgba(232, 228, 220, 0.6);
+  line-height: 1.55;
+  margin-top: 16px;
+  max-width: 320px;
+}
+.hotel-fineprint-link {
+  color: rgba(201, 169, 110, 0.9);
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(201, 169, 110, 0.3);
+}
+.hotel-fineprint-link:hover {
+  color: #c9a96e;
+  border-color: rgba(201, 169, 110, 0.6);
+}
 .hotel-address-link {
   font-family: 'Cormorant Garamond', serif;
   font-size: 20px; color: rgba(232, 228, 220, 0.85);
