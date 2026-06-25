@@ -403,9 +403,10 @@ section { position: relative; z-index: 2; }
   overflow: visible;
   pointer-events: none;
 }
-#swirlPath {
-  filter: drop-shadow(0 0 3px rgba(201, 169, 110, 0.22));
+.swirl-strand {
+  filter: drop-shadow(0 0 2px rgba(201, 169, 110, 0.18));
 }
+#swirlPathB { opacity: 0.78; }
 
 /* Timeline */
 .timeline {

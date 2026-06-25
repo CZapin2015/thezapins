@@ -117,18 +117,20 @@ document.querySelectorAll('.reveal-up').forEach((el, i) => {
 
 // ===== TIMELINE =====
 
-// Swirling gold spine draws itself as you scroll through the timeline
-const swirlPath = document.getElementById('swirlPath');
-if (swirlPath) {
-  const swirlLen = swirlPath.getTotalLength();
-  gsap.set(swirlPath, { strokeDasharray: swirlLen, strokeDashoffset: swirlLen });
-  gsap.to(swirlPath, {
+// Braided gold spine: two strands twist around each other, drawing on scroll
+const swirlStrands = [document.getElementById('swirlPathA'), document.getElementById('swirlPathB')].filter(Boolean);
+if (swirlStrands.length) {
+  swirlStrands.forEach(s => {
+    const len = s.getTotalLength();
+    gsap.set(s, { strokeDasharray: len, strokeDashoffset: len });
+  });
+  gsap.to(swirlStrands, {
     strokeDashoffset: 0,
     ease: 'none',
     scrollTrigger: {
       trigger: '.event-timeline',
-      start: 'top 78%',
-      end: 'bottom 62%',
+      start: 'top 82%',
+      end: 'bottom 42%',
       scrub: 1
     }
   });
