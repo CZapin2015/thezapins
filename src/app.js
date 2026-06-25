@@ -2,9 +2,6 @@
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Timeline marker variant for A/B comparison mock (?tl=a | ?tl=b)
-document.body.dataset.tl = (new URLSearchParams(location.search).get('tl') === 'b') ? 'b' : 'a';
-
 // Safety net: if ScrollTrigger fails or bfcache restores page, force all elements visible
 function forceRevealAll() {
   document.querySelectorAll('.reveal, .reveal-line, .reveal-up, .reveal-tl, .rsvp-form, .hotel-card, .registry-link, .gallery-img, .venue-map, .travel-info').forEach(el => {
@@ -120,17 +117,20 @@ document.querySelectorAll('.reveal-up').forEach((el, i) => {
 
 // ===== TIMELINE =====
 
-// Timeline line draws down linked to scroll (Variant B only; Variant A has no line)
-if (document.body.dataset.tl === 'b') {
-  gsap.to('#timelineLine', {
+// Swirling gold spine draws itself as you scroll through the timeline
+const swirlPath = document.getElementById('swirlPath');
+if (swirlPath) {
+  const swirlLen = swirlPath.getTotalLength();
+  gsap.set(swirlPath, { strokeDasharray: swirlLen, strokeDashoffset: swirlLen });
+  gsap.to(swirlPath, {
+    strokeDashoffset: 0,
+    ease: 'none',
     scrollTrigger: {
       trigger: '.event-timeline',
-      start: 'top 85%',
-      end: 'bottom 60%',
+      start: 'top 78%',
+      end: 'bottom 62%',
       scrub: 1
-    },
-    height: '100%',
-    ease: 'none'
+    }
   });
 }
 

@@ -284,9 +284,9 @@ section { position: relative; z-index: 2; }
 /* Event Timeline */
 .event-timeline {
   position: relative;
-  max-width: 420px;
+  max-width: 440px;
   margin: 0 auto;
-  padding-left: 40px;
+  padding-left: 58px;
 }
 .timeline-line {
   position: absolute;
@@ -395,44 +395,16 @@ section { position: relative; z-index: 2; }
   box-shadow: 0 0 16px rgba(201, 169, 110, 0.35), 0 0 4px rgba(201, 169, 110, 0.5);
 }
 
-/* ============================================================
-   TIMELINE VARIANTS (A/B mock) — toggled by body[data-tl]
-   ============================================================ */
-
-/* --- Variant A: typographic, no spine, no markers --- */
-body[data-tl="a"] .event-timeline { padding-left: 0; max-width: 470px; }
-body[data-tl="a"] .timeline-line { display: none; }
-body[data-tl="a"] .event-dot { display: none; }
-body[data-tl="a"] .event-item { margin-bottom: 24px; }
-body[data-tl="a"] .event-content { text-align: center; }
-body[data-tl="a"] .event-main .event-content { border-left: none; }
-body[data-tl="a"] .event-day { letter-spacing: 4px; }
-
-/* --- Variant B: AI ornament marker + delicate hairline --- */
-body[data-tl="b"] .timeline-line {
-  width: 1px;
-  background: linear-gradient(180deg, rgba(201, 169, 110, 0.32), rgba(201, 169, 110, 0.07));
-  box-shadow: none;
+/* ===== TIMELINE: swirling gold spine that draws on scroll ===== */
+.timeline-swirl {
+  position: absolute;
+  left: 2px; top: 0;
+  width: 54px; height: 100%;
+  overflow: visible;
+  pointer-events: none;
 }
-body[data-tl="b"] .event-dot,
-body[data-tl="b"] .event-item.lit .event-dot {
-  transform: none;
-  border: none;
-  border-radius: 0;
-  background: url('/images/timeline-ornament.png') center / contain no-repeat;
-  width: 24px; height: 24px;
-  left: -41px; top: 2px;
-  box-shadow: none;
-  opacity: 0.9;
-  transition: opacity 0.6s ease;
-}
-body[data-tl="b"] .event-item.lit .event-dot { opacity: 1; }
-body[data-tl="b"] .event-dot-main,
-body[data-tl="b"] .event-item.lit .event-dot-main {
-  width: 36px; height: 36px;
-  left: -47px; top: -3px;
-  border: none;
-  box-shadow: none;
+#swirlPath {
+  filter: drop-shadow(0 0 3px rgba(201, 169, 110, 0.22));
 }
 
 /* Timeline */
