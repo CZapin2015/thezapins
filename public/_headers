@@ -1,0 +1,10 @@
+# Always revalidate the app shell so a stale JS/CSS can never run against fresh HTML.
+# (Assets are also ?v= cache-busted by build.js; this is belt-and-suspenders.)
+/app.js
+  Cache-Control: no-cache
+/styles.css
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+/
+  Cache-Control: no-cache

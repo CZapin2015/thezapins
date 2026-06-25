@@ -7,6 +7,7 @@
     "build": "node build.js",
     "dev": "npx wrangler pages dev dist --d1 DB=thezapins-db",
     "deploy": "npm run build && npx wrangler pages deploy dist",
+    "deploy:staging": "npm run build && npx wrangler pages deploy dist --branch=staging",
     "db:init": "npx wrangler d1 execute thezapins-db --file=schema.sql",
     "db:init:remote": "npx wrangler d1 execute thezapins-db --remote --file=schema.sql"
   },

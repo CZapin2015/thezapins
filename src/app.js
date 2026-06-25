@@ -176,30 +176,62 @@ for (let i = 0; i < 24; i++) {
 }
 
 
-// ===== MOBILE HAMBURGER MENU =====
-const menuToggle = document.getElementById('menuToggle');
-const navLinks = document.getElementById('navLinks');
+// ===== NAVIGATION: active-section highlight (always-visible section nav) =====
+// Wrapped defensively: a nav error must NEVER halt the countdown / RSVP logic below.
+try {
+  const mainNavEl = document.getElementById('mainNav');
+  const navLinksWrap = document.getElementById('navLinks');
+  const spyLinks = navLinksWrap ? Array.from(navLinksWrap.querySelectorAll('a')) : [];
+  const spySections = spyLinks
+    .map(a => { try { return document.querySelector(a.getAttribute('href')); } catch (e) { return null; } })
+    .filter(Boolean);
 
-// ===== CLOSE MOBILE MENU ON SCROLL =====
-window.addEventListener('scroll', () => {
-  if (navLinks.classList.contains('open')) {
-    navLinks.classList.remove('open');
-    menuToggle.classList.remove('active');
+  function updateActiveNav() {
+    if (!spySections.length) return;
+    const navH = mainNavEl ? mainNavEl.offsetHeight : 64;
+    const probe = navH + 40; // viewport line just below the fixed nav
+    let currentId = spySections[0].id;
+    for (const sec of spySections) {
+      if (sec.getClientRects().length === 0) continue; // skip hidden sections (e.g. RSVP when closed)
+      if (sec.getBoundingClientRect().top <= probe) currentId = sec.id;
+    }
+    // Snap to the last visible section once scrolled to the very bottom
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+      for (let i = spySections.length - 1; i >= 0; i--) {
+        if (spySections[i].getClientRects().length > 0) { currentId = spySections[i].id; break; }
+      }
+    }
+    let activeLink = null;
+    spyLinks.forEach(a => {
+      const isActive = a.getAttribute('href') === '#' + currentId;
+      a.classList.toggle('active', isActive);
+      if (isActive) activeLink = a;
+    });
+    // On the horizontally-scrollable mobile strip, keep the active link in view
+    if (activeLink && navLinksWrap && navLinksWrap.scrollWidth > navLinksWrap.clientWidth + 1) {
+      const linkRect = activeLink.getBoundingClientRect();
+      const wrapRect = navLinksWrap.getBoundingClientRect();
+      if (linkRect.left < wrapRect.left || linkRect.right > wrapRect.right) {
+        const target = navLinksWrap.scrollLeft + (linkRect.left - wrapRect.left)
+          - navLinksWrap.clientWidth / 2 + linkRect.width / 2;
+        navLinksWrap.scrollTo({ left: target, behavior: 'smooth' });
+      }
+    }
   }
-}, { passive: true });
 
-menuToggle.addEventListener('click', () => {
-  menuToggle.classList.toggle('active');
-  navLinks.classList.toggle('open');
-});
-
-// Close menu when a link is clicked
-navLinks.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-    menuToggle.classList.remove('active');
-  });
-});
+  let navTicking = false;
+  window.addEventListener('scroll', () => {
+    if (!navTicking) {
+      requestAnimationFrame(() => { updateActiveNav(); navTicking = false; });
+      navTicking = true;
+    }
+  }, { passive: true });
+  window.addEventListener('resize', updateActiveNav, { passive: true });
+  window.addEventListener('load', updateActiveNav);
+  updateActiveNav();
+} catch (err) {
+  console.error('Nav init failed (non-fatal):', err);
+}
 
 
 // ===== ATTENDANCE TOGGLE =====
@@ -508,10 +540,10 @@ document.addEventListener('keydown', (e) => {
 
   mapboxgl.accessToken = 'pk.eyJ1IjoiY29yZXl6YXBpbiIsImEiOiJjbW4zNnYwM3oxYzAyMnFwcDV3enh3cm5vIn0.eLmJZXknCCFLnrNYQltmQw';
 
-  // "Tap" on mobile, "Click" on desktop (based on hamburger visibility)
+  // "Tap" on touch/small screens, "Click" on desktop
   const mapSub = document.getElementById('mapSub');
   if (mapSub) {
-    const isMobile = getComputedStyle(document.getElementById('menuToggle')).display !== 'none';
+    const isMobile = window.matchMedia('(max-width: 1024px)').matches;
     mapSub.textContent = isMobile ? 'Tap a location for directions' : 'Click a location for directions';
   }
 
@@ -790,10 +822,11 @@ function updateCountdown() {
   const hours = Math.floor((diff % 86400000) / 3600000);
   const mins = Math.floor((diff % 3600000) / 60000);
   const secs = Math.floor((diff % 60000) / 1000);
-  document.getElementById('cdDays').textContent = String(days).padStart(3, '0');
-  document.getElementById('cdHours').textContent = String(hours).padStart(2, '0');
-  document.getElementById('cdMins').textContent = String(mins).padStart(2, '0');
-  document.getElementById('cdSecs').textContent = String(secs).padStart(2, '0');
+  const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  setText('cdDays', String(days).padStart(3, '0'));
+  setText('cdHours', String(hours).padStart(2, '0'));
+  setText('cdMins', String(mins).padStart(2, '0'));
+  setText('cdSecs', String(secs).padStart(2, '0'));
 }
 updateCountdown();
 setInterval(updateCountdown, 1000);

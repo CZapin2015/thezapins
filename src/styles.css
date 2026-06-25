@@ -1,6 +1,6 @@
 /* ===== RESET & BASE ===== */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
 body {
   background: #0a1628;
   color: #e8e4dc;
@@ -36,8 +36,17 @@ nav a {
   color: rgba(201, 169, 110, 0.75);
   text-decoration: none;
   transition: color 0.3s;
+  position: relative;
 }
 nav a:hover { color: #c9a96e; }
+.nav-links a.active { color: #f3e6cf; }
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -4px;
+  height: 1px;
+  background: rgba(201, 169, 110, 0.65);
+}
 .nav-monogram {
   text-decoration: none;
   position: absolute;
@@ -55,30 +64,6 @@ nav a:hover { color: #c9a96e; }
   height: 60px;
   width: auto;
   opacity: 0.5;
-}
-
-/* Hamburger toggle - hidden on desktop */
-.menu-toggle {
-  display: none;
-  background: none; border: none; cursor: pointer;
-  padding: 12px 8px;
-  position: absolute; right: 16px; top: 50%;
-  transform: translateY(-50%);
-  z-index: 101;
-}
-.menu-toggle span {
-  display: block;
-  width: 28px; height: 2px;
-  background: rgba(201, 169, 110, 0.8);
-  margin: 6px 0;
-  transition: all 0.3s ease;
-}
-.menu-toggle.active span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 6px);
-}
-.menu-toggle.active span:nth-child(2) { opacity: 0; }
-.menu-toggle.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -6px);
 }
 
 /* ===== HERO ===== */
@@ -1440,32 +1425,8 @@ footer {
 }
 
 @media (max-width: 1024px) {
-  /* Hamburger nav for tablets/foldables */
-  .menu-toggle { display: block; }
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-    position: absolute;
-    top: 100%;
-    left: 0; right: 0;
-    background: rgba(10, 22, 40, 0.97);
-    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(201, 169, 110, 0.1);
-    padding: 12px 0;
-  }
-  .nav-links.open { display: flex; }
-  .nav-links a {
-    padding: 14px 20px;
-    width: 100%;
-    text-align: center;
-    font-size: 12px;
-    letter-spacing: 3px;
-  }
-  .nav-links a:hover {
-    background: rgba(201, 169, 110, 0.06);
-  }
+  /* All section links stay visible (no hamburger); tighten spacing to fit */
+  .nav-links { gap: 22px; }
   .hotel-cards-alt { grid-template-columns: 1fr; }
   .hotel-card-primary { padding: 36px 28px; }
   .hotel-card-primary .hotel-logo { width: 200px; height: 90px; }
@@ -1474,6 +1435,35 @@ footer {
 }
 
 @media (max-width: 768px) {
+  /* Always-visible section nav: monogram + horizontally scrollable readable strip.
+     No hamburger, monogram kept, font stays 12px (the two things that broke before). */
+  nav { justify-content: flex-start; gap: 12px; padding: 13px 0 13px 16px; }
+  .nav-monogram {
+    position: static; transform: none; left: auto; top: auto;
+    flex: 0 0 auto; opacity: 0.9;
+  }
+  .nav-monogram-img { height: 30px; }
+  .nav-links {
+    flex: 1 1 auto;
+    min-width: 0; /* allow shrink so the strip scrolls instead of widening the nav */
+    justify-content: flex-start;
+    gap: 22px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-right: 30px; /* breathing room past the edge fade */
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a { flex: 0 0 auto; font-size: 12px; letter-spacing: 1.5px; }
+  /* Subtle right-edge fade hinting there are more links to swipe */
+  #mainNav::after {
+    content: '';
+    position: absolute; top: 0; right: 0; bottom: 0; width: 30px;
+    background: linear-gradient(to right, rgba(10, 22, 40, 0), rgba(10, 22, 40, 0.94));
+    pointer-events: none; z-index: 102;
+  }
   .sig-text { font-size: 56px !important; }
   .hero-date { font-size: 24px; letter-spacing: 3px; }
   .hero-venue { font-size: 19px; }
