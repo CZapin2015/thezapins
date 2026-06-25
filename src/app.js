@@ -176,30 +176,41 @@ for (let i = 0; i < 24; i++) {
 }
 
 
-// ===== MOBILE HAMBURGER MENU =====
-const menuToggle = document.getElementById('menuToggle');
-const navLinks = document.getElementById('navLinks');
+// ===== SCROLL-SPY: highlight the nav link for the section in view =====
+const mainNavEl = document.getElementById('mainNav');
+const spyLinks = Array.from(document.querySelectorAll('#navLinks a'));
+const spySections = spyLinks
+  .map(a => document.querySelector(a.getAttribute('href')))
+  .filter(Boolean);
 
-// ===== CLOSE MOBILE MENU ON SCROLL =====
+function updateActiveNav() {
+  const navH = mainNavEl ? mainNavEl.offsetHeight : 64;
+  const probe = navH + 40; // viewport line just below the fixed nav
+  let currentId = spySections.length ? spySections[0].id : null;
+  for (const sec of spySections) {
+    if (sec.getClientRects().length === 0) continue; // skip hidden sections (e.g. RSVP when closed)
+    if (sec.getBoundingClientRect().top <= probe) currentId = sec.id;
+  }
+  // Snap to the last section once scrolled to the very bottom
+  if (spySections.length &&
+      window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+    currentId = spySections[spySections.length - 1].id;
+  }
+  spyLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + currentId);
+  });
+}
+
+let navTicking = false;
 window.addEventListener('scroll', () => {
-  if (navLinks.classList.contains('open')) {
-    navLinks.classList.remove('open');
-    menuToggle.classList.remove('active');
+  if (!navTicking) {
+    requestAnimationFrame(() => { updateActiveNav(); navTicking = false; });
+    navTicking = true;
   }
 }, { passive: true });
-
-menuToggle.addEventListener('click', () => {
-  menuToggle.classList.toggle('active');
-  navLinks.classList.toggle('open');
-});
-
-// Close menu when a link is clicked
-navLinks.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-    menuToggle.classList.remove('active');
-  });
-});
+window.addEventListener('resize', updateActiveNav, { passive: true });
+window.addEventListener('load', updateActiveNav);
+updateActiveNav();
 
 
 // ===== ATTENDANCE TOGGLE =====
