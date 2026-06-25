@@ -558,7 +558,8 @@ document.addEventListener('keydown', (e) => {
       isVenue: true,
       isAirport: false,
       distances: [],
-      mobileYOffset: 18
+      mobileYOffset: 46,
+      yOffset: 0
     },
     {
       name: 'Tideline Ocean Resort & Spa',
@@ -570,7 +571,8 @@ document.addEventListener('keydown', (e) => {
       isVenue: false,
       isAirport: false,
       distances: [{ label: 'Venue', time: '5 min' }, { label: 'PBI', time: '15 min' }],
-      mobileYOffset: -18
+      mobileYOffset: 0,
+      yOffset: 0
     },
     {
       name: 'Fairfield Inn & Suites',
@@ -583,7 +585,8 @@ document.addEventListener('keydown', (e) => {
       isAirport: false,
       cardOnLeft: true,
       distances: [{ label: 'Venue', time: '5 min' }, { label: 'PBI', time: '15 min' }],
-      mobileYOffset: 18
+      mobileYOffset: 0,
+      yOffset: 0
     },
     {
       name: 'Palm Beach Intl Airport',
@@ -594,7 +597,9 @@ document.addEventListener('keydown', (e) => {
       color: '#8a9bb5',
       isVenue: false,
       isAirport: true,
-      distances: [{ label: 'Venue', time: '20 min' }]
+      distances: [{ label: 'Venue', time: '20 min' }],
+      mobileYOffset: -32,
+      yOffset: 0
     }
   ];
 
@@ -755,7 +760,7 @@ document.addEventListener('keydown', (e) => {
       marker.setLngLat([loc.lng, loc.lat]);
       // Offset to center the pin dot on the geographic point
       // Pin is at the edge of the composite, offset inward by half pin size
-      const yOff = (isMobileView && loc.mobileYOffset) ? loc.mobileYOffset : 0;
+      const yOff = isMobileView ? (loc.mobileYOffset || 0) : (loc.yOffset || 0);
       marker.setOffset([cardOnLeft ? (pinSize / 2) : -(pinSize / 2), yOff]);
       marker.addTo(map);
     });
