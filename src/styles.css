@@ -856,6 +856,16 @@ section { position: relative; z-index: 2; }
   color: #c9a96e;
   border-color: rgba(201, 169, 110, 0.6);
 }
+.hotel-block-note {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-style: italic;
+  color: rgba(232, 228, 220, 0.7);
+  line-height: 1.6;
+  max-width: 640px;
+  margin: 32px auto 0;
+  text-align: center;
+}
 .hotel-address-link {
   font-family: 'Cormorant Garamond', serif;
   font-size: 20px; color: rgba(232, 228, 220, 0.85);
