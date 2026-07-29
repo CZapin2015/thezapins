@@ -106,6 +106,9 @@ nav a:hover { color: #c9a96e; }
   position: relative; display: inline-block;
 }
 .sig-text {
+  /* Also styles the hero <h1>: neutralize UA heading margin/weight. */
+  margin: 0;
+  font-weight: 400;
   font-family: 'Allura', cursive;
   font-size: 96px;
   color: #c9a96e;
@@ -1408,6 +1411,12 @@ footer {
 }
 .footer-monogram {
   display: flex; justify-content: center;
+}
+.footer-names {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px; letter-spacing: 2px;
+  color: rgba(201, 169, 110, 0.35);
+  margin-top: 14px;
 }
 .footer-date {
   font-family: 'Montserrat', sans-serif;
