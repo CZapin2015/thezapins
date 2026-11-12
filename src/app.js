@@ -835,7 +835,7 @@ function updateCountdown() {
   const mins = Math.floor((diff % 3600000) / 60000);
   const secs = Math.floor((diff % 60000) / 1000);
   const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-  setText('cdDays', String(days).padStart(3, '0'));
+  setText('cdDays', String(days));
   setText('cdHours', String(hours).padStart(2, '0'));
   setText('cdMins', String(mins).padStart(2, '0'));
   setText('cdSecs', String(secs).padStart(2, '0'));
