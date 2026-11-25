@@ -1,9 +1,15 @@
-name: Daily OG Image Refresh
+name: Deploy to Cloudflare Pages
 
 on:
+  push:
+    branches: [master]   # Every merge to master goes live
   schedule:
-    - cron: '3 5 * * *'  # 5:03 AM UTC = 12:03 AM ET daily
-  workflow_dispatch: {}    # Manual trigger
+    - cron: '3 5 * * *'  # 5:03 AM UTC = 12:03 AM ET daily (refreshes OG countdown image)
+  workflow_dispatch: {}  # Manual trigger
+
+concurrency:
+  group: cloudflare-pages-deploy
+  cancel-in-progress: false
 
 jobs:
   deploy:
