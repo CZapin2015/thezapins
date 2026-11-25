@@ -512,7 +512,7 @@ export async function onRequest() {
 
     function exportCSV() {
       if (!currentRsvps.length) { showToast('No RSVPs to export', true); return; }
-      const headers = ['Name', 'Email', 'Status', 'Welcome Party', 'Ceremony', 'Farewell Brunch', 'Guest Count', 'Meal', 'Dietary Notes', 'Guest Name', 'Guest Meal', 'Guest Dietary Notes', 'Date'];
+      const headers = ['Name', 'Email', 'Status', 'Welcome Party', 'Ceremony', 'Farewell Breakfast', 'Guest Count', 'Meal', 'Dietary Notes', 'Guest Name', 'Guest Meal', 'Guest Dietary Notes', 'Date'];
       const rows = currentRsvps.map(r => [
         r.full_name,
         r.email || '',
